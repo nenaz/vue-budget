@@ -1,0 +1,1 @@
+export { dictionaries } from './dictionaries';
