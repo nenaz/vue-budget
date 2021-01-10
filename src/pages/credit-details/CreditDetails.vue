@@ -7,25 +7,28 @@
       />
       <credit-widget
         :monthly-payment="currentCredit.nextPayment"
-        :amount="currentCredit.amount"
+        :amount="currentAmout"
         :start-date="currentCredit.beginDate"
         :pay-date="currentCredit.nextDate"
       />
     </template>
     <template v-slot:body>
       <page-body-content
-        text="Детали кредита"
+        text="Детали счета"
       >
         <details1
           :details="createDetails"
         />
       </page-body-content>
       <page-body-content
-        text="График платежей"
+        text="Операции по счету"
       >
+      <!-- {{ currentOperations }} -->
         <payment-schedule
-          :schedule="schedule"
+          :currentOperations="operations"
         />
+        <!-- {{ operations }} -->
+        <!-- {{ this.getAvat }} -->
       </page-body-content>
       <!-- <page-body-content
         text="Документы по кредиту"
@@ -34,16 +37,17 @@
           :documents="documents"
         />
       </page-body-content> -->
-      <functional-buttons-module
+      <!-- <functional-buttons-module
         :items="items"
         @click="handleItemClick"
-      />
+      /> -->
     </template>
   </page>
 </template>
 
 <script>
 import { mapFields } from 'vuex-map-fields';
+import { mapGetters, mapActions } from 'vuex';
 import get from 'lodash.get';
 import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
@@ -52,10 +56,11 @@ import PageBodyContent from '@/components/PageBodyContent';
 // import DocumentLinkList from '@/components/DocumentLinkList';
 import Details1 from '@/components/Details';
 import PaymentSchedule from '@/components/PaymentSchedule';
-import moneyFormat from '@/utils/money-formatter';
-import { FunctionalButtonsModule } from '@/modules/functional-buttons';
+// import moneyFormat from '@/utils/money-formatter';
+// import { FunctionalButtonsModule } from '@/modules/functional-buttons';
 import { sumOfAllLoans } from '@/utils/sum-all-loans';
-import { MIN_SUM_FOR_CREDIT } from '@/constants/constants';
+// import { MIN_SUM_FOR_CREDIT } from '@/constants/constants';
+// import { store } from '@/store';
 
 export default {
   name: 'CreditDetails',
@@ -66,7 +71,7 @@ export default {
     PageBodyContent,
     // DocumentLinkList,
     Details1,
-    FunctionalButtonsModule,
+    // FunctionalButtonsModule,
     PaymentSchedule,
   },
   props: {
@@ -139,38 +144,54 @@ export default {
       ],
       documents: [
       ],
+      operations: [],
     };
   },
   computed: {
     ...mapFields({
       credits: 'clientInstance.loans',
       authStatus: 'authStatus',
+      operations: 'operations',
+    }),
+    ...mapGetters({
+      getAccountById: 'getAccountById',
+      getOperations: 'getOperations',
     }),
     currentCredit() {
       return get(this, 'credits[this.id]', {});
     },
+    currentAmout() {
+      const account = this.getAccountById(this.id);
+      return account.amount;
+    },
+    currentOperations() {
+      // return this.getOperations;
+      console.log('this.$store.state', this.$store.state.operations);
+      return this.$store.state.operations;
+    },
+    currentAccount() {
+      console.log('getOperations', this.getOperations);
+      return this.getAccountById(this.id);
+    },
     createDetails() {
       const { amount, nextPayment } = this.currentCredit;
+      console.log('this.currentAccount', this.currentAccount);
       return [
         {
-          title: 'Сумма кредита',
-          value: moneyFormat(amount, true),
+          title: 'Статус',
+          value: this.currentAccount.status,
         },
         {
-          title: 'Процентная ставка',
-          value: '-',
+          title: 'Валюта',
+          value: this.currentAccount.currency.title,
         },
         {
-          title: 'Срок кредита',
-          value: '-',
+          title: 'Название',
+          value: this.currentAccount.name,
         },
         {
-          title: 'Ежемесячный платеж',
-          value: moneyFormat(nextPayment, true),
-        },
-        {
-          title: 'Переплата',
-          value: '-',
+          title: 'Последнее обновление',
+          value: this.currentAccount.lastUpdate,
         },
       ];
     },
@@ -180,25 +201,41 @@ export default {
     getAvailableLimit() {
       return this.$store.state.clientInstance.line.limit;
     },
+    getAvat() {
+      console.log('this.$store.state.operations', this.operations);
+      return this.operations;
+    },
   },
-  // beforeMount() {
-  //   if (this.authStatus) {
-  //     if (!this.credits.length) {
-  //       this.$router.replace('/main');
-  //     }
-  //     if (this.getAvailableLimit && this.credits.length) {
-  //       // ПЕРЕДЕЛАТЬ НОРМАЛЬНО!!!!
-  //       this.items[0].disabled = (this.getAvailableLimit - this.sumAllLoans)
-  //  <= MIN_SUM_FOR_CREDIT;
-  //     }
-  //   } else {
-  //     this.$router.replace('/');
-  //   }
-  // },
+  async beforeMount() {
+    console.log('beforeMount');
+    await this.handleStartPage();
+  },
   methods: {
+    ...mapActions([
+      'getOperationsByAccount',
+    ]),
     handleItemClick(value) {
       console.log('handleItemClick', value);
       this.$router.push(`/${value}`);
+    },
+    async handleStartPage() {
+    //   if (this.authStatus) {
+    //     if (!this.credits.length) {
+    //       this.$router.replace('/main');
+    //     }
+    //     if (this.getAvailableLimit && this.credits.length) {
+    //       // ПЕРЕДЕЛАТЬ НОРМАЛЬНО!!!!
+    //       this.items[0].disabled = (this.getAvailableLimit - this.sumAllLoans)
+    //  <= MIN_SUM_FOR_CREDIT;
+    //     }
+    //   } else {
+    //     this.$router.replace('/');
+    //   }
+      this.$store.dispatch('setRequestInProgress', true);
+      console.log('[START] getOperationsByAccount');
+      this.operations = await this.getOperationsByAccount(this.id);
+      console.log('[COMPLETE] getOperationsByAccount');
+      this.$store.dispatch('setRequestInProgress', false);
     },
   },
 };

@@ -2,35 +2,51 @@
   <div :class="$style['payment-schedule']">
     <div
       :class="$style.line"
-      v-for="(schedule, key) in schedule"
-      :key="key"
+      v-for="operation in currentOperations"
+      :key="operation._id"
     >
       <div>
         <img
-          v-if="schedule.status !== 'planned'"
-          :src="getImgUrl(schedule.status)"
-          :alt="schedule.status"
+          v-if="operation.status !== 'planned'"
+          :src="getImgUrl(operation.status)"
+          :alt="operation.status"
         />
       </div>
-      <span>{{ schedule.payDate }}</span>
-      <span />
-      <span>{{ scheduleAmountWithFormat(schedule.amount) }}</span>
+      <span :class="$style['operation-name']">{{ operation.name }}</span>
+      <!-- <span /> -->
+      <span>{{ scheduleAmountWithFormat(operation.amount) }}</span>
     </div>
   </div>
 </template>
 
 <script>
+// import { mapGetters } from 'vuex';
+// import { mapFields } from 'vuex-map-fields';
 import moneyFormat from '@/utils/money-formatter';
 
 export default {
   name: 'PaymentSchedule',
   props: {
-    schedule: {
+    // schedule: {
+    //   type: Array,
+    //   default: () => [],
+    // },
+    currentOperations: {
       type: Array,
       default: () => [],
     },
   },
   computed: {
+    // ...mapFields({
+    //   operations: 'operations',
+    // }),
+  //   ...mapGetters([
+  //     '',
+  //   ]),
+    // currentOperations() {
+    //   console.log('this.$store.getters.getOperations', this.$store.state.operations);
+    //   return this.$store.state.operations;
+    // },
   },
   methods: {
     scheduleAmountWithFormat(amount) {
@@ -54,10 +70,14 @@ export default {
 
     .line {
       display: grid;
-      grid-template-columns: 36px 70px auto 95px;
+      grid-template-columns: 36px auto 95px;
       border-bottom: 1px solid #F1F1F1;
       height: 31px;
       align-content: center;
     }
+  }
+
+  .operation-name {
+    text-align: left;
   }
 </style>

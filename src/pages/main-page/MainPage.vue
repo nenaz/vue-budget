@@ -28,6 +28,12 @@
             :is-active-status="isActiveStatus"
             @click="handleCardClick"
           />
+          <card-widget
+            :is-visible="true"
+            :product-data="addAccount"
+            :is-active-status="addAccount.isActiveStatus"
+            @click="handleAddAccountClick"
+          />
         </div>
       <!-- </transition> -->
       <!-- </transition-group> -->
@@ -64,13 +70,16 @@
           </transition>
         </template>
       </div>
-      <transition name="fade" mode="in-out">
+      <floating-action-button
+        @click="handleAddOperation"
+      >add</floating-action-button>
+      <!-- <transition name="fade" mode="in-out">
         <functional-button-placeholder  v-if="requestInProgress" />
         <functional-buttons-module
           v-else
           :items="items"
         />
-      </transition>
+      </transition> -->
     </template>
   </page>
 </template>
@@ -84,19 +93,20 @@ import get from 'lodash.get';
 import moneyFormat from '@/utils/money-formatter';
 import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
-import BalanceLine from '@/components/BalanceLine';
+// import BalanceLine from '@/components/BalanceLine';
 import CardWidget from '@/components/CardWidget';
 import CreditWidget from '@/components/CreditWidget';
-import { FunctionalButtonsModule } from '@/modules/functional-buttons';
+// import { FunctionalButtonsModule } from '@/modules/functional-buttons';
 import { sumOfAllLoans } from '@/utils/sum-all-loans';
 import { ErrorMessages } from '@/utils/error-messages';
-import { HeaderPlaceholder } from '@/components/placeholders';
+// import { HeaderPlaceholder } from '@/components/placeholders';
 import CurrentTrancheWidget from '@/components/CurrentTrancheWidget';
+import { FloatingActionButton } from '@/components/buttons/floating-action-button';
 // import { MIN_SUM_FOR_CREDIT } from '@/constants/constants';
 // import { redirectToInfoWithParams } from '@/utils/route-utils';
 import CardPlaceholder from './CardPlaceholder';
 import CreditPlaceholder from './CreditPlaceholder';
-import FunctionalButtonPlaceholder from './FunctionalButtonPlaceholder';
+// import FunctionalButtonPlaceholder from './FunctionalButtonPlaceholder';
 
 export default {
   name: 'MainPage',
@@ -106,12 +116,13 @@ export default {
     // BalanceLine,
     CardWidget,
     CreditWidget,
-    FunctionalButtonsModule,
+    // FunctionalButtonsModule,
     // HeaderPlaceholder,
     CardPlaceholder,
     CreditPlaceholder,
-    FunctionalButtonPlaceholder,
+    // FunctionalButtonPlaceholder,
     CurrentTrancheWidget,
+    FloatingActionButton,
   },
   data() {
     return {
@@ -142,6 +153,10 @@ export default {
       test: this.$store.state.requestInProgress,
       createdM: false,
       beforeMountM: false,
+      addAccount: {
+        isActiveStatus: false,
+        _id: 'new',
+      },
     };
   },
   computed: {
@@ -325,6 +340,14 @@ export default {
           this.$router.push('/credit-sign');
         }
       }
+    },
+    handleAddAccountClick() {
+      console.log('handleAddAccountClick');
+      this.$router.push('/work-place');
+    },
+    handleAddOperation() {
+      console.log('click');
+      this.$router.push('/operation/add');
     },
   },
 };

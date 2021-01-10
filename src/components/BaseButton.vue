@@ -17,6 +17,8 @@ const ALLOWED_TYPES = [
   'secondary',
   'transparent',
   'transparent-border-color',
+  'fab',
+  'speed-dial',
 ];
 
 export default {
@@ -143,6 +145,44 @@ export default {
     &.cancel {
       background-color: $RADICAL_RED;
       color: white;
+    }
+
+    &.fab {
+      background-color: #f5f5f5;
+      border-radius: 50%;
+      height: 56px;
+      width: 56px;
+      box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14),
+       0 1px 18px 0 rgba(0,0,0,.12);
+      transition-duration: .28s;
+      transition-property: box-shadow,transform,opacity;
+      transition-timing-function: cubic-bezier(.4,0,.2,1);
+      position: relative;
+      justify-content: center;
+      align-items: center;
+    }
+    &.fab::before {
+      background-color: currentColor;
+      border-radius: inherit;
+      bottom: 0;
+      color: inherit;
+      content: "";
+      left: 0;
+      opacity: 0;
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: opacity .2s cubic-bezier(.4,0,.6,1);
+    }
+
+    &.speed-dial {
+      background-color: #f5f5f5;
+      border-radius: 50%;
+      height: 40px;
+      width: 40px;
+      box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14),
+       0 1px 18px 0 rgba(0,0,0,.12);
     }
   }
 </style>

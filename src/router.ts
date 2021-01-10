@@ -18,6 +18,7 @@ import OfferPage from '@/pages/offer-page';
 import { HelpPage } from '@/pages/help-page';
 import RepayPage from '@/pages/repay-page';
 import { TestsPage } from '@/pages/tests-page';
+import { Operation } from '@/pages/operation-page';
 
 Vue.use(VueRouter);
 
@@ -160,6 +161,15 @@ const routes: Array<RouteConfig> = [
     path: '/tests-unit',
     name: 'TestsPage',
     component: TestsPage,
+  },
+  {
+    path: '/operation/:type',
+    name: 'OperationPage',
+    props: true,
+    meta: {
+      requiresAuth: true,
+    },
+    component: Operation,
   },
 ];
 

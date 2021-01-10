@@ -2,31 +2,27 @@
   <page>
     <template v-slot:header>
       <page-header
-        title="Оформление кредита:"
-        :titleAmount="titleBalance"
+        :showMenu="true"
+        :showBack="true"
       />
     </template>
     <template v-slot:body>
       <div :class="$style.body">
         <div :class="$style['body-content']">
           <div :class="$style['step-text-block']">
-            <span :class="$style['step-title']">
+            <!-- <span :class="$style['step-title']">
               <b>{{ titleWithStep }}</b>Доход и <b>место работы</b>
-            </span>
-            <span :class="$style['step-sub-title']">Расскажите о своей занятости</span>
+            </span> -->
+            <span :class="$style['step-sub-title']">Новый счет</span>
           </div>
           <div :class="$style['work-info']">
             <div :class="$style['work-info__input-styles']">
-              <suggestion-input
-                @select="handleSelectOrganization"
-                title="Наименование организации:"
-                v-model="organization"
-                url="party"
-                :showSecondLine="true"
-                :disabled="requestInProgress"
+              <base-input
+                title="Название счёта"
+                v-model="name"
               />
             </div>
-            <div :class="$style['work-info__input-styles']">
+            <!-- <div :class="$style['work-info__input-styles']">
               <transition name="fade" mode="out-in">
                 <div
                   :class="$style['dictionary-item-block']"
@@ -53,8 +49,8 @@
                   />
                 </dropdown>
               </transition>
-            </div>
-            <div :class="$style['work-info__input-styles']">
+            </div> -->
+            <!-- <div :class="$style['work-info__input-styles']">
               <transition name="fade" mode="out-in">
                 <div
                   :class="$style['dictionary-item-block']"
@@ -80,8 +76,8 @@
                   />
                 </dropdown>
               </transition>
-            </div>
-            <div :class="$style['work-info__input-styles']">
+            </div> -->
+            <!-- <div :class="$style['work-info__input-styles']">
               <transition name="fade" mode="out-in">
                 <div
                   :class="$style['dictionary-item-block']"
@@ -107,8 +103,8 @@
                   />
                 </dropdown>
               </transition>
-            </div>
-            <div :class="$style['work-info__input-styles']">
+            </div> -->
+            <!-- <div :class="$style['work-info__input-styles']">
               <transition name="fade" mode="out-in">
                 <div
                   :class="$style['dictionary-item-block']"
@@ -134,31 +130,44 @@
                   />
                 </dropdown>
               </transition>
+            </div> -->
+            <div :class="$style['work-info__input-styles']">
+              <number-input
+                title="Номер счета"
+                v-model.lazy="number"
+              />
+            </div>
+            <div :class="$style['work-info__input-styles']">
+              <dropdown
+                title="Тип"
+                :data="accountTypes"
+                @select="handleTypeSelect"
+                :placeholder="type.title"
+              >
+                <img
+                  src="@/assets/icon-arrow-green.svg"
+                  alt="arrow"
+                />
+              </dropdown>
             </div>
             <div :class="$style['work-info__input-styles']">
               <number-input
-                title="Стаж (мес):"
-                v-model.lazy="experience"
-                :error="$v.experience.$error"
-                :errorMessage="$$error.errorMessage()"
-                @blur="$v.experience.$touch()"
-                :disabled="requestInProgress"
+                title="Начальное значени"
+                v-model.number="amount"
               />
             </div>
             <div :class="$style['work-info__input-styles']">
-              <suggestion-input
-                @select="handleSelectAddress"
-                title="Адрес:"
-                v-model="address"
-                :disabled="requestInProgress"
-              />
-            </div>
-            <div :class="$style['work-info__input-styles']">
-              <phone-input
-                title="Телефон:"
-                v-model="phone"
-                :disabled="requestInProgress"
-              />
+              <dropdown
+                title="Валюта"
+                :data="currencyList"
+                @select="handleCurrencySelect"
+                :placeholder="currency.title"
+              >
+                <img
+                  src="@/assets/icon-arrow-green.svg"
+                  alt="arrow"
+                />
+              </dropdown>
             </div>
           </div>
         </div>
@@ -190,48 +199,69 @@ import get from 'lodash.get';
 import Page from '@/components/Page';
 import {
   NumberInput,
-  PhoneInput,
-  SuggestionInput,
+  // PhoneInput,
+  // SuggestionInput,
+  BaseInput,
 } from '@/components/inputs';
 import BaseButton from '@/components/BaseButton';
 import Dropdown from '@/components/Dropdown';
 import moneyFormat from '@/utils/money-formatter';
 import PageHeader from '@/components/PageHeader';
+import { AccountTypes, CurrencyList } from '@/dictionaries';
 import { ErrorMessages } from '@/utils/error-messages';
-import {
-  InputPlaceholder,
-} from '@/components/placeholders';
+// import {
+//   InputPlaceholder,
+// } from '@/components/placeholders';
 
 export default {
   name: 'ChangeWorkPlace',
   components: {
     BaseButton,
     Dropdown,
+    BaseInput,
     NumberInput,
     Page,
     PageHeader,
-    PhoneInput,
-    SuggestionInput,
-    InputPlaceholder,
+    // PhoneInput,
+    // SuggestionInput,
+    // InputPlaceholder,
+  },
+  data() {
+    return {
+      name: '',
+      number: '',
+      type: {
+        uuid: '0',
+        title: '',
+      },
+      amount: 0,
+      currency: {
+        uuid: '1',
+        title: 'RUB',
+      },
+      color: '#cdbdde',
+      accountTypes: AccountTypes,
+      currencyList: CurrencyList,
+    };
   },
   computed: {
     ...mapFields({
-      address: 'placeOfWorkAndIncome.address',
-      organization: 'placeOfWorkAndIncome.organization',
-      specialization: 'placeOfWorkAndIncome.specialization',
-      experience: 'placeOfWorkAndIncome.experience',
-      sector: 'placeOfWorkAndIncome.sector',
-      ownership: 'placeOfWorkAndIncome.ownership',
-      phone: 'placeOfWorkAndIncome.phone',
-      position: 'placeOfWorkAndIncome.position',
-      amount: 'creditParams.creditAmount',
-      currentStep: 'steps.current',
-      totalStep: 'steps.total',
-      error: 'error.statusType',
-      requestInProgress: 'requestInProgress',
-      clientProfile: 'clientInstance.activated',
-      activated: 'tranche.activated',
-      authStatus: 'authStatus',
+      // address: 'placeOfWorkAndIncome.address',
+      // organization: 'placeOfWorkAndIncome.organization',
+      // specialization: 'placeOfWorkAndIncome.specialization',
+      // experience: 'placeOfWorkAndIncome.experience',
+      // sector: 'placeOfWorkAndIncome.sector',
+      // ownership: 'placeOfWorkAndIncome.ownership',
+      // phone: 'placeOfWorkAndIncome.phone',
+      // position: 'placeOfWorkAndIncome.position',
+      // amount: 'creditParams.creditAmount',
+      // currentStep: 'steps.current',
+      // totalStep: 'steps.total',
+      // error: 'error.statusType',
+      // requestInProgress: 'requestInProgress',
+      // clientProfile: 'clientInstance.activated',
+      // activated: 'tranche.activated',
+      // authStatus: 'authStatus',
     }),
     ...mapGetters([
       'getHasCard',
@@ -240,16 +270,16 @@ export default {
       return `Шаг: ${this.currentStep} из 3. `;
     },
     isPageValid() {
-      return this.$v.address.required
-        && this.$v.experience.required
-        && this.$v.experience.between
-        && this.$v.specialization.required
-        && this.$v.organization.required
-        && this.$v.sector.required
-        && this.$v.ownership.required
-        && this.$v.phone.required
-        && this.$v.phone.minLength
-        && this.$v.position.required;
+      return this.name !== ''
+        && this.number !== ''
+        // && this.$v.type.between
+        && this.type.title !== ''
+        && this.amount !== 0;
+      // && this.$v.sector.required
+      // && this.$v.ownership.required
+      // && this.$v.phone.required
+      // && this.$v.phone.minLength
+      // && this.$v.position.required;
     },
     titleBalance() {
       return moneyFormat(this.amount, true);
@@ -259,36 +289,47 @@ export default {
     },
   },
   async beforeMount() {
-    if (this.activated && this.clientProfile && this.authStatus) {
-      this.$store.dispatch('setRequestInProgress', true);
-      await this.distionaryCompose();
-      if (this.error === 'error') {
-        this.$router.push('/info');
-      }
-      this.$store.dispatch('setRequestInProgress', false);
-    } else if (!this.activated || !this.clientProfile) {
-      this.$router.replace('/main');
-    } else {
-      this.$router.replace('/');
-    }
+    // if (this.activated && this.clientProfile && this.authStatus) {
+    //   this.$store.dispatch('setRequestInProgress', true);
+    //   await this.distionaryCompose();
+    //   if (this.error === 'error') {
+    //     this.$router.push('/info');
+    //   }
+    //   this.$store.dispatch('setRequestInProgress', false);
+    // } else if (!this.activated || !this.clientProfile) {
+    //   this.$router.replace('/main');
+    // } else {
+    //   this.$router.replace('/');
+    // }
   },
   methods: {
     ...mapActions([
       'setStep',
       'compositionCreateRequest',
       'distionaryCompose',
+      'createAccount',
     ]),
     goBack() {
       this.$router.replace('/income');
     },
     async goNextStep() {
-      this.$router.push('/offers');
+      await this.createAccount({
+        name: this.name,
+        number: this.number,
+        type: this.type,
+        // color: this.color,
+        currency: this.currency,
+        amount: this.amount,
+      });
+      this.$router.push('/main');
+      // console.log('this', this.name);
+      // console.log('this', this.type);
     },
-    handleOwnershipSelect(value) {
-      this.$store.commit('updateOwnership', value);
+    handleTypeSelect(value) {
+      this.type = value;
     },
-    handleIndustrySelect(value) {
-      this.$store.commit('updateIndustry', value);
+    handleCurrencySelect(value) {
+      this.currency = value;
     },
     handlePositionSelect(value) {
       this.$store.commit('updatePosition', value);

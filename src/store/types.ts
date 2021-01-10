@@ -125,6 +125,7 @@ export interface Dictionaries {
 
 export interface RootState {
   accounts?: any;
+  aperations?: any;
   verificationCode: string;
   creditParams: {
     term: number;

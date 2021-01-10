@@ -9,21 +9,6 @@
         <span :class="$style.amount">{{ amountWithFormat }}</span>
         <span :class="$style.date">{{ startDateWithFormat }}</span>
       </div>
-      <div :class="$style.bottom">
-        <div :class="$style['credit-info']">
-          <span :class="$style.title">Платеж по кредиту</span>
-          <span :class="$style.info">{{ nextPayDateWithFormat }}</span>
-        </div>
-        <div :class="$style.button">
-          <base-button
-            type="primary"
-            @click.stop="handlePay"
-            :serialNumber="serialNumber"
-          >
-            {{ monthlyPaymentWithFormat }}
-          </base-button>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -31,13 +16,9 @@
 <script>
 import moneyFormat from '@/utils/money-formatter';
 import { formatDate, diffDatesInDays } from '@/utils/date-utils';
-import BaseButton from '@/components/BaseButton';
 
 export default {
   name: 'CreditWidget',
-  components: {
-    BaseButton,
-  },
   props: {
     isVisible: {
       type: Boolean,
@@ -47,7 +28,7 @@ export default {
       default: 0.00,
     },
     amount: {
-      type: Number,
+      type: [Number, String],
       default: 0.00,
     },
     startDate: {
@@ -75,7 +56,7 @@ export default {
       return moneyFormat(this.monthlyPayment, true);
     },
     startDateWithFormat() {
-      return `Кредит от ${formatDate(this.startDate)}`;
+      return `Открыт ${formatDate(this.startDate)}`;
     },
     nextPayDateWithFormat() {
       return `До ${formatDate(this.payDate, {
@@ -112,7 +93,6 @@ export default {
   .credit {
     .top {
       padding: 16px;
-      border-bottom: 1px solid $GALLERY_CREDIT;
       display: flex;
       flex-direction: rows;
       justify-content: space-between;

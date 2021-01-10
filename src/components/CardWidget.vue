@@ -16,9 +16,9 @@
         </span>
       </div>
       <div v-else :class="$style['text-block']">
-        <span :class="$style.title">Виртуальная карта</span>
-        <span :class="$style['text-empty']">
-          В процессе оформления и ожидании поступления средств
+        <!-- <span :class="$style.title"></span> -->
+        <span :class="$style.text">
+          Добавить счет
         </span>
       </div>
     </div>

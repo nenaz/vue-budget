@@ -9,7 +9,7 @@ import axios from 'axios';
 import download from 'downloadjs';
 import { RootState, Errors } from '@/store/types';
 import mutationTypes from '@/store/mutation-types';
-import { mockCurrentTranche } from './mock';
+// import { mockCurrentTranche } from './mock';
 import { Document, Tranche, TrancheStatuses } from './types';
 
 const {
