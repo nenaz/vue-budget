@@ -1,0 +1,18 @@
+{
+  "short_name": "Line",
+  "name": "Line",
+  "icons": [
+    {
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "ru-RU",
+  "dir": ".",
+  "background_color": "#fff",
+  "theme_color": "#3b51b5",
+  "description": "Prototype add for Line loans"
+}

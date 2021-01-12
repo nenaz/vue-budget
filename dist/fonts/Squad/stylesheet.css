@@ -1,0 +1,47 @@
+@font-face {
+    font-family: 'Squad';
+    src: url('Squad-SemiBold.eot');
+    src: local('Squad SemiBold'), local('Squad-SemiBold'),
+        url('Squad-SemiBold.eot?#iefix') format('embedded-opentype'),
+        url('Squad-SemiBold.woff2') format('woff2'),
+        url('Squad-SemiBold.woff') format('woff'),
+        url('Squad-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Squad';
+    src: url('Squad-Regular.eot');
+    src: local('Squad Regular'), local('Squad-Regular'),
+        url('Squad-Regular.eot?#iefix') format('embedded-opentype'),
+        url('Squad-Regular.woff2') format('woff2'),
+        url('Squad-Regular.woff') format('woff'),
+        url('Squad-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Squad';
+    src: url('Squad-ExtraBold.eot');
+    src: local('Squad ExtraBold'), local('Squad-ExtraBold'),
+        url('Squad-ExtraBold.eot?#iefix') format('embedded-opentype'),
+        url('Squad-ExtraBold.woff2') format('woff2'),
+        url('Squad-ExtraBold.woff') format('woff'),
+        url('Squad-ExtraBold.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Squad';
+    src: url('Squad-Bold.eot');
+    src: local('Squad Bold'), local('Squad-Bold'),
+        url('Squad-Bold.eot?#iefix') format('embedded-opentype'),
+        url('Squad-Bold.woff2') format('woff2'),
+        url('Squad-Bold.woff') format('woff'),
+        url('Squad-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
