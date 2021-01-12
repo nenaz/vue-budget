@@ -60,7 +60,7 @@ export const accounts: Module<Accounts, RootState> = {
       commit: Commit;
       dispatch: Dispatch;
     }, params) {
-      await dispatch('serverCommonAPI', {
+      const result = await dispatch('serverCommonAPI', {
         type: 'POST',
         params: {
           url: '/operations/create',
@@ -69,6 +69,37 @@ export const accounts: Module<Accounts, RootState> = {
           },
         },
       });
+      return result;
+    },
+    async updateAccount({ commit, dispatch }: {
+      commit: Commit;
+      dispatch: Dispatch;
+    }, params) {
+      const result = await dispatch('serverCommonAPI', {
+        type: 'POST',
+        params: {
+          url: '/accounts/update',
+          data: {
+            ...params,
+          },
+        },
+      });
+      return result;
+    },
+    async createOperationComposition({ commit, dispatch }: {
+      commit: Commit;
+      dispatch: Dispatch;
+    }, operationParams) {
+      const result = await dispatch('createOperation', operationParams);
+      console.log('result', result);
+      console.log('operationParams', operationParams);
+      if (result.message === 'success') {
+        await dispatch('updateAccount', {
+          amount: operationParams.amount,
+          /* eslint-disable-next-line */
+          id: operationParams.account._id,
+        });
+      }
     },
   },
   mutations: {

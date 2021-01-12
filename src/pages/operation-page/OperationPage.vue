@@ -161,7 +161,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'createOperation',
+      'createOperationComposition',
     ]),
     handleCategorySelect(value) {
       this.category = value;
@@ -175,7 +175,7 @@ export default {
     },
     async handleAddClick() {
       console.log('handleAddClick');
-      await this.createOperation({
+      await this.createOperationComposition({
         amount: this.amount,
         category: this.category,
         type: this.type,

@@ -43,9 +43,6 @@ const logParamsFromServerWithError = (error: any) => {
 const axiosHttpAuth = axios.create({
   // baseURL: process.env.VUE_APP_SERVER_URL_AUTH,
   baseURL: `${process.env.VUE_APP_SERVER_URL}${process.env.VUE_APP_API_BASE_PATH}`,
-  // baseURL: `${process.env.VUE_APP_SERVER_URL}/line/wiremock/self`,
-  // baseURL: `${process.env.VUE_APP_SERVER_URL_LOCAL}/self`,
-  // baseURL: `${process.env.VUE_APP_SERVER_URL_AUTH_SELF}`,
   timeout: 40000,
   headers: {
     'Content-Type': 'application/json',

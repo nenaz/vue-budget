@@ -14,9 +14,9 @@
           войти
         </span>
         <div :class="$style['input-block']">
-          <span :class="$style['body-text']">
+          <!-- <span :class="$style['body-text']">
             Введите логин и пароль от интернет банка ОТП
-          </span>
+          </span> -->
           <base-input
             v-model="login"
             title="Логин"

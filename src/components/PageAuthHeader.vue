@@ -1,14 +1,14 @@
 <template>
   <div :class="$style.header">
     <div :class="$style['logo-block']">
-      <img src="@/assets/logo.svg" alt="logo" :class="$style.logo" />
+      <!-- <img src="@/assets/logo.svg" alt="logo" :class="$style.logo" /> -->
       <div :class="$style['header-title']">
         <img src="@/assets/icon-lock.svg" alt="Icon_lock" :class="$style.icon" />
-        <span :class="$style['header-text']">
+        <!-- <span :class="$style['header-text']">
           ОТП Банк никому
           <br />
           не передает ваши данные
-        </span>
+        </span> -->
       </div>
     </div>
   </div>
