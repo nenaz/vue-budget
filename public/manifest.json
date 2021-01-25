@@ -1,6 +1,6 @@
 {
-  "short_name": "Line",
-  "name": "Line",
+  "short_name": "Budget",
+  "name": "Budget",
   "icons": [
     {
       "sizes": "192x192",
@@ -14,5 +14,5 @@
   "dir": ".",
   "background_color": "#fff",
   "theme_color": "#3b51b5",
-  "description": "Prototype add for Line loans"
+  "description": "Budget"
 }

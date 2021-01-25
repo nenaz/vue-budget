@@ -10,7 +10,7 @@
         <span :class="$style['icon-card-empty-background']" />
       </div> -->
       <div v-if="isActiveStatus" :class="$style['text-block']">
-        <span :class="$style.title">Карта для покупок</span>
+        <span :class="$style.title">{{ productData.name }}</span>
         <span :class="$style.text">
           {{ getFormattedAmount(Number(productData.amount)) }}
         </span>
@@ -86,6 +86,8 @@ export default {
     flex-direction: column;
     justify-content: center;
     text-align: left;
+    // white-space: nowrap;
+    // width: 70%;
 
     .title {
       font-family: Source Sans Pro;
@@ -95,6 +97,10 @@ export default {
       line-height: 18px;
       letter-spacing: -0.2px;
       color: $DOVE_GRAY;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // white-space: nowrap;
+      // width: 90%;
     }
 
     .text {

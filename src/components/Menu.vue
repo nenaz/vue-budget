@@ -17,35 +17,35 @@
             @click="handleClick"
             link="/main"
           >
-            Кредитная линия
+            1
           </span>
           <span
             :class="$style.item"
             @click="handleClick"
             link="/card-details"
           >
-            Виртуальная карта
+            2
           </span>
           <span
             :class="$style.item"
             @click="handleClick"
             link="/card-details"
           >
-            Реквизиты карты
+            3
           </span>
           <span
             :class="$style.item"
             @click="handleClick"
             link="/credit-params"
           >
-            Взять сумму
+            4
           </span>
           <span
             :class="$style.item"
             @click="handleClick"
             link="/help"
           >
-            Помощь
+            5
           </span>
           <span :class="$style.item" @click="handleExitClick">
             Выход

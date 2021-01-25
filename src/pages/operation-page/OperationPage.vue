@@ -181,6 +181,7 @@ export default {
         type: this.type,
         account: this.account,
       });
+      this.$router.push('/main');
     },
   },
 };

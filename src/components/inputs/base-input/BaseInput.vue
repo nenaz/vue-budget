@@ -51,7 +51,7 @@ export default {
     },
     maxlength: {
       type: Number,
-      default: 20,
+      default: 40,
     },
     error: Boolean,
     errorMessage: {

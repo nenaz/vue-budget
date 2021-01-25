@@ -4,14 +4,15 @@ import {
   Module,
 } from 'vuex';
 import { RootState } from '@/store/types';
-import { Operations } from './types';
+import { LIST_CATEGORY_DEMO } from '@/dictionaries';
+import { Operation } from './types';
 
-const defaultAccountsState = (): Operations => ([{
-  amount: 1,
-}]);
+const defaultAccountsState = (): Operation[] => ([{}]);
 
-export const operations: Module<Operations, RootState> = {
-  state: defaultAccountsState(),
+export const operations: Module<Operation[], RootState> = {
+  state: {
+    ...defaultAccountsState(),
+  },
   actions: {
     /**
      * получение операций по счету
@@ -21,7 +22,7 @@ export const operations: Module<Operations, RootState> = {
       dispatch: Dispatch;
       rootState: RootState;
     }, accountId: string) {
-      console.log('getOperations');
+      console.log('getOperations start');
       const response = await dispatch('serverCommonAPI', {
         type: 'POST',
         params: {
@@ -31,11 +32,20 @@ export const operations: Module<Operations, RootState> = {
           },
         },
       });
-      return response;
-      // dispatch('setOperations', response);
+      console.log('getOperations finish', response);
+      // return response;
+      dispatch('setOperations', response);
     },
     setOperations({ commit }: { commit: Commit }, value) {
-      commit('updateOperations', value);
+      const newValue = value.map((item: any) => {
+        const category = LIST_CATEGORY_DEMO.find((list) => (list.uuid === item.category));
+        return {
+          ...item,
+          category,
+        };
+      });
+      console.log('newValue', newValue);
+      commit('updateOperations', newValue);
     },
   },
   mutations: {
@@ -49,5 +59,15 @@ export const operations: Module<Operations, RootState> = {
       console.log();
       return state;
     },
+    // getOperationCategory: (state, uuid) => {
+    //   console.log();
+    //   const operations = state;
+    //   const category = LIST_CATEGORY_DEMO.find((item) => (item.uuid === uuid));
+    //   const operation = operations.find((oper) => (oper.uuid === uuid));
+    //   return {
+    //     ...operation,
+    //     categoryObj: category,
+    //   };
+    // },
   },
 };

@@ -21,7 +21,7 @@ export const accounts: Module<Accounts, RootState> = {
       await dispatch('serverCommonAPI', {
         type: 'POST',
         params: {
-          url: '/operations/create',
+          url: '/accounts/create',
           data: {
             ...params,
           },

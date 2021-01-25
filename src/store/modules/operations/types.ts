@@ -1,14 +1,14 @@
-type Operation = {
+export type Operation = {
   _id?: string;
-  account_id?: string;
+  accountId?: string;
   type?: string;
   amount?: number;
-  category?: number;
+  category?: string;
   subcategory?: number;
-  createDate?: string;
+  createDate?: number;
   location?: string;
   name?: string;
-  createTime?: string;
+  createTime?: number;
 };
 
-export type Operations = Operation[];
+// export type Operations = Operation[];

@@ -12,7 +12,7 @@
           :alt="operation.status"
         />
       </div>
-      <span :class="$style['operation-name']">{{ operation.name }}</span>
+      <span :class="$style['operation-name']">{{ operation.category.title }}</span>
       <!-- <span /> -->
       <span>{{ scheduleAmountWithFormat(operation.amount) }}</span>
     </div>
@@ -32,8 +32,8 @@ export default {
     //   default: () => [],
     // },
     currentOperations: {
-      type: Array,
-      default: () => [],
+      type: Object,
+      default: () => ({}),
     },
   },
   computed: {
