@@ -23,25 +23,15 @@
       <page-body-content
         text="Операции по счету"
       >
-      <!-- {{ currentOperations }} -->
-      <!-- {{ operations }} -->
+      <div :class="$style.accounts" v-if="!requestInProgress">
         <payment-schedule
-          :currentOperations="operations"
+          v-for="day in getOperationDays"
+          :key="day"
+          :currentOperations="currentOperation(day)"
+          :day="day"
         />
-        <!-- {{ operations }} -->
-        <!-- {{ this.getAvat }} -->
+      </div>
       </page-body-content>
-      <!-- <page-body-content
-        text="Документы по кредиту"
-      >
-        <document-link-list
-          :documents="documents"
-        />
-      </page-body-content> -->
-      <!-- <functional-buttons-module
-        :items="items"
-        @click="handleItemClick"
-      /> -->
     </template>
   </page>
 </template>
@@ -54,15 +44,8 @@ import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
 import CreditWidget from '@/components/CreditWidget';
 import PageBodyContent from '@/components/PageBodyContent';
-// import DocumentLinkList from '@/components/DocumentLinkList';
 import Details1 from '@/components/Details';
 import PaymentSchedule from '@/components/PaymentSchedule';
-// import moneyFormat from '@/utils/money-formatter';
-// import { FunctionalButtonsModule } from '@/modules/functional-buttons';
-import { sumOfAllLoans } from '@/utils/sum-all-loans';
-import { LIST_CATEGORY_DEMO } from '@/dictionaries';
-// import { MIN_SUM_FOR_CREDIT } from '@/constants/constants';
-// import { store } from '@/store';
 
 export default {
   name: 'CreditDetails',
@@ -71,9 +54,7 @@ export default {
     PageHeader,
     CreditWidget,
     PageBodyContent,
-    // DocumentLinkList,
     Details1,
-    // FunctionalButtonsModule,
     PaymentSchedule,
   },
   props: {
@@ -146,7 +127,6 @@ export default {
       ],
       documents: [
       ],
-      // operations: [],
     };
   },
   computed: {
@@ -154,10 +134,10 @@ export default {
       credits: 'clientInstance.loans',
       authStatus: 'authStatus',
       operations: 'operations',
+      requestInProgress: 'requestInProgress',
     }),
     ...mapGetters({
       getAccountById: 'getAccountById',
-      // getOperations: 'getOperations',
     }),
     currentCredit() {
       return get(this, 'credits[this.id]', {});
@@ -166,18 +146,13 @@ export default {
       const account = this.getAccountById(this.id);
       return account.amount;
     },
-    // currentOperations() {
-    //   // return this.getOperations;
-    //   console.log('this.$store.state', this.$store.state.operations);
-    //   return this.$store.state.operations;
-    // },
+    getOperationDays() {
+      return Object.keys(this.operations);
+    },
     currentAccount() {
-      // console.log('getOperations', this.getOperations);
       return this.getAccountById(this.id);
     },
     createDetails() {
-      const { amount, nextPayment } = this.currentCredit;
-      console.log('this.currentAccount', this.currentAccount);
       return [
         {
           title: 'Статус',
@@ -197,24 +172,11 @@ export default {
         },
       ];
     },
-    sumAllLoans() {
-      return sumOfAllLoans(this.credits);
-    },
-    getAvailableLimit() {
-      return this.$store.state.clientInstance.line.limit;
-    },
-    // getAvat() {
-    //   console.log('this.$store.state.operations', this.operations);
-    //   return this.operations;
-    // },
   },
   async beforeMount() {
     console.log('beforeMount', this.id);
-    // await this.handleStartPage();
-    // this.$store.dispatch('setRequestInProgress', true);
-    console.log('[START] getOperationsByAccount', this.id);
+    this.$store.dispatch('setRequestInProgress', true);
     await this.getOperationsByAccount(this.id);
-    console.log('[COMPLETE] getOperationsByAccount', this.id);
     this.$store.dispatch('setRequestInProgress', false);
   },
   methods: {
@@ -222,49 +184,19 @@ export default {
       'getOperationsByAccount',
     ]),
     handleItemClick(value) {
-      console.log('handleItemClick', value);
       this.$router.push(`/${value}`);
     },
-    // getModOperations() {
-    //   // const operations = await this.getOperationsByAccount(id);
-    //   const modOperations = this.$store.state.operations.map((item) => {
-    //     const category = LIST_CATEGORY_DEMO.find((list) => (list.uuid === item.category));
-    //     return {
-    //       ...item,
-    //       category,
-    //     };
-    //   });
-    //   console.log('modOperations', modOperations);
-    //   return modOperations;
-    // },
-    async handleStartPage() {
-    //   if (this.authStatus) {
-    //     if (!this.credits.length) {
-    //       this.$router.replace('/main');
-    //     }
-    //     if (this.getAvailableLimit && this.credits.length) {
-    //       // ПЕРЕДЕЛАТЬ НОРМАЛЬНО!!!!
-    //       this.items[0].disabled = (this.getAvailableLimit - this.sumAllLoans)
-    //  <= MIN_SUM_FOR_CREDIT;
-    //     }
-    //   } else {
-    //     this.$router.replace('/');
-    //   }
-      // this.$store.dispatch('setRequestInProgress', true);
-      // console.log('[START] getOperationsByAccount');
-      // await this.getOperationsByAccount(this.id);
-      // console.log('[COMPLETE] getOperationsByAccount');
-      // this.$store.dispatch('setRequestInProgress', false);
-    },
-    getCurrentOperations() {
-      // return this.getOperations;
-      console.log('this.$store.state', this.$store.state.operations);
-      this.operations = this.$store.state.operations;
+    currentOperation(name) {
+      const { operations } = this.$store.state;
+      return operations[name];
     },
   },
 };
 </script>
 
 <style lang="scss" module>
-
+  .accounts {
+    background-color: red;
+    padding: 2px;
+  }
 </style>

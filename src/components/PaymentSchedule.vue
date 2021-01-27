@@ -1,8 +1,9 @@
 <template>
   <div :class="$style['payment-schedule']">
+    <span :class="$style.payday">{{ day }}</span>
     <div
       :class="$style.line"
-      v-for="operation in currentOperations"
+      v-for="(operation) in currentOperations"
       :key="operation._id"
     >
       <div>
@@ -12,9 +13,10 @@
           :alt="operation.status"
         />
       </div>
-      <span :class="$style['operation-name']">{{ operation.category.title }}</span>
-      <!-- <span /> -->
-      <span>{{ scheduleAmountWithFormat(operation.amount) }}</span>
+      <div :class="$style['description-block']">
+        <span :class="$style['operation-name']">{{ operation.category.title }}</span>
+      </div>
+      <span :class="$style.amount">{{ operationAmountWithFormat(operation.amount) }}</span>
     </div>
   </div>
 </template>
@@ -23,19 +25,25 @@
 // import { mapGetters } from 'vuex';
 // import { mapFields } from 'vuex-map-fields';
 import moneyFormat from '@/utils/money-formatter';
+import { formatDate } from '@/utils/date-utils';
 
 export default {
   name: 'PaymentSchedule',
   props: {
-    // schedule: {
-    //   type: Array,
-    //   default: () => [],
-    // },
+    day: {
+      type: String,
+      default: '',
+    },
     currentOperations: {
-      type: Object,
-      default: () => ({}),
+      type: Array,
+      default: () => ([]),
     },
   },
+  // data() {
+  //   return {
+  //     operations: [],
+  //   };
+  // },
   computed: {
     // ...mapFields({
     //   operations: 'operations',
@@ -43,14 +51,25 @@ export default {
   //   ...mapGetters([
   //     '',
   //   ]),
-    // currentOperations() {
-    //   console.log('this.$store.getters.getOperations', this.$store.state.operations);
-    //   return this.$store.state.operations;
-    // },
+    renderOperations() {
+      // console.log('this.$store.getters.getOperations', this.$store.state.operations);
+      // this.operations = Object.keys(this.currentOperations);
+      return Object.keys(this.currentOperations);
+    },
   },
+  // mount() {
+  //   this.renderOperations();
+  // },
   methods: {
-    scheduleAmountWithFormat(amount) {
-      return moneyFormat(amount, true);
+    operationAmountWithFormat(amount) {
+      return moneyFormat(amount);
+    },
+    operationDateWithFormat(date) {
+      return formatDate(date, {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+      });
     },
     getImgUrl(status) {
       const images = require.context('../assets', false, /\.svg$/);
@@ -65,19 +84,42 @@ export default {
 
 <style lang="scss" module>
   .payment-schedule {
-    margin-top: 17px;
-    border-top: 1px solid #F1F1F1;
+    margin-top: 5px;
+    border-radius: 5px;
+    background-color: #F1F1F1;
 
     .line {
       display: grid;
-      grid-template-columns: 36px auto 95px;
+      grid-template-columns: 25px auto 95px;
       border-bottom: 1px solid #F1F1F1;
-      height: 31px;
+      height: 55px;
       align-content: center;
+      padding-right: 5px;
     }
   }
 
   .operation-name {
     text-align: left;
+  }
+
+  .amount {
+    text-align: right;
+  }
+
+  .description-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: baseline;
+  }
+
+  .payday {
+    text-align: left;
+    display: inline-block;
+    width: 100%;
+    font-weight: bold;
+    background-color: white;
+    box-sizing: border-box;
+    padding: 3px;
   }
 </style>

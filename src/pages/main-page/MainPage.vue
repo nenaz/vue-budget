@@ -179,7 +179,7 @@ export default {
       hasCurrentTranche: 'hasCurrentTranche',
       clientProfile: 'clientInstance.activated',
       currentTranche: 'tranche',
-      accounts: 'accounts',
+      accounts: 'accounts.allAccounts',
     }),
     getAvailableLimit() {
       return this.$store.state.clientInstance.line.limit;

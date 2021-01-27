@@ -8,7 +8,7 @@
     </template>
     <template v-slot:body>
       <div :class="$style.body">
-        <div :class="$style['body-content']">
+        <div :class="$style['body-content tess']">
           <div :class="$style['step-text-block']">
             <!-- <span :class="$style['step-title']">
               <b>{{ titleWithStep }}</b>Доход и <b>место работы</b>
@@ -144,7 +144,7 @@ export default {
   },
   computed: {
     ...mapFields({
-      accounts: 'accounts',
+      accounts: 'accounts.allAccounts',
     }),
     isPageValid() {
       return this.amount > 0 || this.account.uuid !== -1;
@@ -188,12 +188,21 @@ export default {
 </script>
 
 <style lang="scss" module>
+.tess {
+  color: red;
+  // height: 70px;
+  // height: 200px;
+  // transition-property: height;
+  // transition-duration: .2s;
+  // transition-timing-function: linear;
+  // overflow: hidden;
+}
   .body {
     position: relative;
 
     .body-content {
       background: $WHITE;
-      backdrop-filter: blur(16px);
+      // backdrop-filter: blur(16px);
       border-radius: 8px;
       width: 100%;
       height: 100%;

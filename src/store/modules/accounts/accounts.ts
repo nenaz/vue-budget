@@ -6,7 +6,9 @@ import {
 import { RootState } from '@/store/types';
 import { Accounts } from './types';
 
-const defaultAccountsState = (): Accounts => ([]);
+const defaultAccountsState = (): Accounts => ({
+  allAccounts: [],
+});
 
 export const accounts: Module<Accounts, RootState> = {
   state: defaultAccountsState(),
@@ -104,18 +106,20 @@ export const accounts: Module<Accounts, RootState> = {
   },
   mutations: {
     updateAccounts(state, value: any) {
-      Object.assign(state, value);
+      // Object.assign(state, value);
+      state.allAccounts = value;
     },
   },
   getters: {
     getAccountById: (state) => (id: string) => {
       console.log('id', id);
       console.log('state', state);
+      const { allAccounts } = state;
       // eslint-disable-next-line no-underscore-dangle
-      const e = state.find((item) => item._id === id);
+      const e = allAccounts.find((item) => item._id === id);
       console.log('find', e);
       // eslint-disable-next-line no-underscore-dangle
-      return state.find((item) => item._id === id);
+      return allAccounts.find((item) => item._id === id);
     },
   },
 };

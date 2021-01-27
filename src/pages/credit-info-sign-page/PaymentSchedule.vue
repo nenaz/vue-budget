@@ -117,7 +117,7 @@ export default {
 
   .body-content {
     background: $WHITE;
-    backdrop-filter: blur(16px);
+    // backdrop-filter: blur(16px);
     border-radius: 8px;
     width: 100%;
     height: 100%;

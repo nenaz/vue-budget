@@ -3,7 +3,7 @@
     <div :class="$style.body">
       <slot />
     </div>
-    <page-footer />
+    <!-- <page-footer /> -->
     <portal to="modals">
       <left-menu
         v-if="!hideMenu"
@@ -24,7 +24,7 @@ import LeftMenu from './Menu';
 export default {
   name: 'PageWrapper',
   components: {
-    PageFooter,
+    // PageFooter,
     LeftMenu,
   },
   computed: {

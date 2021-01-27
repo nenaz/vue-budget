@@ -1,4 +1,4 @@
-export type Operation = {
+type Operation = {
   _id?: string;
   accountId?: string;
   type?: string;
@@ -11,4 +11,8 @@ export type Operation = {
   createTime?: number;
 };
 
-// export type Operations = Operation[];
+export type Operations = {
+  allOperations: {
+    [key: string]: Operation[];
+  }
+};
