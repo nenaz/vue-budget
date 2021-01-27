@@ -46,6 +46,7 @@ import CreditWidget from '@/components/CreditWidget';
 import PageBodyContent from '@/components/PageBodyContent';
 import Details1 from '@/components/Details';
 import PaymentSchedule from '@/components/PaymentSchedule';
+import { formatDate } from '@/utils/date-utils';
 
 export default {
   name: 'CreditDetails',
@@ -133,7 +134,7 @@ export default {
     ...mapFields({
       credits: 'clientInstance.loans',
       authStatus: 'authStatus',
-      operations: 'operations',
+      operations: 'operations.operations',
       requestInProgress: 'requestInProgress',
     }),
     ...mapGetters({
@@ -168,7 +169,11 @@ export default {
         },
         {
           title: 'Последнее обновление',
-          value: this.currentAccount.lastUpdate,
+          value: formatDate(this.currentAccount.lastUpdate, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+          }),
         },
       ];
     },
@@ -188,7 +193,7 @@ export default {
     },
     currentOperation(name) {
       const { operations } = this.$store.state;
-      return operations[name];
+      return operations.operations[name];
     },
   },
 };
@@ -198,5 +203,8 @@ export default {
   .accounts {
     background-color: red;
     padding: 2px;
+    overflow-x: scroll;
+    max-height: 300px;
+    overflow-y: scroll;
   }
 </style>

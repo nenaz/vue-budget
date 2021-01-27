@@ -93,8 +93,6 @@ export const accounts: Module<Accounts, RootState> = {
       dispatch: Dispatch;
     }, operationParams) {
       const result = await dispatch('createOperation', operationParams);
-      console.log('result', result);
-      console.log('operationParams', operationParams);
       if (result.message === 'success') {
         await dispatch('updateAccount', {
           amount: operationParams.amount,

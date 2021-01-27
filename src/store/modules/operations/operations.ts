@@ -7,7 +7,9 @@ import { RootState } from '@/store/types';
 // import { LIST_CATEGORY_DEMO } from '@/dictionaries';
 import { Operations } from './types';
 
-const defaultAccountsState = (): any => ({});
+const defaultAccountsState = (): any => ({
+  operations: {},
+});
 
 export const operations: Module<any, RootState> = {
   state: defaultAccountsState(),
@@ -15,12 +17,13 @@ export const operations: Module<any, RootState> = {
     /**
      * получение операций по счету
      */
-    async getOperationsByAccount({ dispatch }: {
-      // commit: Commit;
+    async getOperationsByAccount({ commit, dispatch }: {
+      commit: Commit;
       dispatch: Dispatch;
       // rootState: RootState;
     }, accountId: string) {
       console.log('getOperations start');
+      commit('resetState');
       const response = await dispatch('serverCommonAPI', {
         type: 'POST',
         params: {
@@ -32,25 +35,17 @@ export const operations: Module<any, RootState> = {
       });
       console.log('getOperations finish', response);
       // return response;
-      dispatch('setOperations', response);
-    },
-    setOperations({ commit }: { commit: Commit }, value) {
-      // const newValue = value.map((item: any) => {
-      //   const category = LIST_CATEGORY_DEMO.find((list) => (list.uuid === item.category));
-      //   return {
-      //     ...item,
-      //     category,
-      //   };
-      // });
-      // console.log('newValue', newValue);
-      commit('updateOperations', value);
+      // dispatch('setOperations', response);
+      commit('updateOperations', response);
     },
   },
   mutations: {
     updateOperations(state, value: any) {
-      // state.allOperations = value;
-      Object.assign(state, value);
+      Object.assign(state.operations, value);
       console.log('operations save to store');
+    },
+    resetState(state) {
+      Object.assign(state, defaultAccountsState());
     },
   },
   getters: {
