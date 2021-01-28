@@ -1,5 +1,5 @@
 <template>
-  <div :class="classes">
+  <div :class="$style['body-content']">
     <page-body-content-title
       :text="text"
       :subText="subText"
@@ -26,14 +26,6 @@ export default {
       default: '',
     },
   },
-  computed: {
-    classes() {
-      return {
-        [this.$style['body-content']]: true,
-        [this.$style.animation]: true,
-      };
-    },
-  },
 };
 </script>
 
@@ -46,12 +38,6 @@ export default {
     padding: 23px 16px 15px;
     box-sizing: border-box;
     margin-bottom: 16px;
-    height: auto;
-  }
-
-  .animation {
-    transition-timing-function: linear;
-    transition-duration: .2s;
-    transition-property: height;
+    height: 100%;
   }
 </style>

@@ -9,7 +9,9 @@
         />
       </div>
       <div>
-        <!-- <span :class="$style.logo" /> -->
+        <span :class="$style.title">
+          {{ title }}
+        </span>
       </div>
       <div>
         <span
@@ -19,14 +21,14 @@
         />
       </div>
     </div>
-    <div v-if="title" :class="$style['header-balance']">
+    <!-- <div v-if="title" :class="$style['header-balance']">
       <span :class="$style.title">
         {{ title }}
       </span>
       <span :class="$style.amount">
         {{ titleAmount }}
       </span>
-    </div>
+    </div> -->
   </div>
 </template>
 

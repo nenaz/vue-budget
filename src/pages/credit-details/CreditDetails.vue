@@ -4,34 +4,45 @@
       <page-header
         :showBack="true"
         :showMenu="true"
+        :title="currentAccount.name"
       />
       <credit-widget
         :monthly-payment="currentCredit.nextPayment"
         :amount="currentAmout"
-        :start-date="currentCredit.beginDate"
+        :start-date="currentAccount.lastUpdate"
         :pay-date="currentCredit.nextDate"
       />
     </template>
     <template v-slot:body>
-      <page-body-content
+      <!-- <page-body-content
         text="Детали счета"
       >
         <details1
           :details="createDetails"
         />
-      </page-body-content>
-      <page-body-content
-        text="Операции по счету"
+      </page-body-content> -->
+      <page-body-content-roll-up
+        text="Детали счета"
       >
-      <div :class="$style.accounts" v-if="!requestInProgress">
-        <payment-schedule
-          v-for="day in getOperationDays"
-          :key="day"
-          :currentOperations="currentOperation(day)"
-          :day="day"
+        <details1
+          :details="createDetails"
         />
+      </page-body-content-roll-up>
+      <div style="height: calc(100vh - 211px);
+    overflow: hidden;">
+        <page-body-content
+          text="Операции по счету"
+        >
+          <div :class="$style.accounts" v-if="!requestInProgress">
+            <payment-schedule
+              v-for="day in getOperationDays"
+              :key="day"
+              :currentOperations="currentOperation(day)"
+              :day="day"
+            />
+          </div>
+        </page-body-content>
       </div>
-      </page-body-content>
     </template>
   </page>
 </template>
@@ -44,6 +55,7 @@ import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
 import CreditWidget from '@/components/CreditWidget';
 import PageBodyContent from '@/components/PageBodyContent';
+import PageBodyContentRollUp from '@/components/PageBodyContentRollUp';
 import Details1 from '@/components/Details';
 import PaymentSchedule from '@/components/PaymentSchedule';
 import { formatDate } from '@/utils/date-utils';
@@ -57,6 +69,7 @@ export default {
     PageBodyContent,
     Details1,
     PaymentSchedule,
+    PageBodyContentRollUp,
   },
   props: {
     id: {
@@ -168,13 +181,21 @@ export default {
           value: this.currentAccount.name,
         },
         {
-          title: 'Последнее обновление',
-          value: formatDate(this.currentAccount.lastUpdate, {
+          title: 'Открыт',
+          value: formatDate(this.currentAccount.createDate, {
             year: 'numeric',
             month: 'numeric',
             day: 'numeric',
           }),
         },
+        // {
+        //   title: 'Последнее обновление',
+        //   value: formatDate(this.currentAccount.lastUpdate, {
+        //     year: 'numeric',
+        //     month: 'numeric',
+        //     day: 'numeric',
+        //   }),
+        // },
       ];
     },
   },
@@ -204,7 +225,7 @@ export default {
     background-color: red;
     padding: 2px;
     overflow-x: scroll;
-    max-height: 300px;
+    height: calc(100% - 30px);
     overflow-y: scroll;
   }
 </style>

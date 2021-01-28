@@ -1,6 +1,6 @@
 <template>
   <div :class="$style.title">
-    <span :class="$style.text">
+    <span :class="$style.text" @click="handleTitleCLick">
       {{ text }}
     </span>
     <span v-if="subText" :key="subText" :class="$style['sub-text']">
@@ -20,6 +20,11 @@ export default {
     subText: {
       type: String,
       default: '',
+    },
+  },
+  methods: {
+    handleTitleCLick() {
+      this.$emit('click');
     },
   },
 };

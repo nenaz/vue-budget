@@ -7,7 +7,10 @@
     <div :class="$style.credit">
       <div :class="$style.top">
         <span :class="$style.amount">{{ amountWithFormat }}</span>
-        <span :class="$style.date">{{ startDateWithFormat }}</span>
+        <div>
+          <span :class="$style['date-text']">Обновлен </span>
+          <span :class="$style.date">{{ startDateWithFormat }}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -32,8 +35,8 @@ export default {
       default: 0.00,
     },
     startDate: {
-      type: String,
-      default: '1970-12-12',
+      type: Number,
+      default: 1608838972555,
     },
     payDate: {
       type: String,
@@ -56,7 +59,7 @@ export default {
       return moneyFormat(this.monthlyPayment, true);
     },
     startDateWithFormat() {
-      return `Открыт ${formatDate(this.startDate)}`;
+      return formatDate(this.startDate);
     },
     nextPayDateWithFormat() {
       return `До ${formatDate(this.payDate, {
@@ -84,10 +87,10 @@ export default {
 
 <style module lang="scss">
   .credit-block {
-    padding: 8px 0;
+    // padding: 8px 0;
     background-color: $WHITE;
-    border-radius: 8px;
-    margin: 8px 0;
+    // border-radius: 8px;
+    // margin: 8px 0;
   }
 
   .credit {
@@ -152,5 +155,16 @@ export default {
         }
       }
     }
+  }
+
+  .date-text {
+    font-family: Source Sans Pro;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 18px;
+    text-align: right;
+    letter-spacing: -0.2px;
+    // color: $APPLE;
   }
 </style>
