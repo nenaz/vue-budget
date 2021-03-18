@@ -33,6 +33,10 @@ export default {
       type: String,
       default: '',
     },
+    isAnimated: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     classes() {
@@ -43,7 +47,7 @@ export default {
     },
     animationClasses() {
       return {
-        [this.$style['body-content-animation']]: true,
+        [this.$style['body-content-animation']]: this.isAnimated,
         [this.$style.animation]: this.isOpen,
       };
     },
@@ -64,7 +68,7 @@ export default {
     // backdrop-filter: blur(16px);
     border-radius: 8px;
     width: 100%;
-    padding: 8px 16px;
+    // padding: 8px 16px;
     box-sizing: border-box;
     margin-bottom: 16px;
     // height: auto;

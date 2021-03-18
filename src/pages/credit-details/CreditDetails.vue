@@ -3,7 +3,6 @@
     <template v-slot:header>
       <page-header
         :showBack="true"
-        :showMenu="true"
         :title="currentAccount.name"
       />
       <credit-widget
@@ -21,27 +20,39 @@
           :details="createDetails"
         />
       </page-body-content> -->
-      <page-body-content-roll-up
-        text="Детали счета"
-      >
-        <details1
-          :details="createDetails"
-        />
+        <page-body-content-roll-up>
+          <div style="display: flex; flex-direction: row; justify-content: space-around;">
+            <div
+              v-for="(item) in items"
+              :key="item.icon"
+            >
+              <base-button type="fab" @click="item.handleName">
+                {{ item.text }}
+              </base-button>
+            </div>
+        </div>
       </page-body-content-roll-up>
-      <div style="height: calc(100vh - 211px);
-    overflow: hidden;">
+      <div
+        v-if="length"
+        style="height: calc(100vh - 211px); overflow: hidden;"
+      >
         <page-body-content
           text="Операции по счету"
         >
           <div :class="$style.accounts" v-if="!requestInProgress">
             <payment-schedule
-              v-for="day in getOperationDays"
+              v-for="day in Object.keys(operations)"
               :key="day"
               :currentOperations="currentOperation(day)"
               :day="day"
             />
           </div>
         </page-body-content>
+      </div>
+      <div v-else>
+        <page-body-content
+          text="Пока нет ни одной операции"
+        ></page-body-content>
       </div>
     </template>
   </page>
@@ -56,9 +67,11 @@ import PageHeader from '@/components/PageHeader';
 import CreditWidget from '@/components/CreditWidget';
 import PageBodyContent from '@/components/PageBodyContent';
 import PageBodyContentRollUp from '@/components/PageBodyContentRollUp';
-import Details1 from '@/components/Details';
+// import Details1 from '@/components/Details';
 import PaymentSchedule from '@/components/PaymentSchedule';
 import { formatDate } from '@/utils/date-utils';
+// import { FloatingActionButton } from '@/components/buttons/floating-action-button';
+import BaseButton from '@/components/BaseButton';
 
 export default {
   name: 'CreditDetails',
@@ -67,9 +80,10 @@ export default {
     PageHeader,
     CreditWidget,
     PageBodyContent,
-    Details1,
+    // Details1,
     PaymentSchedule,
     PageBodyContentRollUp,
+    BaseButton,
   },
   props: {
     id: {
@@ -79,67 +93,26 @@ export default {
   },
   data() {
     return {
-      schedule: [
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'completed', // (inProcess) (completed)
-        },
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'completed', // (inProcess) (completed)
-        },
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'completed', // (inProcess) (completed)
-        },
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'completed', // (inProcess) (completed)
-        },
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'completed', // (inProcess) (completed)
-        },
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'inProcess', // (inProcess) (completed)
-        },
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'planned', // (inProcess) (completed)
-        },
-        {
-          payDate: '10.01.2020',
-          amount: 3650,
-          status: 'planned', // (inProcess) (completed)
-        },
-      ],
       items: [
         {
           icon: 'icon-down',
-          text: 'Взять сумму для покупок',
+          text: 'Delete',
           link: 'credit-params',
           disabled: false,
+          handleName: this.handleDeleteClick,
         },
         {
           icon: 'icon-up',
-          text: 'Досрочное погашение',
+          text: 'Edit',
           link: 'repayment',
+          handleName: this.editThisAccount,
         },
         {
           icon: 'icon-help',
-          text: 'Помощь',
+          text: 'Add',
           link: 'help',
+          handleName: this.handleAddOperation,
         },
-      ],
-      documents: [
       ],
     };
   },
@@ -147,11 +120,13 @@ export default {
     ...mapFields({
       credits: 'clientInstance.loans',
       authStatus: 'authStatus',
-      operations: 'operations.operations',
+      operations: 'operations.data',
+      length: 'operations.length',
       requestInProgress: 'requestInProgress',
     }),
     ...mapGetters({
       getAccountById: 'getAccountById',
+      getOperationsLength: 'getOperationsLength',
     }),
     currentCredit() {
       return get(this, 'credits[this.id]', {});
@@ -159,9 +134,6 @@ export default {
     currentAmout() {
       const account = this.getAccountById(this.id);
       return account.amount;
-    },
-    getOperationDays() {
-      return Object.keys(this.operations);
     },
     currentAccount() {
       return this.getAccountById(this.id);
@@ -208,13 +180,29 @@ export default {
   methods: {
     ...mapActions([
       'getOperationsByAccount',
+      'deleteThisAccount',
+      'editThisAccount',
     ]),
     handleItemClick(value) {
       this.$router.push(`/${value}`);
     },
     currentOperation(name) {
-      const { operations } = this.$store.state;
-      return operations.operations[name];
+      // const { operations } = this.$store.state;
+      return this.operations[name];
+    },
+    getOperationDays() {
+      console.log('Object.keys(this.operations)', Object.keys(this.operations));
+      return this.operations;
+    },
+    async handleDeleteClick() {
+      await this.deleteThisAccount(this.id);
+      this.$router.push('/main');
+    },
+    handleEditClick() {
+      this.editThisAccount(this.id);
+    },
+    handleAddOperation() {
+      this.$router.push('/operation/add');
     },
   },
 };
@@ -222,8 +210,9 @@ export default {
 
 <style lang="scss" module>
   .accounts {
-    background-color: red;
-    padding: 2px;
+    // background-color: red;
+    // border: 1px solid;
+    // padding: 2px;
     overflow-x: scroll;
     height: calc(100% - 30px);
     overflow-y: scroll;

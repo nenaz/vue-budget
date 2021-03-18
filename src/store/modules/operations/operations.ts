@@ -8,7 +8,8 @@ import { RootState } from '@/store/types';
 import { Operations } from './types';
 
 const defaultAccountsState = (): any => ({
-  operations: {},
+  data: {},
+  length: 0,
 });
 
 export const operations: Module<any, RootState> = {
@@ -36,22 +37,35 @@ export const operations: Module<any, RootState> = {
       console.log('getOperations finish', response);
       // return response;
       // dispatch('setOperations', response);
-      commit('updateOperations', response);
+      dispatch('setOperations', response);
+    },
+    setOperations({ commit }: { commit: Commit }, value) {
+      commit('updateOperations', value);
+      commit('updateOperationsLength', value);
     },
   },
   mutations: {
+    updateOperationsLength(state, value: any) {
+      state.length = Object.keys(value).length;
+      console.log('operations length save to store');
+    },
     updateOperations(state, value: any) {
-      Object.assign(state.operations, value);
-      console.log('operations save to store');
+      state.data = value;
+      console.log('operations data save to store');
     },
     resetState(state) {
       Object.assign(state, defaultAccountsState());
     },
   },
   getters: {
-    getOperations: (state) => {
-      console.log();
+    getOperations(state) {
       return state;
+    },
+    getOperationsLength(state) {
+      console.log('getOperationsLength_state', state);
+      return state
+        ? Object.keys(state).length
+        : 0;
     },
     // getOperationCategory: (state, uuid) => {
     //   console.log();

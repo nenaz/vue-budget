@@ -28,7 +28,7 @@ import moneyFormat from '@/utils/money-formatter';
 import { formatDate } from '@/utils/date-utils';
 
 export default {
-  name: 'PaymentSchedule',
+  name: 'PaymentSchedule', // опервции по счету
   props: {
     day: {
       type: String,
@@ -85,8 +85,10 @@ export default {
 <style lang="scss" module>
   .payment-schedule {
     margin-top: 5px;
-    border-radius: 5px;
+    // border-radius: 5px;
     background-color: #F1F1F1;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
 
     .line {
       display: grid;

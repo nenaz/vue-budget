@@ -101,6 +101,24 @@ export const accounts: Module<Accounts, RootState> = {
         });
       }
     },
+    async deleteThisAccount({ commit, dispatch }: {
+      commit: Commit;
+      dispatch: Dispatch;
+    }, id) {
+      const result = await dispatch('serverCommonAPI', {
+        type: 'POST',
+        params: {
+          url: '/accounts/delete',
+          data: {
+            id,
+          },
+        },
+      });
+      return result;
+    },
+    editThisAccount() {
+      console.log('editThisAccount');
+    },
   },
   mutations: {
     updateAccounts(state, value: any) {
