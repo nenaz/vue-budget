@@ -106,8 +106,10 @@ export default {
       this.$store.commit('SET_AUTH_CONSENT', value);
     },
     async authProcedureStart() {
-      this.$router.push('/main');
       await this.authProcedure();
+      if (!this.error) {
+        this.$router.push('/main');
+      }
     },
   },
   mounted() {

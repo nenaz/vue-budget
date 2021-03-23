@@ -42,7 +42,7 @@ export const auth: Module<Auth, RootState> = {
       dispatch: Dispatch;
       commit: Commit;
     }) {
-      dispatch('removeAuthInfo');
+      // dispatch('removeAuthInfo');
       dispatch('setRequestInProgress', true);
       await dispatch('authenticate');
       dispatch('setRequestInProgress', false);
@@ -59,21 +59,16 @@ export const auth: Module<Auth, RootState> = {
       const { login, password } = state;
 
       const response = await dispatch('serverAuthAPI', {
-        // url: '/v1/authenticate',
-        url: '/login',
+        url: '/login/login',
         data: {
-          // data: {
           login,
           password,
-          // channel: 'ib',
-          // },
-          // accessToken: null,
         },
       });
+      console.log('response.data', response);
 
       if (isEmpty(rootState.error)) {
-        dispatch('setAuthInfo', response.data);
-        dispatch('setUserPhone', response.data);
+        dispatch('setAuthInfo', response.data.token);
       }
     },
     /**
@@ -89,21 +84,18 @@ export const auth: Module<Auth, RootState> = {
      */
     setAuthInfo(
       { commit }: { commit: Commit },
-      authenticateObject: AuthenticateResponse | undefined,
+      token: string,
     ) {
-      if (!get(authenticateObject, 'errorCode', 0)) {
-        Cookies.set(
-          'token',
-          get(authenticateObject, 'confirmation.token'),
-          {
-            expires: getExpires(EXPIRES),
-            // secure: true,
-            samesite: 'lax',
-            path: '/',
-          },
-        );
-        Cookies.set('authSessionToken', get(authenticateObject, 'data.authSessionToken'), { expires: getExpires(EXPIRES) });
-      }
+      Cookies.set(
+        'token',
+        token,
+        {
+          expires: getExpires(EXPIRES),
+          // secure: true,
+          samesite: 'lax',
+          path: '/',
+        },
+      );
     },
     /**
      * сохранить номер телефона на который отправляется СМС для проверки

@@ -15,7 +15,7 @@ export const redirectToInfoWithParams = (params: Params) => {
   const { from = '/', status = 200, requestUrl = '' } = params;
   const routeParams: any = {};
 
-  if (status === 403) {
+  if (status === 403 || status === 401) {
     routeParams.name = 'Info';
     routeParams.params = {
       status: Errors.ERROR,

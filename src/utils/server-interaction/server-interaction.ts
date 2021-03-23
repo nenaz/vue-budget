@@ -74,11 +74,11 @@ axiosHttpAuth.interceptors.request.use((config) => axiosConfigAPI(config), (erro
 
 axiosHttp.interceptors.request.use(
   (config) => {
-    const accessToken = Cookies.get('accessToken');
+    const accessToken = Cookies.get('token');
     const newHeaders = accessToken
       ? {
         ...config.headers,
-        'X-Line-Token': accessToken,
+        'X-Auth-Token': accessToken,
       }
       : config.headers;
     const newConf = {

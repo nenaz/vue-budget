@@ -421,6 +421,7 @@ export const mainStore: StoreOptions<RootState> = {
       await dispatch('fetchGetCard');
       await dispatch('fetchGetCredits');
     },
+
     async serverAuthAPI({ commit, dispatch }: {
       commit: Commit;
       dispatch: Dispatch;
@@ -445,14 +446,14 @@ export const mainStore: StoreOptions<RootState> = {
           }
           console.log(' serverAuthAPI ERROR ', status);
           dispatch('setError', errResult);
-          const routerParams = redirectToInfoWithParams({
-            from: backUrl,
-            status,
-            requestUrl: result.request.responseURL,
-            error: errResult,
-          });
-          console.log('routerParams', routerParams);
-          dispatch('routeTo', routerParams);
+          // const routerParams = redirectToInfoWithParams({
+          //   from: backUrl,
+          //   status,
+          //   requestUrl: result.request.responseURL,
+          //   error: errResult,
+          // });
+          // console.log('routerParams', routerParams);
+          // dispatch('routeTo', routerParams);
           return errResult;
         }
         return result;
