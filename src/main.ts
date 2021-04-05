@@ -2,11 +2,14 @@ import Vue from 'vue';
 import Vuelidate from 'vuelidate';
 import PortalVue from 'portal-vue';
 import Vue2TouchEvents from 'vue2-touch-events';
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import { router } from './router';
 import { store } from './store';
 import { masks } from './utils/masks';
 import error from './utils/error-messages';
+// import './plugins/elements';
 
 const VueInputMask = require('vue-inputmask').default;
 
@@ -16,7 +19,7 @@ Vue.prototype.$$mask = masks;
 Vue.prototype.$$error = error;
 
 Vue.use(VueInputMask);
-// Vue.use(VueTheMask);
+Vue.use(ElementUI);
 Vue.use(Vuelidate);
 Vue.use(PortalVue);
 Vue.use(Vue2TouchEvents);

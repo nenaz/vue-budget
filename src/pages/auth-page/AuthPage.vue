@@ -1,33 +1,48 @@
 <template>
   <page
     :grid-config="pageConfig"
-    :isGridPage="true"
   >
     <template v-slot:header>
-      <page-auth-header />
+      <!-- <page-auth-header /> -->
     </template>
     <template v-slot:body>
       <div :class="$style.body">
-        <span :class="$style['body-title']">
+        <!-- <span :class="$style['body-title']">
           Необходимо
           <br />
           войти
-        </span>
+        </span> -->
         <div :class="$style['input-block']">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <el-avatar :size="size" :src="circleUrl"></el-avatar>
+            </div>
+              <el-input
+                placeholder="Логин"
+                v-model="login"
+                label="Пароль"
+              />
+              <el-input
+                placeholder="Пароль"
+                v-model="password"
+                show-password
+                label="Пароль"
+              />
+          </el-card>
           <!-- <span :class="$style['body-text']">
             Введите логин и пароль от интернет банка ОТП
           </span> -->
-          <base-input
+          <!-- <base-input
             v-model="login"
             title="Логин"
-          />
-          <base-input
+          /> -->
+          <!-- <base-input
             title="Пароль"
             v-model="password"
             type="password"
-          />
+          /> -->
         </div>
-        <div :class="$style.consent">
+        <!-- <div :class="$style.consent">
           <checkbox
             position="left"
             @input="handleChangeConsent"
@@ -37,8 +52,8 @@
             Я даю согласие на обработку Банком моих персональных
               данных в целях рассмотрения настоящего сообщения
           </checkbox>
-        </div>
-        <div :class="$style.buttons">
+        </div> -->
+        <!-- <div :class="$style.buttons">
           <base-button
             type="primary"
             :disabled="!isPageValid"
@@ -46,7 +61,12 @@
           >
             Продолжить
           </base-button>
-        </div>
+        </div> -->
+        <el-button
+          type="primary"
+          :loading="requestInProgress"
+          @click="authProcedureStart"
+        >Продолжить</el-button>
       </div>
     </template>
   </page>
@@ -56,20 +76,21 @@
 import { mapActions } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
 import { required } from 'vuelidate/lib/validators';
-import { BaseInput } from '@/components/inputs';
-import Checkbox from '@/components/Checkbox';
-import BaseButton from '@/components/BaseButton';
+// import { }
+// import { BaseInput } from '@/components/inputs';
+// import Checkbox from '@/components/Checkbox';
+// import BaseButton from '@/components/BaseButton';
 import Page from '@/components/Page';
-import PageAuthHeader from '@/components/PageAuthHeader';
+// import PageAuthHeader from '@/components/PageAuthHeader';
 
 export default {
   name: 'AuthPage',
   components: {
-    BaseButton,
-    BaseInput,
-    Checkbox,
+    // BaseButton,
+    // BaseInput,
+    // Checkbox,
     Page,
-    PageAuthHeader,
+    // PageAuthHeader,
   },
   data() {
     return {
@@ -85,6 +106,7 @@ export default {
       password: 'auth.password',
       consent: 'auth.consent',
       error: 'error.statusType',
+      requestInProgress: 'requestInProgress',
     }),
     isPageValid() {
       return this.$v.login.required
