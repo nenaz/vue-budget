@@ -293,7 +293,7 @@ export default {
       console.log('handleCardClick');
       // this.$router.push('/card-details');
       this.$router.push({
-        path: `credit-details/${id}`,
+        path: `account/${id}`,
         id,
       });
     },
@@ -343,7 +343,7 @@ export default {
     },
     handleAddAccountClick() {
       console.log('handleAddAccountClick');
-      this.$router.push('/work-place');
+      this.$router.push('/account/add');
     },
     handleAddOperation() {
       console.log('click');

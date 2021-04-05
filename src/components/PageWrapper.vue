@@ -36,11 +36,13 @@ export default {
   methods: {
     ...mapActions([
       'resetState',
+      'closeSession',
     ]),
     handleCloseClick() {
       this.$store.commit('HIDE_MENU');
     },
     handleExitClick() {
+      this.closeSession();
       this.handleCloseClick();
       this.resetState();
       this.$router.replace('/');

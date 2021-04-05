@@ -13,7 +13,7 @@
             <!-- <span :class="$style['step-title']">
               <b>{{ titleWithStep }}</b>Доход и <b>место работы</b>
             </span> -->
-            <span :class="$style['step-sub-title']">Новый счет</span>
+            <span :class="$style['step-sub-title']">{{ title }}</span>
           </div>
           <div :class="$style['work-info']">
             <div :class="$style['work-info__input-styles']">
@@ -22,115 +22,7 @@
                 v-model="name"
               />
             </div>
-            <!-- <div :class="$style['work-info__input-styles']">
-              <transition name="fade" mode="out-in">
-                <div
-                  :class="$style['dictionary-item-block']"
-                  v-if="requestInProgress"
-                >
-                  <span :class="$style['dictionary-item-text']">
-                    Выберите форму собственности:
-                  </span>
-                  <input-placeholder
-                    :class="$style['input-placeholder']"
-                  />
-                </div>
-
-                <dropdown
-                  v-else
-                  title="Выберите форму собственности:"
-                  :data="dictionaries.ownerships"
-                  @select="handleOwnershipSelect"
-                  :placeholder="ownership.title"
-                >
-                  <img
-                    src="@/assets/icon-arrow-green.svg"
-                    alt="arrow"
-                  />
-                </dropdown>
-              </transition>
-            </div> -->
-            <!-- <div :class="$style['work-info__input-styles']">
-              <transition name="fade" mode="out-in">
-                <div
-                  :class="$style['dictionary-item-block']"
-                  v-if="requestInProgress"
-                >
-                  <span :class="$style['dictionary-item-text']">
-                    Выберите отрасль:
-                  </span>
-                  <input-placeholder
-                    :class="$style['input-placeholder']"
-                  />
-                </div>
-                <dropdown
-                  v-else
-                  title="Выберите отрасль:"
-                  :data="dictionaries.sectors"
-                  @select="handleIndustrySelect"
-                  :placeholder="sector.title"
-                >
-                  <img
-                    src="@/assets/icon-arrow-green.svg"
-                    alt="arrow"
-                  />
-                </dropdown>
-              </transition>
-            </div> -->
-            <!-- <div :class="$style['work-info__input-styles']">
-              <transition name="fade" mode="out-in">
-                <div
-                  :class="$style['dictionary-item-block']"
-                  v-if="requestInProgress"
-                >
-                  <span :class="$style['dictionary-item-text']">
-                    Направление деятельности:
-                  </span>
-                  <input-placeholder
-                    :class="$style['input-placeholder']"
-                  />
-                </div>
-                <dropdown
-                  v-else
-                  title="Направление деятельности:"
-                  :data="dictionaries.specializations"
-                  :placeholder="specialization.title"
-                  @select="handleSpecializationSelect"
-                >
-                  <img
-                    src="@/assets/arrow-green.svg"
-                    alt="arrow"
-                  />
-                </dropdown>
-              </transition>
-            </div> -->
-            <!-- <div :class="$style['work-info__input-styles']">
-              <transition name="fade" mode="out-in">
-                <div
-                  :class="$style['dictionary-item-block']"
-                  v-if="requestInProgress"
-                >
-                  <span :class="$style['dictionary-item-text']">
-                    Выберите должность:
-                  </span>
-                  <input-placeholder
-                    :class="$style['input-placeholder']"
-                  />
-                </div>
-                <dropdown
-                  v-else
-                  title="Выберите должность:"
-                  :data="dictionaries.positions"
-                  :placeholder="position.title"
-                  @select="handlePositionSelect"
-                >
-                  <img
-                    src="@/assets/arrow-green.svg"
-                    alt="arrow"
-                  />
-                </dropdown>
-              </transition>
-            </div> -->
+            <!-- {{ currentAccount() }} -->
             <div :class="$style['work-info__input-styles']">
               <number-input
                 title="Номер счета"
@@ -242,7 +134,18 @@ export default {
       color: '#cdbdde',
       accountTypes: AccountTypes,
       currencyList: CurrencyList,
+      title: '',
     };
+  },
+  props: {
+    id: {
+      type: String,
+      default: '',
+    },
+    edit: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     ...mapFields({
@@ -265,6 +168,7 @@ export default {
     }),
     ...mapGetters([
       'getHasCard',
+      'getAccountById',
     ]),
     titleWithStep() {
       return `Шаг: ${this.currentStep} из 3. `;
@@ -287,6 +191,13 @@ export default {
     dictionaries() {
       return this.$store.state.dictionaries;
     },
+    // currentAccount() {
+    //   console.log('this.getAccountById(this.id)', this.getAccountById(this.id));
+    //   return this.getAccountById(this.id);
+    // },
+    // getName() {
+    //   return this.currentAccount?.name;
+    // },
   },
   async beforeMount() {
     // if (this.activated && this.clientProfile && this.authStatus) {
@@ -301,26 +212,50 @@ export default {
     // } else {
     //   this.$router.replace('/');
     // }
+    if (this.edit === 'edit') {
+      this.updateData();
+    }
   },
+  // mounted() {
+  //   console.log('this.$route.params.pathMatch', this.$route.params.pathMatch);
+  //   console.log('this.edit', this.edit);
+  // },
   methods: {
     ...mapActions([
       'setStep',
       'compositionCreateRequest',
       'distionaryCompose',
       'createAccount',
+      'fetchUpdateAccount',
     ]),
+    updateData() {
+      // console.log('this.getAccountById(this.id)', this.getAccountById(this.id));
+      // console.log('pathMatch', this.$route.params.pathMatch);
+      const currentAccount = this.getAccountById(this.id);
+      this.name = currentAccount?.name;
+      this.number = currentAccount?.number;
+      this.type = currentAccount?.type;
+      this.amount = currentAccount?.amount;
+      // this.number = currentAccount?.number;
+    },
     goBack() {
       this.$router.replace('/income');
     },
     async goNextStep() {
-      await this.createAccount({
+      const params = {
         name: this.name,
         number: this.number,
-        type: this.type,
-        // color: this.color,
+        operationType: this.type,
+        id: this.id,
         currency: this.currency,
         amount: this.amount,
-      });
+        isEditAccount: !!this.edit,
+      };
+      if (this.edit === 'edit') {
+        await this.fetchUpdateAccount(params);
+      } else {
+        await this.createAccount(params);
+      }
       this.$router.push('/main');
       // console.log('this', this.name);
       // console.log('this', this.type);

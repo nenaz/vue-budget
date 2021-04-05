@@ -14,7 +14,9 @@
         />
       </div>
       <div :class="$style['description-block']">
-        <span :class="$style['operation-name']">{{ operation.category.title }}</span>
+        <span :class="$style['operation-name']">
+          {{ getCategoryById(operation.category).title }}
+        </span>
       </div>
       <span :class="$style.amount">{{ operationAmountWithFormat(operation.amount) }}</span>
     </div>
@@ -26,6 +28,11 @@
 // import { mapFields } from 'vuex-map-fields';
 import moneyFormat from '@/utils/money-formatter';
 import { formatDate } from '@/utils/date-utils';
+import {
+  // LIST_CATEGORY_DEMO,
+  // OPERATION_TYPES,
+  LISTCATEGORY,
+} from '@/dictionaries';
 
 export default {
   name: 'PaymentSchedule', // опервции по счету
@@ -45,12 +52,6 @@ export default {
   //   };
   // },
   computed: {
-    // ...mapFields({
-    //   operations: 'operations',
-    // }),
-  //   ...mapGetters([
-  //     '',
-  //   ]),
     renderOperations() {
       // console.log('this.$store.getters.getOperations', this.$store.state.operations);
       // this.operations = Object.keys(this.currentOperations);
@@ -77,6 +78,10 @@ export default {
         ? 'icon-checked'
         : 'icon-alert';
       return images(`./${path}.svg`);
+    },
+    getCategoryById(id) {
+      console.log('getCategoryById_id', id);
+      return LISTCATEGORY.find((item) => item.value === id);
     },
   },
 };

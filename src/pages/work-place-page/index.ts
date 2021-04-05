@@ -1,1 +1,1 @@
-export { default as WorkPlacePage } from './WorkPlacePage.vue';
+export { default as AccountPage } from './WorkPlacePage.vue';

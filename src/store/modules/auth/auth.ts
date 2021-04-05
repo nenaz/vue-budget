@@ -35,6 +35,15 @@ const defaultAuthState = (): Auth => ({
 export const auth: Module<Auth, RootState> = {
   state: defaultAuthState(),
   actions: {
+    closeSession({ dispatch, commit }: {
+      dispatch: Dispatch;
+      commit: Commit;
+    }) {
+      dispatch('serverAuthAPI', {
+        url: '/users/logout',
+        data: {},
+      });
+    },
     /**
      * композиция для Аутентификации пользователя и получения sessionToken, authSessionToken
      */
@@ -59,7 +68,7 @@ export const auth: Module<Auth, RootState> = {
       const { login, password } = state;
 
       const response = await dispatch('serverAuthAPI', {
-        url: '/login/login',
+        url: '/users/gettoken',
         data: {
           login,
           password,

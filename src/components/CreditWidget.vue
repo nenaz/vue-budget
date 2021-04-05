@@ -35,8 +35,8 @@ export default {
       default: 0.00,
     },
     startDate: {
-      type: Number,
-      default: 1608838972555,
+      type: String,
+      default: '',
     },
     payDate: {
       type: String,
@@ -49,6 +49,10 @@ export default {
     serialNumber: {
       type: Number,
       default: 0,
+    },
+    edit: {
+      type: Boolean,
+      default: false,
     },
   },
   computed: {
@@ -70,6 +74,10 @@ export default {
     getDiffDatesInDays() {
       return diffDatesInDays(this.payDate);
     },
+  },
+  mounted() {
+    console.log('this.edit', this.edit);
+    console.log('this.id', this.id);
   },
   methods: {
     handleClick() {

@@ -90,6 +90,10 @@ export default {
       type: String,
       default: '',
     },
+    edit: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -105,7 +109,7 @@ export default {
           icon: 'icon-up',
           text: 'Edit',
           link: 'repayment',
-          handleName: this.editThisAccount,
+          handleName: this.handleEditClick,
         },
         {
           icon: 'icon-help',
@@ -173,6 +177,7 @@ export default {
   },
   async beforeMount() {
     console.log('beforeMount', this.id);
+    console.log('beforeMount', this.edit);
     this.$store.dispatch('setRequestInProgress', true);
     await this.getOperationsByAccount(this.id);
     this.$store.dispatch('setRequestInProgress', false);
@@ -199,10 +204,25 @@ export default {
       this.$router.push('/main');
     },
     handleEditClick() {
-      this.editThisAccount(this.id);
+      this.$router.push({
+        name: 'EditAccountPage',
+        params: {
+          edit: 'edit',
+        },
+      });
+      // this.editThisAccount(this.id);
     },
     handleAddOperation() {
-      this.$router.push('/operation/add');
+      // this.$router.push('/operation/add');
+      this.$router.push({
+        path: `/operation/add?accountId=${this.id}`,
+        props: (route) => {
+          console.log('route.query', route);
+          return ({
+            accountId: route.query.id,
+          });
+        },
+      });
     },
   },
 };

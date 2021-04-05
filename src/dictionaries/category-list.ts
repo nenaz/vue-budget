@@ -171,203 +171,261 @@ export const LISTCATEGORY = [
         count: 0,
         title: 'Жилье - прочее',
         uuid: '3-0',
-        value: 0,
+        value: '0',
       },
       {
         count: 0,
         title: 'Аренда',
-        value: 1,
+        value: '1',
         uuid: '3-1',
       }, {
         count: 0,
         title: 'Ипотека',
-        value: 2,
+        value: '2',
         uuid: '3-2',
       }, {
-        value: 3, title: 'Страхование имущества', count: 0, uuid: '3-3',
+        count: 0,
+        title: 'Страхование имущества',
+        uuid: '3-3',
+        value: '3',
       }, {
-        value: 4, title: 'Технообслуживание, ремонт', count: 21, uuid: '3-4',
+        count: 21,
+        title: 'Технообслуживание, ремонт',
+        uuid: '3-4',
+        value: '4',
       }, {
-        value: 5, title: 'Услуги', count: 0, uuid: '3-5',
+        count: 0,
+        title: 'Услуги',
+        uuid: '3-5',
+        value: '5',
       }, {
-        value: 6, title: 'Элекстричество, коммунальные платежи', count: 0, uuid: '3-6',
+        count: 0,
+        title: 'Элекстричество, коммунальные платежи',
+        uuid: '3-6',
+        value: '6',
       },
     ],
   },
   {
-    value: 3,
+    value: '4',
+    uuid: '4_1',
     title: 'Транспорт',
     data: [
       {
-        value: 0, title: 'Транспорт - прочее', count: 0,
+        count: 0,
+        title: 'Транспорт - прочее',
+        uuid: '4-1',
+        value: '0',
       }, {
-        value: 1, title: 'Дальние поездки', count: 0,
+        value: '1',
+        title: 'Дальние поездки',
+        count: 0,
+        uuid: '4-2',
       }, {
-        value: 2, title: 'Деловые поездки', count: 0,
+        value: '2',
+        title: 'Деловые поездки',
+        count: 0,
+        uuid: '4-3',
       }, {
-        value: 3, title: 'Общественный транспорт', count: 0,
+        value: '3',
+        title: 'Общественный транспорт',
+        count: 0,
+        uuid: '4-4',
       }, {
-        value: 4, title: 'Такси', count: 0,
+        value: '4',
+        title: 'Такси',
+        count: 0,
+        uuid: '4-5',
       },
     ],
   },
   {
-    value: 4,
+    value: '5',
+    uuid: '5_1',
     title: 'Транспортное средство',
     data: [
       {
-        value: 0, title: 'Транспортное средство - прочее', count: 0,
+        value: '0',
+        title: 'Транспортное средство - прочее',
+        count: 0,
+        uuid: '5-1',
       }, {
-        value: 1, title: 'Аренда', count: 0,
+        value: '1',
+        title: 'Аренда',
+        count: 0,
+        uuid: '5-2',
       }, {
-        value: 2, title: 'Бензин', count: 0,
+        value: '2',
+        title: 'Бензин',
+        count: 0,
+        uuid: '5-3',
       }, {
-        value: 3, title: 'Лизинг', count: 0,
+        value: '3',
+        title: 'Лизинг',
+        count: 0,
+        uuid: '5-4',
       }, {
-        value: 4, title: 'Парковка', count: 0,
+        value: '4',
+        title: 'Парковка',
+        count: 0,
+        uuid: '5-5',
       }, {
-        value: 5, title: 'Страхование', count: 0,
+        value: '5',
+        title: 'Страхование',
+        count: 0,
+        uuid: '5-6',
       }, {
-        value: 6, title: 'Техобслуживание', count: 0,
+        value: '6',
+        title: 'Техобслуживание',
+        count: 0,
+        uuid: '5-7',
       },
     ],
   },
   {
-    value: 5,
+    value: '6',
     title: 'Жизнь и развлечения',
+    uuid: '6_1',
     data: [
       {
-        value: 0, title: 'Жизнь и развлечения - прочее', count: 0,
+        value: '0', title: 'Жизнь и развлечения - прочее', count: 0, uuid: '6-1',
       }, {
-        value: 1, title: 'Алкоголь, табак', count: 0,
+        value: '1', title: 'Алкоголь, табак', count: 0, uuid: '6-2',
       }, {
-        value: 2, title: 'Благотворительность, подарки', count: 0,
+        value: '2', title: 'Благотворительность, подарки', count: 0, uuid: '6-3',
       }, {
-        value: 3, title: 'Здравоохранение, врач', count: 0,
+        value: '3', title: 'Здравоохранение, врач', count: 0, uuid: '6-4',
       }, {
-        value: 4, title: 'Значимые события', count: 0,
+        value: '4', title: 'Значимые события', count: 0, uuid: '6-5',
       }, {
-        value: 5, title: 'Книги, аудио, подписки', count: 0,
+        value: '5', title: 'Книги, аудио, подписки', count: 0, uuid: '6-6',
       }, {
-        value: 6, title: 'Культура, спортивные мероприятия', count: 0,
+        value: '6', title: 'Культура, спортивные мероприятия', count: 0, uuid: '6-7',
       }, {
-        value: 7, title: 'Лотереи, азартные игры', count: 0,
+        value: '7', title: 'Лотереи, азартные игры', count: 0, uuid: '6-8',
       }, {
-        value: 8, title: 'Образование, развитие', count: 0,
+        value: '8', title: 'Образование, развитие', count: 0, uuid: '6-9',
       }, {
-        value: 9, title: 'Оздоровление, красота', count: 0,
+        value: '9', title: 'Оздоровление, красота', count: 0, uuid: '6-10',
       }, {
-        value: 10, title: 'Отпуск, поездки, отели', count: 0,
+        value: '10', title: 'Отпуск, поездки, отели', count: 0, uuid: '6-11',
       }, {
-        value: 11, title: 'Спорт, фитнес', count: 0,
+        value: '11', title: 'Спорт, фитнес', count: 0, uuid: '6-12',
       }, {
-        value: 12, title: 'ТВ и потоковое вещание', count: 0,
+        value: '12', title: 'ТВ и потоковое вещание', count: 0, uuid: '6-13',
       }, {
-        value: 13, title: 'Хобби', count: 0,
+        value: '13', title: 'Хобби', count: 0, uuid: '6-14',
       },
     ],
   },
   {
-    value: 6,
+    value: '7',
     title: 'Связь, ПК',
+    uuid: '7_1',
     data: [
       {
-        value: 0, title: 'Связь, ПК - прочее', count: 0,
+        value: '0', title: 'Связь, ПК - прочее', count: 0, uuid: '7-1',
       },
       {
-        value: 1, title: 'Интернет', count: 0,
+        value: '1', title: 'Интернет', count: 0, uuid: '7-2',
       },
       {
-        value: 2, title: 'Почтовые услуги', count: 0,
+        value: '2', title: 'Почтовые услуги', count: 0, uuid: '7-3',
       },
       {
-        value: 3, title: 'Программы, игры', count: 0,
+        value: '3', title: 'Программы, игры', count: 0, uuid: '7-4',
       },
       {
-        value: 4, title: 'Телефон', count: 0,
+        value: '4', title: 'Телефон', count: 0, uuid: '7-5',
       },
     ],
   },
   {
-    value: 7,
+    value: '8',
     title: 'Финансовые расходы',
+    uuid: '8_1',
     data: [
       {
-        value: 0, title: 'Финансовые расходы - прочее', count: 0,
+        value: '0', title: 'Финансовые расходы - прочее', count: 0, uuid: '8-1',
       }, {
-        value: 1, title: 'Алименты', count: 0,
+        value: '1', title: 'Алименты', count: 0, uuid: '8-2',
       }, {
-        value: 2, title: 'Займы, проценты', count: 0,
+        value: '2', title: 'Займы, проценты', count: 0, uuid: '8-3',
       }, {
-        value: 3, title: 'Консультации', count: 0,
+        value: '3', title: 'Консультации', count: 0, uuid: '8-4',
       }, {
-        value: 4, title: 'Налоги', count: 0,
+        value: '4', title: 'Налоги', count: 0, uuid: '8-5',
       }, {
-        value: 5, title: 'Сборы, платы', count: 0,
+        value: '5', title: 'Сборы, платы', count: 0, uuid: '8-6',
       }, {
-        value: 6, title: 'Страхование', count: 0,
+        value: '6', title: 'Страхование', count: 0, uuid: '8-7',
       }, {
-        value: 7, title: 'Штрафы', count: 0,
+        value: '7', title: 'Штрафы', count: 0, uuid: '8-8',
       },
     ],
   },
   {
-    value: 8,
+    value: '9',
     title: 'Инвестиции',
+    uuid: '9_1',
     data: [
       {
-        value: 0, title: 'Инвестиции - прочее', count: 0,
+        value: '0', title: 'Инвестиции - прочее', count: 0, uuid: '9-1',
       }, {
-        value: 1, title: 'Коллекции', count: 0,
+        value: '1', title: 'Коллекции', count: 0, uuid: '9-2',
       }, {
-        value: 2, title: 'Недвижимость', count: 0,
+        value: '2', title: 'Недвижимость', count: 0, uuid: '9-3',
       }, {
-        value: 3, title: 'Сбережения', count: 0,
+        value: '3', title: 'Сбережения', count: 0, uuid: '9-4',
       }, {
-        value: 4, title: 'Транпортные средства', count: 0,
+        value: '4', title: 'Транпортные средства', count: 0, uuid: '9-5',
       }, {
-        value: 5, title: 'Финансовые инвестиции', count: 0,
-      },
-    ],
-  },
-  {
-    value: 9,
-    title: 'Доход',
-    data: [
-      {
-        value: 0, title: 'Доход - прочее', count: 0,
-      }, {
-        value: 1, title: 'Алименты', count: 0,
-      }, {
-        value: 2, title: 'Возврат денег(налогЮ покупка)', count: 0,
-      }, {
-        value: 3, title: 'Доход от аренды', count: 0,
-      }, {
-        value: 4, title: 'Зарплата, счета-фактуры', count: 0,
-      }, {
-        value: 5, title: 'Интересы, дивиденды', count: 0,
-      }, {
-        value: 6, title: 'Кредит, аренда', count: 0,
-      }, {
-        value: 7, title: 'Лотереи, азартные игры', count: 0,
-      }, {
-        value: 8, title: 'Подарки', count: 0,
-      }, {
-        value: 9, title: 'Продажа', count: 0,
-      }, {
-        value: 10, title: 'Чеки, купоны', count: 0,
-      }, {
-        value: 11, title: 'Членские взносы', count: 0,
+        value: '5', title: 'Финансовые инвестиции', count: 0, uuid: '9-6',
       },
     ],
   },
   {
     value: '10',
+    title: 'Доход',
     uuid: '10_1',
+    data: [
+      {
+        value: '0', title: 'Доход - прочее', count: 0, uuid: '10-1',
+      }, {
+        value: '1', title: 'Алименты', count: 0, uuid: '10-1',
+      }, {
+        value: '2', title: 'Возврат денег(налогЮ покупка)', count: 0, uuid: '10-1',
+      }, {
+        value: '3', title: 'Доход от аренды', count: 0, uuid: '10-1',
+      }, {
+        value: '4', title: 'Зарплата, счета-фактуры', count: 0, uuid: '10-1',
+      }, {
+        value: '5', title: 'Интересы, дивиденды', count: 0, uuid: '10-1',
+      }, {
+        value: '6', title: 'Кредит, аренда', count: 0, uuid: '10-1',
+      }, {
+        value: '7', title: 'Лотереи, азартные игры', count: 0, uuid: '10-1',
+      }, {
+        value: '8', title: 'Подарки', count: 0, uuid: '10-1',
+      }, {
+        value: '9', title: 'Продажа', count: 0, uuid: '10-1',
+      }, {
+        value: '10', title: 'Чеки, купоны', count: 0, uuid: '10-1',
+      }, {
+        value: '11', title: 'Членские взносы', count: 0, uuid: '10-1',
+      },
+    ],
+  },
+  {
+    value: '11',
+    uuid: '11_1',
     title: 'Прочее',
     data: [
       {
-        value: 0, title: 'Прочее - прочее', count: 0,
+        value: '0',
+        title: 'Прочее - прочее',
+        count: 0,
+        uuid: '11-1',
       },
     ],
   },

@@ -5,7 +5,7 @@ import { CreditInfoSignPage } from '@/pages/credit-info-sign-page';
 import { VirtualCardPage } from '@/pages/virtual-card-page';
 import InfoPage from '@/pages/info-page';
 import IncomePage from '@/pages/income-page';
-import { WorkPlacePage } from '@/pages/work-place-page';
+import { AccountPage } from '@/pages/work-place-page';
 import { AuthPage } from '@/pages/auth-page';
 import { VerificationPage } from '@/pages/verification-page';
 import { CreditParamsPage } from '@/pages/credit-params-page';
@@ -84,12 +84,31 @@ const routes: Array<RouteConfig> = [
     component: IncomePage,
   },
   {
-    path: '/work-place',
-    name: 'WorkPlacePage',
+    path: '/account/add',
+    name: 'NewAccountPage',
     meta: {
       requiresAuth: true,
     },
-    component: WorkPlacePage,
+    component: AccountPage,
+    props: true,
+  },
+  {
+    path: '/account/:id/*',
+    name: 'AccountPage',
+    meta: {
+      requiresAuth: true,
+    },
+    component: AccountPage,
+    props: true,
+  },
+  {
+    path: '/account/:id/:edit',
+    name: 'EditAccountPage',
+    meta: {
+      requiresAuth: true,
+    },
+    component: AccountPage,
+    props: true,
   },
   {
     path: '/reject',
@@ -97,7 +116,7 @@ const routes: Array<RouteConfig> = [
     component: NoLinePage,
   },
   {
-    path: '/credit-details/:id',
+    path: '/account/:id',
     name: 'CreditDetails',
     props: true,
     meta: {
@@ -105,15 +124,24 @@ const routes: Array<RouteConfig> = [
     },
     component: CreditDetails,
   },
-  {
-    path: '/card-details',
-    name: 'CardDetails',
-    props: true,
-    meta: {
-      requiresAuth: true,
-    },
-    component: CardDetails,
-  },
+  // {
+  //   path: '/account/:id/operation/add',
+  //   name: 'OperationToAccount',
+  //   props: true,
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  //   component: Operation,
+  // },
+  // {
+  //   path: '/card-details',
+  //   name: 'OperationPage',
+  //   props: true,
+  //   meta: {
+  //     requiresAuth: true,
+  //   },
+  //   component: CardDetails,
+  // },
   {
     path: '/payment-method',
     name: 'LoanPaymentPage',

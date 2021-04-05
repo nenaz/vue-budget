@@ -73,7 +73,7 @@ export const accounts: Module<Accounts, RootState> = {
       });
       return result;
     },
-    async updateAccount({ commit, dispatch }: {
+    async fetchUpdateAccount({ commit, dispatch }: {
       commit: Commit;
       dispatch: Dispatch;
     }, params) {
@@ -94,10 +94,11 @@ export const accounts: Module<Accounts, RootState> = {
     }, operationParams) {
       const result = await dispatch('createOperation', operationParams);
       if (result.message === 'success') {
-        await dispatch('updateAccount', {
+        await dispatch('fetchUpdateAccount', {
           amount: operationParams.amount,
           /* eslint-disable-next-line */
           id: operationParams.account._id,
+          operationType: operationParams.operationType,
         });
       }
     },

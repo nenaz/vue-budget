@@ -88,14 +88,14 @@
             </div>
           </div>
         </div>
-        <video autoplay style="width: 100%;"></video>
+        <!-- <video autoplay style="width: 100%;"></video> -->
         <div :class="$style.buttons">
-          <base-button
+          <!-- <base-button
             @click="handleCamera"
             type="primary"
           >
             Get access to camera
-          </base-button>
+          </base-button> -->
           <base-button
             type="primary"
             :disabled="!isFormValid"
@@ -167,12 +167,15 @@ export default {
       subCategory: {},
       subCategoryList: LISTCATEGORY,
       subTitle: 'Выберите подкатегорию',
-      type: {
-        uuid: '0',
-        title: 'Расход',
-      },
+      type: OPERATION_TYPES[1],
       typeList: OPERATION_TYPES,
     };
+  },
+  props: {
+    accountId: {
+      type: String,
+      default: '',
+    },
   },
   computed: {
     ...mapFields({
@@ -199,6 +202,9 @@ export default {
         && this.$v.subCategory.required;
     },
   },
+  mounted() {
+    console.log('PROPS', this.accountId);
+  },
   methods: {
     ...mapActions([
       'createOperationComposition',
@@ -224,10 +230,11 @@ export default {
     async handleAddClick() {
       console.log('handleAddClick');
       await this.createOperationComposition({
+        account: this.account,
         amount: this.amount,
         category: this.category,
-        type: this.type,
-        account: this.account,
+        subCategory: this.subCategory,
+        operationType: this.type,
       });
       this.$router.push('/main');
     },

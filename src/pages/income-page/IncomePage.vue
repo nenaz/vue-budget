@@ -172,7 +172,7 @@ export default {
       this.setBKIConsent(value);
     },
     goToSubStep() {
-      this.$router.replace('/work-place');
+      this.$router.replace('/account/add');
     },
     goNextStep() {
       this.$router.push('/offers');
