@@ -245,7 +245,7 @@ export default {
       const params = {
         name: this.name,
         number: this.number,
-        operationType: this.type,
+        type: this.type,
         id: this.id,
         currency: this.currency,
         amount: this.amount,

@@ -91,7 +91,8 @@ export default {
 
 <style lang="scss" module>
   .page {
-    background: $WILD_SAND;
+    // background: $WILD_SAND;
+    background-color: #eee;
     // background: #1d1a1a;
     height: 100%;
     overflow: hidden;
@@ -114,7 +115,8 @@ export default {
 
     &.color-default {
       // background-color: $WILD_SAND;
-      background-color: #1d1a1a;
+      // background-color: #1d1a1a;
+      background-color: #eee;
     }
 
     &.color-white {
