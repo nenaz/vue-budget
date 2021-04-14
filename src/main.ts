@@ -9,7 +9,7 @@ import { router } from './router';
 import { store } from './store';
 import { masks } from './utils/masks';
 import error from './utils/error-messages';
-// import './plugins/elements';
+import './plugins/elements';
 
 const VueInputMask = require('vue-inputmask').default;
 

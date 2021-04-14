@@ -18,6 +18,19 @@
               />
             </div>
             <div :class="$style.select">
+              <el-date-picker
+                v-model="operDate"
+                type="date"
+                placeholder="Дата операции"
+                :picker-options="pickerOptions"
+                format="dd.MM.yyyy"
+                :class="$style.button"
+                size="large"
+                style="width: 100%"
+              >
+              </el-date-picker>
+            </div>
+            <div :class="$style.select">
               <el-select
                 v-model="category"
                 placeholder="Категория"
@@ -91,7 +104,6 @@ import PageHeader from '@/components/PageHeader';
 import {
   NumberInput,
 } from '@/components/inputs';
-// import Dropdown from '@/components/Dropdown';
 import {
   LIST_CATEGORY_DEMO,
   OPERATION_TYPES,
@@ -127,6 +139,29 @@ export default {
       subTitle: 'Выберите подкатегорию',
       type: OPERATION_TYPES[1],
       typeList: OPERATION_TYPES,
+      // operDate: Date.now(),
+      operDate: new Date().toISOString(),
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now();
+        },
+        shortcuts: [
+          {
+            text: 'Сегодня',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            },
+          }, {
+            text: 'Вчера',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            },
+          },
+        ],
+        firstDayOfWeek: 1,
+      },
     };
   },
   props: {
@@ -194,12 +229,12 @@ export default {
       this.$v.subCategory.$touch();
     },
     async handleAddClick() {
-      console.log('handleAddClick');
       await this.createOperationComposition({
         account: this.account,
         amount: this.amount,
         category: this.category,
         operationType: this.type,
+        createDate: this.operDate,
       });
       this.$router.push('/main');
     },
@@ -236,6 +271,10 @@ export default {
         console.log('error', e);
       }
     },
+    // handlePickerChange(value) {
+    //   console.log('value', value);
+    //   this.operDate = formatDate(value);
+    // },
   },
   validations: {
     account: {

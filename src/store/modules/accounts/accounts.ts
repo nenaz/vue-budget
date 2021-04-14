@@ -10,6 +10,14 @@ const defaultAccountsState = (): Accounts => ({
   allAccounts: [],
 });
 
+interface OperationParams {
+  account: any;
+  amount: any;
+  category: any;
+  operationType: any;
+  createDate: any;
+}
+
 export const accounts: Module<Accounts, RootState> = {
   state: defaultAccountsState(),
   actions: {
@@ -91,7 +99,7 @@ export const accounts: Module<Accounts, RootState> = {
     async createOperationComposition({ commit, dispatch }: {
       commit: Commit;
       dispatch: Dispatch;
-    }, operationParams) {
+    }, operationParams: OperationParams) {
       const result = await dispatch('createOperation', operationParams);
       if (result.message === 'success') {
         await dispatch('fetchUpdateAccount', {
