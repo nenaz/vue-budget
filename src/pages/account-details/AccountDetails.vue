@@ -113,6 +113,7 @@ export default {
           types: [
             ACCOUNT_TYPES.default,
             ACCOUNT_TYPES.invest,
+            ACCOUNT_TYPES.savings,
           ],
         },
         {
@@ -123,6 +124,7 @@ export default {
           types: [
             ACCOUNT_TYPES.default,
             ACCOUNT_TYPES.invest,
+            ACCOUNT_TYPES.savings,
           ],
         },
         {
@@ -132,6 +134,7 @@ export default {
           handleName: this.handleAddOperation,
           types: [
             ACCOUNT_TYPES.default,
+            ACCOUNT_TYPES.savings,
           ],
         },
         {

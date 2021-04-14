@@ -17,7 +17,7 @@
                 v-model.lazy="amount"
               />
             </div>
-            <div :class="$style['work-info__input-styles']">
+            <div :class="$style.select">
               <el-select
                 v-model="category"
                 placeholder="Категория"
@@ -32,20 +32,22 @@
                 </el-option>
               </el-select>
             </div>
-            <div :class="$style['work-info__input-styles']">
-              <dropdown
-                title="Тип"
-                :data="typeList"
-                @select="handleTypeSelect"
-                :placeholder="type.title"
+            <div :class="$style.select">
+              <el-select
+                v-model="type.title"
+                placeholder="Тип"
+                :class="$style.button"
+                @change="handleTypeSelect"
               >
-                <img
-                  src="@/assets/icon-arrow-green.svg"
-                  alt="arrow"
-                />
-              </dropdown>
+                <el-option
+                  v-for="item in typeList"
+                  :key="item.uuid"
+                  :label="item.title"
+                  :value="item">
+                </el-option>
+              </el-select>
             </div>
-            <div :class="$style['work-info__input-styles']">
+            <div :class="$style.select">
               <el-select
                 v-model="account.title"
                 placeholder="Счет"
@@ -89,7 +91,7 @@ import PageHeader from '@/components/PageHeader';
 import {
   NumberInput,
 } from '@/components/inputs';
-import Dropdown from '@/components/Dropdown';
+// import Dropdown from '@/components/Dropdown';
 import {
   LIST_CATEGORY_DEMO,
   OPERATION_TYPES,
@@ -103,7 +105,7 @@ export default {
     Page,
     PageHeader,
     NumberInput,
-    Dropdown,
+    // Dropdown,
   },
   data() {
     return {
@@ -180,6 +182,7 @@ export default {
       this.category = value;
     },
     handleTypeSelect(value) {
+      console.log('handleTypeSelect value', value);
       this.type = value;
     },
     handleAccountSelect(value) {
@@ -255,6 +258,9 @@ export default {
 <style lang="scss" module>
   .button {
     width: 100%;
+  }
+  .select {
+    margin: 10px 0;
   }
   .tess {
     color: red;
