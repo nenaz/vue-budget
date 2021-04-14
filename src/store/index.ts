@@ -428,6 +428,7 @@ export const mainStore: StoreOptions<RootState> = {
     }, value: any) {
       const result = await axiosPostAuth(value);
       const backUrl = router.currentRoute.path;
+      console.log('result', result);
 
       if (result) {
         const data = get(result, 'data');

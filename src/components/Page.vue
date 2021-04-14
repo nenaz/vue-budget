@@ -4,6 +4,7 @@
     <div :class="bodyClasses">
       <slot name="body" />
     </div>
+    <slot name="footer"></slot>
   </div>
 </template>
 
@@ -92,7 +93,8 @@ export default {
 <style lang="scss" module>
   .page {
     // background: $WILD_SAND;
-    background-color: #eee;
+    background-image: url('../assets/page-bg.jpg');
+    // background-color: #eee;
     // background: #1d1a1a;
     height: 100%;
     overflow: hidden;
@@ -113,11 +115,11 @@ export default {
       padding: 0 16px;
     }
 
-    &.color-default {
-      // background-color: $WILD_SAND;
-      // background-color: #1d1a1a;
-      background-color: #eee;
-    }
+    // &.color-default {
+    //   // background-color: $WILD_SAND;
+    //   // background-color: #1d1a1a;
+    //   background-color: #eee;
+    // }
 
     &.color-white {
       background-color: $WHITE;

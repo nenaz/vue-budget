@@ -4,24 +4,13 @@
       <page-header
         :showMenu="true"
         :showBack="true"
+        title="Новая операция"
       />
     </template>
     <template v-slot:body>
       <div :class="$style.body">
         <div :class="$style['body-content tess']">
-          <div :class="$style['step-text-block']">
-            <!-- <span :class="$style['step-title']">
-              <b>{{ titleWithStep }}</b>Доход и <b>место работы</b>
-            </span> -->
-            <span :class="$style['step-sub-title']">Новый счет</span>
-          </div>
           <div :class="$style['work-info']">
-            <!-- <div :class="$style['work-info__input-styles']">
-              <base-input
-                title="Название счёта"
-                v-model="name"
-              />
-            </div> -->
             <div :class="$style['work-info__input-styles']">
               <number-input
                 title="Сумма"
@@ -29,37 +18,20 @@
               />
             </div>
             <div :class="$style['work-info__input-styles']">
-              <dropdown
-                title="Категория"
-                :data="categoryList"
-                @select="handleCategorySelect"
-                :placeholder="categoryTitle"
+              <el-select
+                v-model="category"
+                placeholder="Категория"
+                :class="$style.button"
+                @change="handleCategorySelect"
               >
-                <img
-                  src="@/assets/icon-arrow-green.svg"
-                  alt="arrow"
-                />
-              </dropdown>
+                <el-option
+                  v-for="item in dictionaries.category"
+                  :key="item._id"
+                  :label="item.categoryName"
+                  :value="item.categoryName">
+                </el-option>
+              </el-select>
             </div>
-            <div :class="$style['work-info__input-styles']" v-if="subCategoryGroup.value">
-              <dropdown
-                title="Подкатегория"
-                :data="subCategoryGroup.data"
-                @select="handleSubCategorySelect"
-                :placeholder="subTitle"
-              >
-                <img
-                  src="@/assets/icon-arrow-green.svg"
-                  alt="arrow"
-                />
-              </dropdown>
-            </div>
-            <!-- <div :class="$style['work-info__input-styles']">
-              <number-input
-                title="Начальное значени"
-                v-model.number="amount"
-              />
-            </div> -->
             <div :class="$style['work-info__input-styles']">
               <dropdown
                 title="Тип"
@@ -74,40 +46,33 @@
               </dropdown>
             </div>
             <div :class="$style['work-info__input-styles']">
-              <dropdown
-                title="Счет"
-                :data="getAccountsList"
-                @select="handleAccountSelect"
-                :placeholder="account.title"
+              <el-select
+                v-model="account.title"
+                placeholder="Счет"
+                :class="$style.button"
+                @change="handleAccountSelect"
               >
-                <img
-                  src="@/assets/icon-arrow-green.svg"
-                  alt="arrow"
-                />
-              </dropdown>
+                <el-option
+                  v-for="item in getAccountsList"
+                  :key="item.label"
+                  :label="item.title"
+                  :value="item">
+                </el-option>
+              </el-select>
             </div>
           </div>
         </div>
         <!-- <video autoplay style="width: 100%;"></video> -->
         <div :class="$style.buttons">
-          <!-- <base-button
-            @click="handleCamera"
-            type="primary"
-          >
-            Get access to camera
-          </base-button> -->
-          <base-button
+          <el-button
             type="primary"
             :disabled="!isFormValid"
+            :loading="requestInProgress"
             @click="handleAddClick"
+            :class="$style.button"
           >
             Продолжить
-          </base-button>
-          <base-button
-            type="transparent"
-          >
-            Вернуться назад
-          </base-button>
+          </el-button>
         </div>
       </div>
     </template>
@@ -118,15 +83,12 @@
 import { mapFields } from 'vuex-map-fields';
 import QrScanner from 'qr-scanner';
 import { mapActions } from 'vuex';
+import get from 'lodash.get';
 import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
 import {
   NumberInput,
-  // PhoneInput,
-  // SuggestionInput,
-  // BaseInput,
 } from '@/components/inputs';
-import BaseButton from '@/components/BaseButton';
 import Dropdown from '@/components/Dropdown';
 import {
   LIST_CATEGORY_DEMO,
@@ -134,7 +96,6 @@ import {
   LISTCATEGORY,
 } from '@/dictionaries';
 import { required, minValue } from 'vuelidate/lib/validators';
-// import moneyFormat from '@/utils/money-formatter';
 
 export default {
   name: 'Operation',
@@ -142,16 +103,12 @@ export default {
     Page,
     PageHeader,
     NumberInput,
-    // BaseInput,
-    BaseButton,
     Dropdown,
   },
   data() {
     return {
-      account: {
-        uuid: -1,
-        title: '',
-      },
+      account: {},
+      title: '',
       amount: 0,
       category: LIST_CATEGORY_DEMO[0],
       categoryTitle: 'Выберите категорию',
@@ -161,7 +118,6 @@ export default {
         uuid: '1',
         title: 'RUB',
       },
-      name: '',
       number: '',
       subCategoryGroup: {},
       subCategory: {},
@@ -172,7 +128,11 @@ export default {
     };
   },
   props: {
-    accountId: {
+    types: {
+      type: String,
+      default: '',
+    },
+    id: {
       type: String,
       default: '',
     },
@@ -180,11 +140,9 @@ export default {
   computed: {
     ...mapFields({
       accounts: 'accounts.allAccounts',
+      dictionaries: 'dictionaries',
+      requestInProgress: 'requestInProgress',
     }),
-    // isPageValid() {
-    //   return this.amount > 0 || this.account.uuid !== -1;
-    //   // return false;
-    // },
     getAccountsList() {
       console.log('this.accounts', this.accounts);
       return this.accounts.map((item, key) => ({
@@ -194,32 +152,37 @@ export default {
       }));
     },
     isFormValid() {
-      console.log('this.$v.subTitle', this.$v.subTitle);
-      console.log('this.$v.account', this.$v.account);
-      return this.$v.amount.required
-        && this.$v.account.uuid.minValue
-        && this.$v.amount.minValue
-        && this.$v.subCategory.required;
+      return this.$v.amount.required;
     },
   },
-  mounted() {
-    console.log('PROPS', this.accountId);
+  async mounted() {
+    await this.getDictionary('category');
+    this.account = this.handleFindAccountById(this.id);
+    this.title = this.account.title || '';
   },
   methods: {
     ...mapActions([
       'createOperationComposition',
+      'getDictionary',
     ]),
+    handleFindAccountById(id) {
+      // eslint-disable-next-line no-underscore-dangle
+      const result = this.accounts.find((item) => item._id === id);
+      const title = result
+        ? `${get(result, 'name', '')} ${get(result, 'amount', '')}`
+        : '';
+      return {
+        ...result,
+        title,
+      };
+    },
     handleCategorySelect(value) {
       this.category = value;
-      this.categoryTitle = value.title;
-      this.subTitle = 'Выберите подкатегорию';
-      this.subCategoryGroup = LISTCATEGORY.find((item) => item.value === value.value) || {};
     },
     handleTypeSelect(value) {
       this.type = value;
     },
     handleAccountSelect(value) {
-      console.log('handleAccountSelect_value', value);
       this.account = value;
     },
     handleSubCategorySelect(value) {
@@ -233,7 +196,6 @@ export default {
         account: this.account,
         amount: this.amount,
         category: this.category,
-        subCategory: this.subCategory,
         operationType: this.type,
       });
       this.$router.push('/main');
@@ -286,29 +248,22 @@ export default {
     category: {
       required,
     },
-    subCategory: {
-      required,
-    },
   },
 };
 </script>
 
 <style lang="scss" module>
-.tess {
-  color: red;
-  // height: 70px;
-  // height: 200px;
-  // transition-property: height;
-  // transition-duration: .2s;
-  // transition-timing-function: linear;
-  // overflow: hidden;
-}
+  .button {
+    width: 100%;
+  }
+  .tess {
+    color: red;
+  }
   .body {
     position: relative;
 
     .body-content {
       background: $WHITE;
-      // backdrop-filter: blur(16px);
       border-radius: 8px;
       width: 100%;
       height: 100%;

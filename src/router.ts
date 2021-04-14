@@ -5,12 +5,12 @@ import { CreditInfoSignPage } from '@/pages/credit-info-sign-page';
 import { VirtualCardPage } from '@/pages/virtual-card-page';
 import InfoPage from '@/pages/info-page';
 import IncomePage from '@/pages/income-page';
-import { AccountPage } from '@/pages/work-place-page';
+import { AccountPage } from '@/pages/account-page';
 import { AuthPage } from '@/pages/auth-page';
 import { VerificationPage } from '@/pages/verification-page';
 import { CreditParamsPage } from '@/pages/credit-params-page';
 import { NoLinePage } from '@/pages/no-line-page';
-import { CreditDetails } from '@/pages/credit-details';
+import { AccountDetails } from '@/pages/account-details';
 import { CardDetails } from '@/pages/card-details';
 import { LoanPaymentPage } from '@/pages/loan-payment-page';
 import PdfViewPage from '@/pages/pdf-view-page';
@@ -19,6 +19,7 @@ import { HelpPage } from '@/pages/help-page';
 import RepayPage from '@/pages/repay-page';
 import { TestsPage } from '@/pages/tests-page';
 import { Operation } from '@/pages/operation-page';
+import { CategoryPage } from '@/pages/category-page';
 
 Vue.use(VueRouter);
 
@@ -117,12 +118,12 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/account/:id',
-    name: 'CreditDetails',
+    name: 'AccountDetails',
     props: true,
     meta: {
       requiresAuth: true,
     },
-    component: CreditDetails,
+    component: AccountDetails,
   },
   // {
   //   path: '/account/:id/operation/add',
@@ -191,13 +192,22 @@ const routes: Array<RouteConfig> = [
     component: TestsPage,
   },
   {
-    path: '/operation/:type',
+    path: '/operation/:types/:id',
     name: 'OperationPage',
     props: true,
     meta: {
       requiresAuth: true,
     },
     component: Operation,
+  },
+  {
+    path: '/add-dictionary-item',
+    name: 'CategoryPage',
+    props: true,
+    meta: {
+      requiresAuth: true,
+    },
+    component: CategoryPage,
   },
 ];
 

@@ -18,7 +18,7 @@
 <script>
 import { mapActions } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
-import PageFooter from '@/components/PageFooter';
+// import PageFooter from '@/components/PageFooter';
 import LeftMenu from './Menu';
 
 export default {

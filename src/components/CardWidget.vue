@@ -73,12 +73,16 @@ export default {
 
   .card {
     background: #cdbdde;
+    background-image: url('../assets/card-background3.jpg');
     border-radius: 8px;
     height: 88px;
     display: flex;
     flex-direction: row;
     padding: 16px;
     box-sizing: border-box;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border: 1px solid #258ee9;
   }
 
   .text-block {
@@ -93,10 +97,11 @@ export default {
       font-family: Source Sans Pro;
       font-style: normal;
       font-weight: normal;
-      font-size: 14px;
+      font-size: 18px;
       line-height: 18px;
       letter-spacing: -0.2px;
       color: $DOVE_GRAY;
+      color: #001740;
       // overflow: hidden;
       // text-overflow: ellipsis;
       // white-space: nowrap;
@@ -107,10 +112,11 @@ export default {
       font-family: Squad;
       font-style: normal;
       font-weight: bold;
-      font-size: 18px;
+      font-size: 20px;
       line-height: 24px;
       letter-spacing: -0.2px;
       color: $BLACK;
+      color: white
     }
 
     .text-empty {

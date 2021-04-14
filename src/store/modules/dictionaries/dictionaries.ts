@@ -11,19 +11,33 @@ const defaultDictionaiesState = () => ({
   ownerships: [],
   sectors: [],
   specializations: [],
+  category: [],
 });
 
 export const dictionaries: Module<Dictionaries, RootState> = {
   state: defaultDictionaiesState(),
   actions: {
+    async dictionaryItemAdd({ dispatch }: {
+      dispatch: Dispatch;
+    }, params) {
+      await dispatch('serverCommonAPI', {
+        type: 'POST',
+        params: {
+          url: '/dictionary/add-dictionary-item',
+          data: {
+            ...params,
+          },
+        },
+      });
+    },
     async distionaryCompose({ dispatch }: {
       dispatch: Dispatch;
     }) {
       await Promise.all([
-        dispatch('getDictionary', 'ownerships'),
-        dispatch('getDictionary', 'sectors'),
-        dispatch('getDictionary', 'specializations'),
-        dispatch('getDictionary', 'positions'),
+        dispatch('getDictionary', 'category'),
+        // dispatch('getDictionary', 'sectors'),
+        // dispatch('getDictionary', 'specializations'),
+        // dispatch('getDictionary', 'positions'),
       ]).then((values: any[]) => {
         console.log('all dictionary response');
       }).catch((error: any) => {
@@ -38,7 +52,7 @@ export const dictionaries: Module<Dictionaries, RootState> = {
         const dictionary = await dispatch('serverCommonAPI', {
           type: 'GET',
           params: {
-            url: `/dictionaries/${name}`,
+            url: `/dictionary/${name}`,
           },
         });
         if (!get(dictionary, 'statusType')) {

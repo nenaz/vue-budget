@@ -21,15 +21,19 @@
         />
       </page-body-content> -->
         <page-body-content-roll-up>
-          <div style="display: flex; flex-direction: row; justify-content: space-around;">
-            <div
+          <div style="display: flex; flex-direction: row; justify-content: center;">
+            <template
               v-for="(item) in items"
-              :key="item.icon"
             >
-              <base-button type="fab" @click="item.handleName">
+              <base-button
+                :key="item.icon"
+                type="fab"
+                @click="item.handleName"
+                v-if="item.types.includes(currentAccount.type.uuid)"
+              >
                 {{ item.text }}
               </base-button>
-            </div>
+            </template>
         </div>
       </page-body-content-roll-up>
       <div
@@ -72,9 +76,11 @@ import PaymentSchedule from '@/components/PaymentSchedule';
 import { formatDate } from '@/utils/date-utils';
 // import { FloatingActionButton } from '@/components/buttons/floating-action-button';
 import BaseButton from '@/components/BaseButton';
+// import { AccountTypes } from '@/dictionaries/type-of-account';
+import { ACCOUNT_TYPES } from './account-details-constants';
 
 export default {
-  name: 'CreditDetails',
+  name: 'AccountDetails',
   components: {
     Page,
     PageHeader,
@@ -104,18 +110,38 @@ export default {
           link: 'credit-params',
           disabled: false,
           handleName: this.handleDeleteClick,
+          types: [
+            ACCOUNT_TYPES.default,
+            ACCOUNT_TYPES.invest,
+          ],
         },
         {
           icon: 'icon-up',
           text: 'Edit',
           link: 'repayment',
           handleName: this.handleEditClick,
+          types: [
+            ACCOUNT_TYPES.default,
+            ACCOUNT_TYPES.invest,
+          ],
         },
         {
           icon: 'icon-help',
           text: 'Add',
           link: 'help',
           handleName: this.handleAddOperation,
+          types: [
+            ACCOUNT_TYPES.default,
+          ],
+        },
+        {
+          icon: 'icon-invest',
+          text: 'Invest',
+          link: 'invest',
+          handleName: this.handleInvestCorrect,
+          types: [
+            ACCOUNT_TYPES.invest,
+          ],
         },
       ],
     };
@@ -140,7 +166,9 @@ export default {
       return account.amount;
     },
     currentAccount() {
-      return this.getAccountById(this.id);
+      const result = this.getAccountById(this.id);
+      console.log('result', result);
+      return result;
     },
     createDetails() {
       return [
@@ -180,6 +208,7 @@ export default {
     console.log('beforeMount', this.edit);
     this.$store.dispatch('setRequestInProgress', true);
     await this.getOperationsByAccount(this.id);
+    await this.getDictionary('category');
     this.$store.dispatch('setRequestInProgress', false);
   },
   methods: {
@@ -187,6 +216,7 @@ export default {
       'getOperationsByAccount',
       'deleteThisAccount',
       'editThisAccount',
+      'getDictionary',
     ]),
     handleItemClick(value) {
       this.$router.push(`/${value}`);
@@ -213,14 +243,16 @@ export default {
       // this.editThisAccount(this.id);
     },
     handleAddOperation() {
-      // this.$router.push('/operation/add');
       this.$router.push({
-        path: `/operation/add?accountId=${this.id}`,
-        props: (route) => {
-          console.log('route.query', route);
-          return ({
-            accountId: route.query.id,
-          });
+        path: `/operation/add/${this.id}`,
+      });
+    },
+    handleInvestCorrect() {
+      this.$router.push({
+        name: 'EditAccountPage',
+        params: {
+          edit: 'edit',
+          invest: true,
         },
       });
     },

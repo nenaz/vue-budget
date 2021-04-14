@@ -7,67 +7,43 @@
     </template>
     <template v-slot:body>
       <div :class="$style.body">
+        <el-card class="box-card">
+          <div slot="header" :class="$style.clearfix">
+              <span :class="$style['avatar-logo']"></span>
+            <!-- <el-avatar :size="size" :src="circleUrl">
+            </el-avatar> -->
+          </div>
+          <el-tabs v-model="activeName" type="border-card">
+            <el-tab-pane
+              label="Вход"
+              name="first"
+              :disabled="requestInProgress"
+            >
+              <auth-tab
+                @auth-start="authProcedureStart"
+              />
+            </el-tab-pane>
+            <el-tab-pane
+              label="Регистрация"
+              name="second"
+              :disabled="requestInProgress"
+            >
+              <register-tab
+                @register-start="registerProcStart"
+              />
+            </el-tab-pane>
+          </el-tabs>
+        </el-card>
         <!-- <span :class="$style['body-title']">
           Необходимо
           <br />
           войти
         </span> -->
-        <div :class="$style['input-block']">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <el-avatar :size="size" :src="circleUrl"></el-avatar>
-            </div>
-              <el-input
-                placeholder="Логин"
-                v-model="login"
-                label="Пароль"
-              />
-              <el-input
-                placeholder="Пароль"
-                v-model="password"
-                show-password
-                label="Пароль"
-              />
-          </el-card>
-          <!-- <span :class="$style['body-text']">
-            Введите логин и пароль от интернет банка ОТП
-          </span> -->
-          <!-- <base-input
-            v-model="login"
-            title="Логин"
-          /> -->
-          <!-- <base-input
-            title="Пароль"
-            v-model="password"
-            type="password"
-          /> -->
-        </div>
-        <!-- <div :class="$style.consent">
-          <checkbox
-            position="left"
-            @input="handleChangeConsent"
-            v-model="consent"
-            name="auth-consent"
-          >
-            Я даю согласие на обработку Банком моих персональных
-              данных в целях рассмотрения настоящего сообщения
-          </checkbox>
-        </div> -->
-        <!-- <div :class="$style.buttons">
-          <base-button
-            type="primary"
-            :disabled="!isPageValid"
-            @click="authProcedureStart"
-          >
-            Продолжить
-          </base-button>
-        </div> -->
-        <el-button
-          type="primary"
-          :loading="requestInProgress"
-          @click="authProcedureStart"
-        >Продолжить</el-button>
+        <!-- <div :class="$style['input-block']"> -->
       </div>
+    </template>
+    <template v-slot:footer>
+      <span>ver.</span>
     </template>
   </page>
 </template>
@@ -81,7 +57,9 @@ import { required } from 'vuelidate/lib/validators';
 // import Checkbox from '@/components/Checkbox';
 // import BaseButton from '@/components/BaseButton';
 import Page from '@/components/Page';
-// import PageAuthHeader from '@/components/PageAuthHeader';
+import AuthTab from './AuthTab';
+import RegisterTab from './RegisterTab';
+// import PageFooter from '@/components/PageFooter';
 
 export default {
   name: 'AuthPage',
@@ -90,7 +68,9 @@ export default {
     // BaseInput,
     // Checkbox,
     Page,
-    // PageAuthHeader,
+    AuthTab,
+    RegisterTab,
+    // PageFooter,
   },
   data() {
     return {
@@ -98,12 +78,15 @@ export default {
         rowsCount: 2,
         flexibleRow: 2,
       },
+      activeName: 'first',
+      // circleUrl: './src/assets/logo.png',
+      circleUrl: 'c:\\Work\\JS\\pos-prototype-2\\src\\assets\\logo.png',
     };
   },
   computed: {
     ...mapFields({
-      login: 'auth.login',
-      password: 'auth.password',
+      // login: 'auth.login',
+      // password: 'auth.password',
       consent: 'auth.consent',
       error: 'error.statusType',
       requestInProgress: 'requestInProgress',
@@ -123,16 +106,19 @@ export default {
     ...mapActions([
       'authProcedure',
       'removeAuthInfo',
+      'testFetch',
     ]),
     handleChangeConsent(value) {
       this.$store.commit('SET_AUTH_CONSENT', value);
     },
     async authProcedureStart() {
+      // await this.testFetch();
       await this.authProcedure();
       if (!this.error) {
         this.$router.push('/main');
       }
     },
+    registerProcStart() {},
   },
   mounted() {
     this.removeAuthInfo();
@@ -152,12 +138,27 @@ export default {
 </script>
 
 <style lang="scss" module>
+  .clearfix {
+    background-color: #409eff;
+  }
+  .avatar-logo {
+    background-image: url('../../assets/logo.png');
+    width: 100%;
+    height: 75px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .test {
+    width: 100%;
+  }
+
   .body {
     padding: 27px 16px 5px;
     position: relative;
     box-sizing: border-box;
-    display: grid;
-    grid-template-rows: auto auto auto 1fr;
+    // display: grid;
+    // grid-template-rows: auto auto auto 1fr;
     height: 100%;
 
     .body-title {

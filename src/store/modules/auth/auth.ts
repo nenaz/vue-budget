@@ -6,7 +6,7 @@ import {
 } from 'vuex';
 import get from 'lodash.get';
 import isEmpty from 'lodash.isempty';
-import { axiosPostAuth } from '@/utils/server-interaction/server-interaction';
+import { axiosPostAuth, postData } from '@/utils/server-interaction/server-interaction';
 import { getExpires } from '@/utils/cookies';
 import mutationTypes from '@/store/mutation-types';
 import { RootState } from '@/store/types';
@@ -35,6 +35,14 @@ const defaultAuthState = (): Auth => ({
 export const auth: Module<Auth, RootState> = {
   state: defaultAuthState(),
   actions: {
+    async testFetch() {
+      // const result = await postData('?email=mr444%40mail.ru&password=1&_csrf=');
+      const result = await postData({
+        login: 'q',
+        password: 'q',
+      });
+      console.log('result', result);
+    },
     closeSession({ dispatch, commit }: {
       dispatch: Dispatch;
       commit: Commit;

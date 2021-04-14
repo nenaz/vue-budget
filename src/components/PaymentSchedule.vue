@@ -15,7 +15,8 @@
       </div>
       <div :class="$style['description-block']">
         <span :class="$style['operation-name']">
-          {{ getCategoryById(operation.category).title }}
+          <!-- {{ getCategoryById(operation.category).title }} -->
+          {{ operation.category }}
         </span>
       </div>
       <span :class="$style.amount">{{ operationAmountWithFormat(operation.amount) }}</span>
@@ -25,6 +26,7 @@
 
 <script>
 // import { mapGetters } from 'vuex';
+import { mapActions } from 'vuex';
 // import { mapFields } from 'vuex-map-fields';
 import moneyFormat from '@/utils/money-formatter';
 import { formatDate } from '@/utils/date-utils';
@@ -58,10 +60,13 @@ export default {
       return Object.keys(this.currentOperations);
     },
   },
-  // mount() {
-  //   this.renderOperations();
+  // async mounted() {
+  //   await this.getDictionary();
   // },
   methods: {
+    ...mapActions([
+      'getDictionary',
+    ]),
     operationAmountWithFormat(amount) {
       return moneyFormat(amount);
     },

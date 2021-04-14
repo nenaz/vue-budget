@@ -81,6 +81,13 @@
         />
       </transition> -->
     </template>
+    <template v-slot:footer>
+      <el-button-group>
+      <el-button type="primary" icon="el-icon-edit"></el-button>
+      <el-button type="primary" icon="el-icon-share"></el-button>
+      <el-button type="primary" icon="el-icon-delete"></el-button>
+    </el-button-group>
+    </template>
   </page>
 </template>
 
@@ -343,11 +350,11 @@ export default {
     },
     handleAddAccountClick() {
       console.log('handleAddAccountClick');
-      this.$router.push('/account/add');
+      this.$router.push('/account/add/0');
     },
     handleAddOperation() {
       console.log('click');
-      this.$router.push('/operation/add');
+      this.$router.push('/operation/add/0');
     },
   },
 };

@@ -15,9 +15,9 @@
           <span
             :class="$style.item"
             @click="handleClick"
-            link="/main"
+            link="/add-dictionary-item"
           >
-            1
+            Добавить категорию
           </span>
           <span
             :class="$style.item"
@@ -121,7 +121,8 @@ export default {
     bottom: 0;
     height: 100vh;
     z-index: 99999999999;
-    background-color: #52AE30;
+    background-color: #26509e;
+    // background-color: #52AE30;
     padding: 26px 26px 68px;
     box-sizing: border-box;
   }

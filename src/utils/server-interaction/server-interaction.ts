@@ -47,6 +47,7 @@ const axiosHttpAuth = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 const axiosHttp = axios.create({
@@ -55,6 +56,7 @@ const axiosHttp = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
 const axiosConfigAPI = (config: any) => ({
@@ -104,6 +106,7 @@ export const axiosPostAuth = (params: AxiosPostParams, options?: any) => {
     {
       headers: {
         ...params.headers,
+        withCredentials: true,
       },
       cancelToken: new CancelToken(((c: any) => {
         cancelObj.cancel = c;
@@ -163,4 +166,28 @@ export const axiosGet = (params: AxiosPostParams, options?: any) => {
     logParamsFromServerWithError(error);
     return (options && options.fakeData) || error.response;
   }).finally(() => {});
+};
+
+
+export const postData = async (
+  data = {},
+) => {
+  console.log('fetch postData');
+  const url = 'https://192.168.31.198:8444/api/users/gettoken';
+  // const url = 'https://localhost:3005/auth/login';
+  const response = await fetch(
+    url,
+    {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        // 'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: JSON.stringify(data),
+    },
+  );
+  const resjs = await response.json();
+  return resjs;
 };

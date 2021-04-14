@@ -10,73 +10,84 @@
       <div :class="$style.body">
         <div :class="$style['body-content tess']">
           <div :class="$style['step-text-block']">
-            <!-- <span :class="$style['step-title']">
-              <b>{{ titleWithStep }}</b>Доход и <b>место работы</b>
-            </span> -->
             <span :class="$style['step-sub-title']">{{ title }}</span>
           </div>
-          <div :class="$style['work-info']">
-            <div :class="$style['work-info__input-styles']">
-              <base-input
-                title="Название счёта"
-                v-model="name"
-              />
-            </div>
-            <!-- {{ currentAccount() }} -->
-            <div :class="$style['work-info__input-styles']">
-              <number-input
-                title="Номер счета"
-                v-model.lazy="number"
-              />
-            </div>
-            <div :class="$style['work-info__input-styles']">
-              <dropdown
-                title="Тип"
-                :data="accountTypes"
-                @select="handleTypeSelect"
-                :placeholder="type.title"
-              >
-                <img
-                  src="@/assets/icon-arrow-green.svg"
-                  alt="arrow"
+          <div v-if="!invest">
+            <div :class="$style['work-info']">
+              <div :class="$style['work-info__input-styles']">
+                <base-input
+                  title="Название счёта"
+                  v-model="name"
                 />
-              </dropdown>
+              </div>
+              <div :class="$style['work-info__input-styles']">
+                <number-input
+                  title="Номер счета"
+                  v-model.lazy="number"
+                />
+              </div>
+              <div :class="$style['work-info__input-styles']">
+                <dropdown
+                  title="Тип"
+                  :data="accountTypes"
+                  @select="handleTypeSelect"
+                  :placeholder="type.title"
+                >
+                  <img
+                    src="@/assets/icon-arrow-green.svg"
+                    alt="arrow"
+                  />
+                </dropdown>
+              </div>
+              <div :class="$style['work-info__input-styles']">
+                <number-input
+                  title="Начальное значени"
+                  v-model.number="amount"
+                />
+              </div>
+              <div :class="$style['work-info__input-styles']">
+                <dropdown
+                  title="Валюта"
+                  :data="currencyList"
+                  @select="handleCurrencySelect"
+                  :placeholder="currency.title"
+                >
+                  <img
+                    src="@/assets/icon-arrow-green.svg"
+                    alt="arrow"
+                  />
+                </dropdown>
+              </div>
             </div>
+          </div>
+          <div v-else>
             <div :class="$style['work-info__input-styles']">
               <number-input
-                title="Начальное значени"
+                title="Новое значени"
                 v-model.number="amount"
               />
-            </div>
-            <div :class="$style['work-info__input-styles']">
-              <dropdown
-                title="Валюта"
-                :data="currencyList"
-                @select="handleCurrencySelect"
-                :placeholder="currency.title"
-              >
-                <img
-                  src="@/assets/icon-arrow-green.svg"
-                  alt="arrow"
-                />
-              </dropdown>
+              <!-- <el-input-number
+                v-model="amount"
+                :min="1"
+                :max="10"
+              ></el-input-number> -->
             </div>
           </div>
         </div>
         <div :class="$style.buttons">
-          <base-button
+          <!-- <base-button
             type="primary"
             @click="goNextStep"
             :disabled="!isPageValid"
           >
             Продолжить
-          </base-button>
-          <base-button
-            type="transparent"
-            @click="goBack"
-          >
-            Вернуться назад
-          </base-button>
+          </base-button> -->
+          <el-button
+            type="primary"
+            :loading="requestInProgress"
+            @click="goNextStep"
+            :class="$style.test"
+          >Продолжить</el-button>
         </div>
       </div>
     </template>
@@ -95,7 +106,7 @@ import {
   // SuggestionInput,
   BaseInput,
 } from '@/components/inputs';
-import BaseButton from '@/components/BaseButton';
+// import BaseButton from '@/components/BaseButton';
 import Dropdown from '@/components/Dropdown';
 import moneyFormat from '@/utils/money-formatter';
 import PageHeader from '@/components/PageHeader';
@@ -106,9 +117,9 @@ import { ErrorMessages } from '@/utils/error-messages';
 // } from '@/components/placeholders';
 
 export default {
-  name: 'ChangeWorkPlace',
+  name: 'AccountPage',
   components: {
-    BaseButton,
+    // BaseButton,
     Dropdown,
     BaseInput,
     NumberInput,
@@ -146,6 +157,10 @@ export default {
       type: String,
       default: '',
     },
+    invest: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     ...mapFields({
@@ -161,7 +176,7 @@ export default {
       // currentStep: 'steps.current',
       // totalStep: 'steps.total',
       // error: 'error.statusType',
-      // requestInProgress: 'requestInProgress',
+      requestInProgress: 'requestInProgress',
       // clientProfile: 'clientInstance.activated',
       // activated: 'tranche.activated',
       // authStatus: 'authStatus',
@@ -216,10 +231,10 @@ export default {
       this.updateData();
     }
   },
-  // mounted() {
-  //   console.log('this.$route.params.pathMatch', this.$route.params.pathMatch);
-  //   console.log('this.edit', this.edit);
-  // },
+  mounted() {
+    // console.log('this.$route.params.pathMatch', this.$route.params.pathMatch);
+    console.log('this.invest', this.invest);
+  },
   methods: {
     ...mapActions([
       'setStep',
@@ -252,6 +267,9 @@ export default {
         isEditAccount: !!this.edit,
       };
       if (this.edit === 'edit') {
+        if (this.invest) {
+          params.isInvest = this.invest;
+        }
         await this.fetchUpdateAccount(params);
       } else {
         await this.createAccount(params);
@@ -319,6 +337,9 @@ export default {
 </script>
 
 <style lang="scss" module>
+  .test {
+    width: 100%;
+  }
   .body {
     position: relative;
 
