@@ -40,3 +40,21 @@ export const dateIsExpired = (date: string) => {
 
   return expireDate.getTime() < nowDate.getTime();
 };
+
+export const formatDDMMYYYtoYYYYMMDD = (date: string) => date.replace(/(\d{2}).(\d{2}).(\d{4})/, '$3/$2/$1');
+
+export const getOffsetTime = (date: Date) => {
+  const TIME = 60 * 1000;
+  return date.getTimezoneOffset() * TIME;
+};
+
+export const dateFormattingFromDDMMYYYtoYYYYMMDDwithTimezone = (dateStr: string) => {
+  const formatStr = formatDDMMYYYtoYYYYMMDD(dateStr);
+  const tempDate = new Date(formatStr);
+  const tempTime = getOffsetTime(tempDate) >= 0
+    ? tempDate.getTime() + getOffsetTime(tempDate)
+    : tempDate.getTime() - getOffsetTime(tempDate);
+  const dateInt = tempDate.setTime(tempTime);
+  const resultDate = new Date(dateInt).toISOString();
+  return resultDate;
+};

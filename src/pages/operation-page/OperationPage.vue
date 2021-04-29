@@ -22,7 +22,16 @@
               ></money-input-el>
             </div>
             <div :class="$style.select">
-              <el-date-picker
+              <date-picker
+                v-model="operDate"
+                valueType="format"
+                :editable = "false"
+                :clearable = "false"
+                style="width: 100%"
+                format="DD.MM.YYYY"
+              >
+              </date-picker>
+              <!-- <el-date-picker
                 v-model="operDate"
                 type="date"
                 placeholder="Дата операции"
@@ -32,7 +41,7 @@
                 size="large"
                 style="width: 100%"
               >
-              </el-date-picker>
+              </el-date-picker> -->
             </div>
             <div :class="$style.select">
               <el-select
@@ -104,17 +113,20 @@ import QrScanner from 'qr-scanner';
 import { mapActions } from 'vuex';
 import get from 'lodash.get';
 import { required, minValue } from 'vuelidate/lib/validators';
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
 import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
 import {
   NumberInput,
-  MoneyInputEl,
+  // MoneyInputEl,
 } from '@/components/inputs';
 import {
   LIST_CATEGORY_DEMO,
   OPERATION_TYPES,
   LISTCATEGORY,
 } from '@/dictionaries';
+import { dateFormattingFromDDMMYYYtoYYYYMMDDwithTimezone } from '@/utils/date-utils';
 
 export default {
   name: 'Operation',
@@ -122,7 +134,7 @@ export default {
     Page,
     PageHeader,
     NumberInput,
-    // Dropdown,
+    DatePicker,
   },
   data() {
     return {
@@ -234,12 +246,18 @@ export default {
       this.$v.subCategory.$touch();
     },
     async handleAddClick() {
+      // const operDate = new Date(formatDDMMYYYtoYYYYMMDD(this.operDate)).toISOString();
+      // const tempDate = new Date(formatDDMMYYYtoYYYYMMDD(this.operDate));
+
+      // const operTime =
+      //  tempDate.setTime(tempDate.getTime() - tempDate.getTimezoneOffset() * TIME);
+      // const operDate = new Date(operTime).toISOString();
       await this.createOperationComposition({
         account: this.account,
         amount: this.amount,
         category: this.category,
         operationType: this.type,
-        createDate: this.operDate,
+        createDate: dateFormattingFromDDMMYYYtoYYYYMMDDwithTimezone(this.operDate),
       });
       this.$router.push('/main');
     },

@@ -113,17 +113,6 @@ export default {
       // border-top: 1px solid $ATHENS_GRAY_TITLE;
       padding: 16px 32px;
 
-      .title {
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 20px;
-        font-family: 'Source Sans Pro';
-        font-weight: bold;
-        color: white;
-        text-shadow: 1px 1px black;
-      }
-
       .amount {
         font-family: Source Sans Pro;
         font-style: normal;
@@ -133,5 +122,16 @@ export default {
         color: $APPLE;
       }
     }
+  }
+
+  .title {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    font-family: 'Source Sans Pro';
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px black;
   }
 </style>
