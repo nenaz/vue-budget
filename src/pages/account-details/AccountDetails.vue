@@ -44,8 +44,11 @@
           text="Операции по счету"
         >
           <div :class="$style.accounts" v-if="!requestInProgress">
+            <!-- <operations-list
+              :tableData="tableData"
+            /> -->
             <payment-schedule
-              v-for="day in Object.keys(operations)"
+              v-for="day in getOperationDays()"
               :key="day"
               :currentOperations="currentOperation(day)"
               :day="day"
@@ -76,7 +79,9 @@ import PaymentSchedule from '@/components/PaymentSchedule';
 import { formatDate } from '@/utils/date-utils';
 // import { FloatingActionButton } from '@/components/buttons/floating-action-button';
 import BaseButton from '@/components/BaseButton';
+// import OperationsList from '@/modules/operations-list/OperationsList.vue';
 // import { AccountTypes } from '@/dictionaries/type-of-account';
+// import OperationPage from '../operation-page/OperationPage.vue';
 import { ACCOUNT_TYPES } from './account-details-constants';
 
 export default {
@@ -90,6 +95,7 @@ export default {
     PaymentSchedule,
     PageBodyContentRollUp,
     BaseButton,
+    // OperationsList,
   },
   props: {
     id: {
@@ -147,6 +153,56 @@ export default {
           ],
         },
       ],
+      tableData: [{
+        date: '2016-05-03',
+        name: 'Tom',
+        state: 'California',
+        city: 'Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles',
+        zip: 'CA 90036',
+      }, {
+        date: '2016-05-02',
+        name: 'Tom',
+        state: 'California',
+        city: 'Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles',
+        zip: 'CA 90036',
+      }, {
+        date: '2016-05-04',
+        name: 'Tom',
+        state: 'California',
+        city: 'Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles',
+        zip: 'CA 90036',
+      }, {
+        date: '2016-05-01',
+        name: 'Tom',
+        state: 'California',
+        city: 'Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles',
+        zip: 'CA 90036',
+      }, {
+        date: '2016-05-08',
+        name: 'Tom',
+        state: 'California',
+        city: 'Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles',
+        zip: 'CA 90036',
+      }, {
+        date: '2016-05-06',
+        name: 'Tom',
+        state: 'California',
+        city: 'Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles',
+        zip: 'CA 90036',
+      }, {
+        date: '2016-05-07',
+        name: 'Tom',
+        state: 'California',
+        city: 'Los Angeles',
+        address: 'No. 189, Grove St, Los Angeles',
+        zip: 'CA 90036',
+      }],
     };
   },
   computed: {
@@ -224,13 +280,17 @@ export default {
     handleItemClick(value) {
       this.$router.push(`/${value}`);
     },
-    currentOperation(name) {
-      // const { operations } = this.$store.state;
-      return this.operations[name];
+    currentOperation(date) {
+      return this.operations[date];
     },
     getOperationDays() {
-      console.log('Object.keys(this.operations)', Object.keys(this.operations));
-      return this.operations;
+      const oper = Object.keys(this.operations);
+      const sortOpers = oper.sort((a, b) => {
+        if (a < b) return 1;
+        if (a > b) return -1;
+        return 0;
+      });
+      return sortOpers;
     },
     async handleDeleteClick() {
       await this.deleteThisAccount(this.id);

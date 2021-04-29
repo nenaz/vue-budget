@@ -94,6 +94,7 @@ export default {
 
 <style lang="scss" module>
   .payment-schedule {
+    font-family: 'Source Sans Pro';
     margin-top: 5px;
     // border-radius: 5px;
     background-color: #F1F1F1;
@@ -126,6 +127,7 @@ export default {
   }
 
   .payday {
+    font-family: 'Squad';
     text-align: left;
     display: inline-block;
     width: 100%;

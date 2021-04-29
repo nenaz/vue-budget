@@ -1,6 +1,7 @@
 <template>
   <div :class="classes">
     <page-body-content-title
+      v-if="text"
       :text="text"
       :subText="subText"
       @click="handleTitleClick"
@@ -64,7 +65,8 @@ export default {
 
 <style lang="scss" module>
   .body-content {
-    background: $WHITE;
+    // background: $WHITE;
+    background: transparent;
     // backdrop-filter: blur(16px);
     border-radius: 8px;
     width: 100%;

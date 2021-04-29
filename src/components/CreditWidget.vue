@@ -8,7 +8,7 @@
       <div :class="$style.top">
         <span :class="$style.amount">{{ amountWithFormat }}</span>
         <div>
-          <span :class="$style['date-text']">Обновлен </span>
+          <span :class="$style['date-text']">Обновлено </span>
           <span :class="$style.date">{{ startDateWithFormat }}</span>
         </div>
       </div>
@@ -97,26 +97,29 @@ export default {
   .credit-block {
     // padding: 8px 0;
     background-color: $WHITE;
+    background-color: transparent;
+    font-family: 'Source Sans Pro';
     // border-radius: 8px;
     // margin: 8px 0;
   }
 
   .credit {
     .top {
-      padding: 16px;
+      padding: 16px 16px 0 16px;
       display: flex;
       flex-direction: rows;
       justify-content: space-between;
       align-items: center;
 
       .amount {
-        font-family: Squad;
+        // font-family: Squad;
         font-style: normal;
         font-weight: bold;
         font-size: 18px;
         line-height: 24px;
         letter-spacing: -0.2px;
-        color: $BLACK;
+        color: $WHITE;
+        text-shadow: 1px 1px 2px black, 0 0 1em red;
       }
 
       .date {
@@ -128,6 +131,7 @@ export default {
         text-align: right;
         letter-spacing: -0.2px;
         color: $APPLE;
+        text-shadow: 1px 1px 2px black, 0 0 1em red;
       }
     }
 
@@ -173,6 +177,7 @@ export default {
     line-height: 18px;
     text-align: right;
     letter-spacing: -0.2px;
-    // color: $APPLE;
+    color: $WHITE;
+    text-shadow: 1px 1px 2px black, 0 0 1em red;
   }
 </style>

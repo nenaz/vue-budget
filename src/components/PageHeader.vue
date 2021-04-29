@@ -66,7 +66,7 @@ export default {
 
 <style lang="scss" module>
   .header {
-    background-color: $WHITE;
+    background-color: transparent;
     box-sizing: border-box;
 
     .logo-block {
@@ -114,12 +114,14 @@ export default {
       padding: 16px 32px;
 
       .title {
-        font-family: Source Sans Pro;
         font-style: normal;
         font-weight: normal;
         font-size: 14px;
         line-height: 20px;
-        color: $BLACK;
+        font-family: 'Source Sans Pro';
+        font-weight: bold;
+        color: white;
+        text-shadow: 1px 1px black;
       }
 
       .amount {

@@ -16,6 +16,10 @@
                 title="Сумма"
                 v-model.lazy="amount"
               />
+              <money-input-el
+                v-model="amount"
+                title="Суммаs"
+              ></money-input-el>
             </div>
             <div :class="$style.select">
               <el-date-picker
@@ -99,17 +103,18 @@ import { mapFields } from 'vuex-map-fields';
 import QrScanner from 'qr-scanner';
 import { mapActions } from 'vuex';
 import get from 'lodash.get';
+import { required, minValue } from 'vuelidate/lib/validators';
 import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
 import {
   NumberInput,
+  MoneyInputEl,
 } from '@/components/inputs';
 import {
   LIST_CATEGORY_DEMO,
   OPERATION_TYPES,
   LISTCATEGORY,
 } from '@/dictionaries';
-import { required, minValue } from 'vuelidate/lib/validators';
 
 export default {
   name: 'Operation',
