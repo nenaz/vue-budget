@@ -22,9 +22,9 @@
           <span
             :class="$style.item"
             @click="handleClick"
-            link="/card-details"
+            link="/chart"
           >
-            2
+            График
           </span>
           <span
             :class="$style.item"

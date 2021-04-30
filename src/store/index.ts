@@ -468,7 +468,7 @@ export const mainStore: StoreOptions<RootState> = {
       const routerParams = redirectToInfoWithParams({
         from: backUrl,
         status: Errors.CANCELED,
-        requestUrl: result.request.responseURL,
+        requestUrl: result?.request?.responseURL || '/',
       });
       console.log('routerParams', routerParams);
       dispatch('routeTo', routerParams);

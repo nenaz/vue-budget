@@ -3,6 +3,7 @@ import Vuelidate from 'vuelidate';
 import PortalVue from 'portal-vue';
 import Vue2TouchEvents from 'vue2-touch-events';
 import ElementUI from 'element-ui';
+import VueApexCharts from 'vue-apexcharts';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App.vue';
 import { router } from './router';
@@ -23,6 +24,9 @@ Vue.use(ElementUI);
 Vue.use(Vuelidate);
 Vue.use(PortalVue);
 Vue.use(Vue2TouchEvents);
+Vue.use(VueApexCharts);
+
+Vue.component('apex-chart', VueApexCharts);
 
 // window.onbeforeunload = () => {
 //   localStorage.setItem('restart-page', 'true');
