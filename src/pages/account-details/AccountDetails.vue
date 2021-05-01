@@ -13,13 +13,6 @@
       />
     </template>
     <template v-slot:body>
-      <!-- <page-body-content
-        text="Детали счета"
-      >
-        <details1
-          :details="createDetails"
-        />
-      </page-body-content> -->
         <page-body-content-roll-up>
           <div style="display: flex; flex-direction: row; justify-content: center;">
             <template
@@ -44,9 +37,6 @@
           text="Операции по счету"
         >
           <div :class="$style.accounts" v-if="!requestInProgress">
-            <!-- <operations-list
-              :tableData="tableData"
-            /> -->
             <payment-schedule
               v-for="day in getOperationDays()"
               :key="day"
@@ -74,14 +64,9 @@ import PageHeader from '@/components/PageHeader';
 import CreditWidget from '@/components/CreditWidget';
 import PageBodyContent from '@/components/PageBodyContent';
 import PageBodyContentRollUp from '@/components/PageBodyContentRollUp';
-// import Details1 from '@/components/Details';
 import PaymentSchedule from '@/components/PaymentSchedule';
 import { formatDate } from '@/utils/date-utils';
-// import { FloatingActionButton } from '@/components/buttons/floating-action-button';
 import BaseButton from '@/components/BaseButton';
-// import OperationsList from '@/modules/operations-list/OperationsList.vue';
-// import { AccountTypes } from '@/dictionaries/type-of-account';
-// import OperationPage from '../operation-page/OperationPage.vue';
 import { ACCOUNT_TYPES } from './account-details-constants';
 
 export default {
@@ -91,11 +76,9 @@ export default {
     PageHeader,
     CreditWidget,
     PageBodyContent,
-    // Details1,
     PaymentSchedule,
     PageBodyContentRollUp,
     BaseButton,
-    // OperationsList,
   },
   props: {
     id: {
@@ -251,23 +234,12 @@ export default {
             day: 'numeric',
           }),
         },
-        // {
-        //   title: 'Последнее обновление',
-        //   value: formatDate(this.currentAccount.lastUpdate, {
-        //     year: 'numeric',
-        //     month: 'numeric',
-        //     day: 'numeric',
-        //   }),
-        // },
       ];
     },
   },
   async beforeMount() {
-    console.log('beforeMount', this.id);
-    console.log('beforeMount', this.edit);
     this.$store.dispatch('setRequestInProgress', true);
     await this.getOperationsByAccount(this.id);
-    await this.getDictionary('category');
     this.$store.dispatch('setRequestInProgress', false);
   },
   methods: {
@@ -275,7 +247,6 @@ export default {
       'getOperationsByAccount',
       'deleteThisAccount',
       'editThisAccount',
-      'getDictionary',
     ]),
     handleItemClick(value) {
       this.$router.push(`/${value}`);
@@ -303,7 +274,6 @@ export default {
           edit: 'edit',
         },
       });
-      // this.editThisAccount(this.id);
     },
     handleAddOperation() {
       this.$router.push({
@@ -325,9 +295,6 @@ export default {
 
 <style lang="scss" module>
   .accounts {
-    // background-color: red;
-    // border: 1px solid;
-    // padding: 2px;
     overflow-x: scroll;
     height: calc(100% - 30px);
     overflow-y: scroll;

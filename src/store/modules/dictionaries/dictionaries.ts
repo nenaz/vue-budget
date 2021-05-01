@@ -5,18 +5,28 @@ import {
 } from 'vuex';
 import get from 'lodash.get';
 import { RootState, Dictionaries, Dictionary } from '@/store/types';
+import type { Category } from './types';
 
 const defaultDictionaiesState = () => ({
-  positions: [],
-  ownerships: [],
-  sectors: [],
-  specializations: [],
   category: [],
 });
 
 export const dictionaries: Module<Dictionaries, RootState> = {
   state: defaultDictionaiesState(),
   actions: {
+    async dictionaryItemDelete({ dispatch }: {
+      dispatch: Dispatch;
+    }, params) {
+      await dispatch('serverCommonAPI', {
+        type: 'POST',
+        params: {
+          url: '/dictionary/delete-dictionary-item',
+          data: {
+            ...params,
+          },
+        },
+      });
+    },
     async dictionaryItemAdd({ dispatch }: {
       dispatch: Dispatch;
     }, params) {
@@ -35,9 +45,6 @@ export const dictionaries: Module<Dictionaries, RootState> = {
     }) {
       await Promise.all([
         dispatch('getDictionary', 'category'),
-        // dispatch('getDictionary', 'sectors'),
-        // dispatch('getDictionary', 'specializations'),
-        // dispatch('getDictionary', 'positions'),
       ]).then((values: any[]) => {
         console.log('all dictionary response');
       }).catch((error: any) => {

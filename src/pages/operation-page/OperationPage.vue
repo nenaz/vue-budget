@@ -16,10 +16,6 @@
                 title="Сумма"
                 v-model.lazy="amount"
               />
-              <money-input-el
-                v-model="amount"
-                title="Суммаs"
-              ></money-input-el>
             </div>
             <div :class="$style.select">
               <date-picker
@@ -31,17 +27,6 @@
                 format="DD.MM.YYYY"
               >
               </date-picker>
-              <!-- <el-date-picker
-                v-model="operDate"
-                type="date"
-                placeholder="Дата операции"
-                :picker-options="pickerOptions"
-                format="dd.MM.yyyy"
-                :class="$style.button"
-                size="large"
-                style="width: 100%"
-              >
-              </el-date-picker> -->
             </div>
             <div :class="$style.select">
               <el-select
@@ -119,12 +104,10 @@ import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
 import {
   NumberInput,
-  // MoneyInputEl,
 } from '@/components/inputs';
 import {
   LIST_CATEGORY_DEMO,
   OPERATION_TYPES,
-  LISTCATEGORY,
 } from '@/dictionaries';
 import { dateFormattingFromDDMMYYYtoYYYYMMDDwithTimezone } from '@/utils/date-utils';
 
@@ -141,7 +124,7 @@ export default {
       account: {},
       title: '',
       amount: 0,
-      category: LIST_CATEGORY_DEMO[0],
+      category: '',
       categoryTitle: 'Выберите категорию',
       categoryList: LIST_CATEGORY_DEMO,
       color: '#cdbdde',
@@ -150,13 +133,8 @@ export default {
         title: 'RUB',
       },
       number: '',
-      subCategoryGroup: {},
-      subCategory: {},
-      subCategoryList: LISTCATEGORY,
-      subTitle: 'Выберите подкатегорию',
       type: OPERATION_TYPES[1],
       typeList: OPERATION_TYPES,
-      // operDate: Date.now(),
       operDate: new Date().toISOString(),
       pickerOptions: {
         disabledDate(time) {
@@ -210,14 +188,12 @@ export default {
     },
   },
   async mounted() {
-    await this.getDictionary('category');
     this.account = this.handleFindAccountById(this.id);
     this.title = this.account.title || '';
   },
   methods: {
     ...mapActions([
       'createOperationComposition',
-      'getDictionary',
     ]),
     handleFindAccountById(id) {
       // eslint-disable-next-line no-underscore-dangle
@@ -240,18 +216,7 @@ export default {
     handleAccountSelect(value) {
       this.account = value;
     },
-    handleSubCategorySelect(value) {
-      this.subCategory = value;
-      this.subTitle = value.title;
-      this.$v.subCategory.$touch();
-    },
     async handleAddClick() {
-      // const operDate = new Date(formatDDMMYYYtoYYYYMMDD(this.operDate)).toISOString();
-      // const tempDate = new Date(formatDDMMYYYtoYYYYMMDD(this.operDate));
-
-      // const operTime =
-      //  tempDate.setTime(tempDate.getTime() - tempDate.getTimezoneOffset() * TIME);
-      // const operDate = new Date(operTime).toISOString();
       await this.createOperationComposition({
         account: this.account,
         amount: this.amount,
@@ -294,10 +259,6 @@ export default {
         console.log('error', e);
       }
     },
-    // handlePickerChange(value) {
-    //   console.log('value', value);
-    //   this.operDate = formatDate(value);
-    // },
   },
   validations: {
     account: {

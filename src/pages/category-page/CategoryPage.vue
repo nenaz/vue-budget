@@ -9,28 +9,41 @@
     </template>
     <template v-slot:body>
       <div :class="$style.body">
-        <div :class="$style['body-content tess']">
-          <div :class="$style['step-text-block']">
-            <span :class="$style['step-sub-title']">{{ title }}</span>
-          </div>
-          <div :class="$style['category-margin']">
-            <el-input
-              placeholder="Наименование категории"
-              v-model="categoryName"
-              label="Наименование категории"
-            />
-          </div>
-        </div>
-        <div :class="$style.buttons">
-          <el-button
-            type="primary"
-            :loading="requestInProgress"
-            @click="handleAddCategory"
-            :class="$style.button"
+        <el-select
+          filterable
+          allow-create
+          v-model="categoryName"
+          placeholder="Категория"
+          :class="$style.button"
+          @change="handleCategorySelect"
+        >
+          <el-option
+            v-for="item in dictionaries.category"
+            :key="item._id"
+            :label="item.categoryName"
+            :value="item.categoryName">
+          </el-option>
+        </el-select>
+          <el-button-group
+            :class="$style['group-button']"
+            style="display: flex;"
           >
-            Добавить
-          </el-button>
-        </div>
+            <el-button
+              type="danger"
+              icon="el-icon-delete"
+              :disabled="!removeCandidate"
+              @click="handleDeleteButton"
+            ></el-button>
+            <el-button
+              type="primary"
+              :loading="requestInProgress"
+              @click="handleAddCategory"
+              :class="$style['group-button-item']"
+              :disabled="!isCanAdd"
+            >
+              Add
+            </el-button>
+          </el-button-group>
       </div>
     </template>
   </page>
@@ -39,7 +52,6 @@
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
-import get from 'lodash.get';
 import Page from '@/components/Page';
 import moneyFormat from '@/utils/money-formatter';
 import PageHeader from '@/components/PageHeader';
@@ -54,6 +66,9 @@ export default {
   data() {
     return {
       categoryName: '',
+      category: {},
+      removeCandidate: '',
+      isCanAdd: false,
     };
   },
   props: {
@@ -73,14 +88,12 @@ export default {
   computed: {
     ...mapFields({
       requestInProgress: 'requestInProgress',
+      dictionaries: 'dictionaries',
     }),
     ...mapGetters([
       'getHasCard',
       'getAccountById',
     ]),
-    titleWithStep() {
-      return `Шаг: ${this.currentStep} из 3. `;
-    },
     isPageValid() {
       return this.name !== ''
         && this.number !== ''
@@ -102,39 +115,18 @@ export default {
   methods: {
     ...mapActions([
       'dictionaryItemAdd',
-      'getDictionary',
+      'dictionaryItemDelete',
     ]),
     goBack() {
       this.$router.replace('/income');
     },
     async handleAddCategory() {
-      await this.dictionaryItemAdd({
-        categoryName: this.categoryName,
-      });
-      this.$router.push('/main');
-    },
-    async handleGetDictionary() {
-      await this.getDictionary('category');
-      this.$router.push('/main');
-    },
-    handleTypeSelect(value) {
-      this.type = value;
-    },
-    handleCurrencySelect(value) {
-      this.currency = value;
-    },
-    handlePositionSelect(value) {
-      this.$store.commit('updatePosition', value);
-    },
-    handleSpecializationSelect(value) {
-      this.$store.commit('updateSpecialization', value);
-    },
-    handleSelectAddress(suggestion) {
-      this.address = suggestion.value;
-    },
-    handleSelectOrganization(suggestion) {
-      this.organization = get(suggestion, 'value', '');
-      this.address = get(suggestion, 'data.address.value', this.address);
+      if (this.category) {
+        await this.dictionaryItemAdd({
+          categoryName: this.categoryName,
+        });
+        this.$router.push('/main');
+      }
     },
     prepareErrorParams() {
       return this.clientInstanceError
@@ -142,6 +134,47 @@ export default {
           errorMessages: ErrorMessages(this.clientInstanceError),
         }
         : {};
+    },
+    handleCategorySelect(value) {
+      this.categoryName = value;
+      const currCategory = this.findCurrentCategory(value);
+      const isAlreadyExists = !!currCategory;
+      if (!isAlreadyExists) {
+        this.isCanAdd = true;
+        this.removeCandidate = '';
+        this.category = {};
+      } else {
+        this.category = currCategory;
+        this.removeCandidate = value;
+      }
+    },
+    handleDeleteButton() {
+      this.confirmOpen();
+    },
+    confirmOpen() {
+      this.$confirm(`Будет удалена категория ${this.categoryName}! Продолжить?`, 'Внимание!', {
+        confirmButtonText: 'Да',
+        cancelButtonText: 'Нет',
+        type: 'warning',
+      }).then(async () => {
+        await this.dictionaryItemDelete({
+          // eslint-disable-next-line no-underscore-dangle
+          categotyId: this.category._id,
+        });
+        this.$message({
+          type: 'success',
+          message: 'Удаление совершено',
+        });
+        this.$router.push('/main');
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Удаление отменено',
+        });
+      });
+    },
+    findCurrentCategory(name) {
+      return this.dictionaries.category.find((item) => item.categoryName === name);
     },
   },
 };
@@ -154,6 +187,7 @@ export default {
 
   .button {
     width: 100%;
+    margin: 20px 0;
   }
 
   .body {
@@ -161,7 +195,6 @@ export default {
 
     .body-content {
       background: $WHITE;
-      // backdrop-filter: blur(16px);
       border-radius: 8px;
       width: 100%;
       height: 100%;
@@ -256,6 +289,10 @@ export default {
     line-height: 20px;
     display: inline-block;
     text-align: left;
+    width: 100%;
+  }
+
+  .group-button-item {
     width: 100%;
   }
 </style>

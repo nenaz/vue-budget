@@ -5,18 +5,8 @@
   >
     <template v-slot:header>
       <page-header :showMenu="true" />
-      <!-- <transition name="fade" mode="out-in">
-        <header-placeholder v-if="requestInProgress" />
-        <balance-line
-          v-else
-          :baseLimit="getAvailableLimit"
-          :allCreditsAmount="sumAllLoans"
-        />
-      </transition> -->
     </template>
     <template v-slot:body>
-      <!-- <transition name="fade" mode="out-in"> -->
-      <!-- <transition-group name="fade" mode="in-out"> -->
         <card-placeholder v-if="requestInProgress" />
         <div class="accounts" v-else>
           <card-widget
@@ -35,8 +25,6 @@
             @click="handleAddAccountClick"
           />
         </div>
-      <!-- </transition> -->
-      <!-- </transition-group> -->
       <div v-if="isActiveStatus">
         <transition name="fade" mode="in-out" v-if="requestInProgress">
           <credit-placeholder />
@@ -73,13 +61,6 @@
       <floating-action-button
         @click="handleAddOperation"
       >add</floating-action-button>
-      <!-- <transition name="fade" mode="in-out">
-        <functional-button-placeholder  v-if="requestInProgress" />
-        <functional-buttons-module
-          v-else
-          :items="items"
-        />
-      </transition> -->
     </template>
     <template v-slot:footer>
       <el-button-group>
@@ -96,38 +77,26 @@ import { mapActions, mapGetters } from 'vuex';
 import Cookies from 'js-cookie';
 import { mapFields } from 'vuex-map-fields';
 import get from 'lodash.get';
-// import isEmpty from 'lodash.isempty';
 import moneyFormat from '@/utils/money-formatter';
 import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
-// import BalanceLine from '@/components/BalanceLine';
 import CardWidget from '@/components/CardWidget';
 import CreditWidget from '@/components/CreditWidget';
-// import { FunctionalButtonsModule } from '@/modules/functional-buttons';
 import { sumOfAllLoans } from '@/utils/sum-all-loans';
 import { ErrorMessages } from '@/utils/error-messages';
-// import { HeaderPlaceholder } from '@/components/placeholders';
 import CurrentTrancheWidget from '@/components/CurrentTrancheWidget';
 import { FloatingActionButton } from '@/components/buttons/floating-action-button';
-// import { MIN_SUM_FOR_CREDIT } from '@/constants/constants';
-// import { redirectToInfoWithParams } from '@/utils/route-utils';
 import CardPlaceholder from './CardPlaceholder';
 import CreditPlaceholder from './CreditPlaceholder';
-// import FunctionalButtonPlaceholder from './FunctionalButtonPlaceholder';
-
 export default {
   name: 'MainPage',
   components: {
     Page,
     PageHeader,
-    // BalanceLine,
     CardWidget,
     CreditWidget,
-    // FunctionalButtonsModule,
-    // HeaderPlaceholder,
     CardPlaceholder,
     CreditPlaceholder,
-    // FunctionalButtonPlaceholder,
     CurrentTrancheWidget,
     FloatingActionButton,
   },
@@ -220,34 +189,6 @@ export default {
       return confirmed && !signed;
     },
   },
-  // watch: {
-  //   async requestInProgress(value) {
-  //     console.log('watch activated', value);
-  //     if (!value) {
-  //       /**
-  //        * замена || на && как временное решение для отладки
-  //        */
-  //       if ((!this.limit || isEmpty(this.offer)) && !this.requestInProgress) {
-  //         this.$router.replace('/reject');
-  //       } else if (this.limit && !isEmpty(this.offer) && !this.requestInProgress) {
-  //         console.log('!requestInProgress');
-  //         if (!this.getHasCard && !this.getHasLoans) {
-  //           this.$router.push('/credit-params');
-  //         }
-  //       }
-  //     }
-  //   },
-  //   // пока нужно!!!!
-  //   async isRestart(value) {
-  //     console.log('isRestart watch', value, this.authStatus, this.activated);
-  //   // пока нужно!!!!
-  //   // hasCurrentTranche(value) {
-  //   //   if (value) {
-  //   //     console.log('watch hasCurrentTranche');
-  //   //     this.currentTranche = mockCurrentTranche;
-  //   //   }
-  //   },
-  // },
   async beforeMount() {
     console.log('beforeMount');
     await this.handleStartPage();
@@ -261,6 +202,7 @@ export default {
       'resetState',
       'resetStateTranche',
       'getAccounts',
+      'getDictionary',
     ]),
     goToBalancePage() {
       this.$router.push('/balance');
@@ -282,9 +224,6 @@ export default {
           this.$router.push(`/info/${this.error}`);
         } else {
           this.$router.push('/credit-params');
-          // this.$store.dispatch('setRequestInProgress', true);
-          // await this.createAndReceiveTranshCreationStatus();
-          // this.$store.dispatch('setRequestInProgress', false);
         }
       } else {
         this.$router.push(`/${value}`);
@@ -297,8 +236,6 @@ export default {
       });
     },
     handleCardClick(id) {
-      console.log('handleCardClick');
-      // this.$router.push('/card-details');
       this.$router.push({
         path: `account/${id}`,
         id,
@@ -316,28 +253,9 @@ export default {
       this.$router.push('/payment-method');
     },
     async handleStartPage() {
-      // if (!this.hasCurrentTranche) {
-      //   this.resetStateTranche();
-      // }
-      // if (!this.authStatus) {
-      //   const routerParams = redirectToInfoWithParams({
-      //     from: '/main',
-      //     status: 403,
-      //   });
-      //   console.log('routerParams', routerParams);
-      //   this.$store.dispatch('routeTo', routerParams);
-      // } else {
-      //   this.$store.dispatch('setError', {});
       this.$store.dispatch('setRequestInProgress', true);
-      //   if (this.authStatus) {
       await this.getAccounts();
-      //     this.mockAddInfoByUserLogin();
-      //     if (this.getAvailableLimit && this.loans.length) {
-      //       this.items[0].disabled = (this.getAvailableLimit - this.sumAllLoans)
-      //       <= MIN_SUM_FOR_CREDIT;
-      //     }
-      //   }
-      // }
+      await this.getDictionary('category');
       this.$store.dispatch('setRequestInProgress', false);
     },
     handleCurrentTrancheClick() {
