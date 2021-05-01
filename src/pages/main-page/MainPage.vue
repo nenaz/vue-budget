@@ -88,6 +88,7 @@ import CurrentTrancheWidget from '@/components/CurrentTrancheWidget';
 import { FloatingActionButton } from '@/components/buttons/floating-action-button';
 import CardPlaceholder from './CardPlaceholder';
 import CreditPlaceholder from './CreditPlaceholder';
+
 export default {
   name: 'MainPage',
   components: {
