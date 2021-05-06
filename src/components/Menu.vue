@@ -29,9 +29,9 @@
           <span
             :class="$style.item"
             @click="handleClick"
-            link="/card-details"
+            link="/reports"
           >
-            3
+            Отчет
           </span>
           <span
             :class="$style.item"

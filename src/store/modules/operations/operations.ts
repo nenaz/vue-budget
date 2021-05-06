@@ -5,15 +5,23 @@ import {
 } from 'vuex';
 import { RootState } from '@/store/types';
 // import { LIST_CATEGORY_DEMO } from '@/dictionaries';
-import { Operations } from './types';
+import {
+  Operations,
+  OperationsFind,
+  ResponseCharDatas,
+} from './types';
 
-const defaultAccountsState = (): any => ({
+const defaultOperationsState = (): any => ({
   data: {},
   length: 0,
+  operationsForPeriod: {
+    names: [],
+    data: [],
+  },
 });
 
 export const operations: Module<any, RootState> = {
-  state: defaultAccountsState(),
+  state: defaultOperationsState(),
   actions: {
     /**
      * получение операций по счету
@@ -39,9 +47,26 @@ export const operations: Module<any, RootState> = {
       // dispatch('setOperations', response);
       dispatch('setOperations', response);
     },
+    async fetchOperationsForPeriod({ dispatch }: {
+      dispatch: Dispatch;
+    }, params: OperationsFind) {
+      const response = await dispatch('serverCommonAPI', {
+        type: 'POST',
+        params: {
+          url: '/operations/find',
+          data: {
+            params,
+          },
+        },
+      });
+      dispatch('setOperationsFindResult', response);
+    },
     setOperations({ commit }: { commit: Commit }, value) {
       commit('updateOperations', value);
       commit('updateOperationsLength', value);
+    },
+    setOperationsFindResult({ commit }: { commit: Commit }, value: ResponseCharDatas) {
+      commit('updateOperationsFindResult', value);
     },
   },
   mutations: {
@@ -54,7 +79,10 @@ export const operations: Module<any, RootState> = {
       console.log('operations data save to store');
     },
     resetState(state) {
-      Object.assign(state, defaultAccountsState());
+      Object.assign(state, defaultOperationsState());
+    },
+    updateOperationsFindResult(state, value) {
+      state.operationsForPeriod = value;
     },
   },
   getters: {
@@ -66,6 +94,9 @@ export const operations: Module<any, RootState> = {
       return state
         ? Object.keys(state).length
         : 0;
+    },
+    getOperationsForPeriod(state) {
+      return state.operationsForPeriod.donutChartData;
     },
     // getOperationCategory: (state, uuid) => {
     //   console.log();

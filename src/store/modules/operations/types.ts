@@ -16,3 +16,13 @@ export type Operations = {
     [key: string]: Operation[];
   }
 };
+
+export type OperationsFind = {
+  startDate: string,
+  endDate: string,
+};
+
+export type ResponseCharDatas = {
+  names: string[],
+  data: number[],
+}; 

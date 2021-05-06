@@ -21,6 +21,7 @@ import { TestsPage } from '@/pages/tests-page';
 import { Operation } from '@/pages/operation-page';
 import { CategoryPage } from '@/pages/category-page';
 import { ChartPage } from '@/pages/chart-page';
+import { ReportPage } from '@/pages/report-page';
 
 Vue.use(VueRouter);
 
@@ -218,6 +219,15 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
     },
     component: ChartPage,
+  },
+  {
+    path: '/report',
+    name: 'ReportPage',
+    props: true,
+    meta: {
+      requiresAuth: true,
+    },
+    component: ReportPage,
   },
 ];
 

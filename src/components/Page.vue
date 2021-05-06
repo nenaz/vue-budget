@@ -49,6 +49,7 @@ export default {
         [this.$style.body]: true,
         [this.$style[`color-${this.bodyColor}`]]: this.bodyColor,
         [this.$style['no-top-bottom-padding']]: this.noTopBottomPadding,
+        [this.$style['no-padding']]: this.noPadding,
       };
     },
   },
@@ -78,6 +79,10 @@ export default {
       ),
     },
     noTopBottomPadding: {
+      type: Boolean,
+      default: false,
+    },
+    noPadding: {
       type: Boolean,
       default: false,
     },
@@ -113,6 +118,10 @@ export default {
 
     &.no-top-bottom-padding {
       padding: 0 16px;
+    }
+
+    &.no-padding {
+      padding: 0;
     }
 
     // &.color-default {
