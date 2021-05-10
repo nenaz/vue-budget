@@ -65,7 +65,7 @@ import CreditWidget from '@/components/CreditWidget';
 import PageBodyContent from '@/components/PageBodyContent';
 import PageBodyContentRollUp from '@/components/PageBodyContentRollUp';
 import PaymentSchedule from '@/components/PaymentSchedule';
-import { formatDate } from '@/utils/date-utils';
+import { formatDate, formatDDMMYYYtoYYYYMMDD } from '@/utils/date-utils';
 import BaseButton from '@/components/BaseButton';
 import { ACCOUNT_TYPES } from './account-details-constants';
 
@@ -257,8 +257,10 @@ export default {
     getOperationDays() {
       const oper = Object.keys(this.operations);
       const sortOpers = oper.sort((a, b) => {
-        if (a < b) return 1;
-        if (a > b) return -1;
+        const tempA = formatDDMMYYYtoYYYYMMDD(a);
+        const tempB = formatDDMMYYYtoYYYYMMDD(b);
+        if (tempA < tempB) return 1;
+        if (tempA > tempB) return -1;
         return 0;
       });
       return sortOpers;
