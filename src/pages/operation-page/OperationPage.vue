@@ -75,7 +75,23 @@
             </div>
           </div>
         </div>
-        <!-- <video autoplay style="width: 100%;"></video> -->
+        <p v-if="showScanConfirmation" class="decode-result">Last result: <b>{{ result }}</b></p>
+        <div v-if="showScanConfirmation">
+          <StreamBarcodeReader
+              @decode="onDecode"
+              @loaded="onLoaded"
+              @error="onError"
+          ></StreamBarcodeReader>
+        </div>
+        <div :class="$style.buttons">
+          <el-button
+            type="primary"
+            @click="handleQRClick"
+            :class="$style.button"
+          >
+            QR
+          </el-button>
+        </div>
         <div :class="$style.buttons">
           <el-button
             type="primary"
@@ -94,11 +110,11 @@
 
 <script>
 import { mapFields } from 'vuex-map-fields';
-import QrScanner from 'qr-scanner';
 import { mapActions } from 'vuex';
 import get from 'lodash.get';
 import { required, minValue } from 'vuelidate/lib/validators';
 import DatePicker from 'vue2-datepicker';
+import { StreamBarcodeReader } from 'vue-barcode-reader';
 import 'vue2-datepicker/index.css';
 import Page from '@/components/Page';
 import PageHeader from '@/components/PageHeader';
@@ -110,6 +126,7 @@ import {
   OPERATION_TYPES,
 } from '@/dictionaries';
 import { dateFormattingFromDDMMYYYtoYYYYMMDDwithTimezone } from '@/utils/date-utils';
+import { qrCodeResultParse } from './utils';
 
 export default {
   name: 'Operation',
@@ -118,9 +135,12 @@ export default {
     PageHeader,
     NumberInput,
     DatePicker,
+    StreamBarcodeReader,
   },
   data() {
     return {
+      result: null,
+      showScanConfirmation: false,
       account: {},
       title: '',
       amount: 0,
@@ -226,38 +246,25 @@ export default {
       });
       this.$router.push('/main');
     },
-    async handleCamera() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: false,
-          video: {
-            width: 480,
-            height: 320,
-            facingMode: { exact: 'environment' },
-          },
-        });
-        const videoTracks = stream.getVideoTracks();
-        const track = videoTracks[0];
-        const videoElem = document.querySelector('video');
-        videoElem.srcObject = stream;
-        try {
-          const qrScanner = new QrScanner(videoElem, (result) => console.log('decoded qr code:', result));
-          // document.querySelector('#get-access').setAttribute('hidden', true);
-          console.log('start');
-          qrScanner.start();
-        } catch (e) {
-          console.log('error', e);
-        } finally {
-          setTimeout(() => {
-            // qrScanner.stop();
-            // console.log('qrScanner.stop');
-            track.stop();
-            console.log('track.stop');
-          }, 15 * 1000);
-        }
-      } catch (e) {
-        console.log('error', e);
+    async onDecode(content) {
+      this.result = content;
+      this.showScanConfirmation = !this.showScanConfirmation;
+      const qrCodeStrParseObj = qrCodeResultParse(content);
+      if (qrCodeStrParseObj.dateTime.date) {
+        this.operDate = qrCodeStrParseObj.dateTime.date;
       }
+      if (qrCodeStrParseObj.amount) {
+        this.amount = qrCodeStrParseObj.amount;
+      }
+    },
+    handleQRClick() {
+      this.showScanConfirmation = !this.showScanConfirmation;
+    },
+    onLoaded(onload) {
+      console.log('onload', onload);
+    },
+    onError(error) {
+      console.log('error', error);
     },
   },
   validations: {
@@ -279,6 +286,15 @@ export default {
 </script>
 
 <style lang="scss" module>
+.scan-confirmation {
+  position: absolute;
+
+  background-color: rgba(255, 255, 255, .8);
+
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
   .button {
     width: 100%;
   }
