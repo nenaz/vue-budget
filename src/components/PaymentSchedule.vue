@@ -6,16 +6,9 @@
       v-for="(operation) in currentOperations"
       :key="operation._id"
     >
-      <div>
-        <img
-          v-if="operation.status !== 'planned'"
-          :src="getImgUrl(operation.status)"
-          :alt="operation.status"
-        />
-      </div>
+      <div :class="$style.icons" v-html="getOperIcon(operation)"></div>
       <div :class="$style['description-block']">
         <span :class="$style['operation-name']">
-          <!-- {{ getCategoryById(operation.category).title }} -->
           {{ operation.category }}
         </span>
       </div>
@@ -88,11 +81,41 @@ export default {
       console.log('getCategoryById_id', id);
       return LISTCATEGORY.find((item) => item.value === id);
     },
+    getOperIcon({ isTransferOpertion, type }) {
+      let result = '';
+      if (isTransferOpertion) {
+        result = '<i class="el-icon-refresh"></i>';
+        result += type
+          ? `<i class="el-icon-caret-top ${this.$style['up-icon']}"></i>`
+          : `<i class="el-icon-caret-bottom ${this.$style['down-icon']}"></i>`;
+      } else {
+        result = type
+          ? `<i class="el-icon-caret-top ${this.$style['up-icon']}"></i>`
+          : `<i class="el-icon-caret-bottom ${this.$style['down-icon']}"></i>`;
+      }
+      return result;
+    },
   },
 };
 </script>
 
 <style lang="scss" module>
+  .up-icon {
+    color: #52AE30;
+  }
+
+  .down-icon {
+    color: red;
+  }
+
+  .icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    width: 40px;
+  }
+
   .payment-schedule {
     font-family: 'Source Sans Pro';
     margin-top: 5px;
@@ -103,7 +126,7 @@ export default {
 
     .line {
       display: grid;
-      grid-template-columns: 25px auto 95px;
+      grid-template-columns: 40px auto 95px;
       border-bottom: 1px solid #F1F1F1;
       height: 55px;
       align-content: center;

@@ -4,6 +4,7 @@
 // [2020]
 // JVrGHYaXq4NcYPA1eOO71pN9nk9oJvPKfuuAQsJK2rMvhYJYiZWE2tzXl6E2WYSA9NQCbPLp9c/Dirqren8zDQ==
 // 4640018900570
+import { Account, AccountToView } from './types';
 
 type GetDateTime = {
   date: string;
@@ -83,4 +84,19 @@ export const qrCodeResultParse = (scanResult: string): QrCodeResultParse => {
     dateTime: getDateTime(scanResult),
     amount: getAmount(scanResult),
   };
+};
+
+export const getAccountsList = (
+  accountsList: Account[],
+  currentAccount: Account,
+): AccountToView[] => {
+  const accListWithoutCurrAcc = accountsList.filter((item: Account) => (
+    // eslint-disable-next-line no-underscore-dangle
+    item._id !== currentAccount._id
+  ));
+  return accListWithoutCurrAcc.map((item, key) => ({
+    ...item,
+    uuid: key,
+    title: `${item.name} ${item.amount} руб.`,
+  }));
 };

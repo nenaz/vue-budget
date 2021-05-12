@@ -45,7 +45,7 @@
             </div>
             <div :class="$style.select">
               <el-select
-                v-model="type.title"
+                v-model="typeTitle"
                 placeholder="Тип"
                 :class="$style.button"
                 @change="handleTypeSelect"
@@ -53,6 +53,21 @@
                 <el-option
                   v-for="item in typeList"
                   :key="item.uuid"
+                  :label="item.title"
+                  :value="item">
+                </el-option>
+              </el-select>
+            </div>
+            <div :class="$style.select" v-if="isTransfer">
+              <el-select
+                v-model="accountFrom.title"
+                placeholder="Со счета"
+                :class="$style.button"
+                @change="handleAccountFromSelect"
+              >
+                <el-option
+                  v-for="item in getAccountsList"
+                  :key="item.label"
                   :label="item.title"
                   :value="item">
                 </el-option>
@@ -126,7 +141,7 @@ import {
   OPERATION_TYPES,
 } from '@/dictionaries';
 import { dateFormattingFromDDMMYYYtoYYYYMMDDwithTimezone } from '@/utils/date-utils';
-import { qrCodeResultParse } from './utils';
+import { qrCodeResultParse, getAccountsList } from './utils';
 
 export default {
   name: 'Operation',
@@ -154,6 +169,7 @@ export default {
       },
       number: '',
       type: OPERATION_TYPES[1],
+      typeTitle: OPERATION_TYPES[1].title,
       typeList: OPERATION_TYPES,
       operDate: new Date().toISOString(),
       pickerOptions: {
@@ -177,6 +193,7 @@ export default {
         ],
         firstDayOfWeek: 1,
       },
+      accountFrom: {},
     };
   },
   props: {
@@ -197,14 +214,13 @@ export default {
     }),
     getAccountsList() {
       console.log('this.accounts', this.accounts);
-      return this.accounts.map((item, key) => ({
-        ...item,
-        uuid: key,
-        title: `${item.name} ${item.amount} руб.`,
-      }));
+      return getAccountsList(this.accounts, this.account);
     },
     isFormValid() {
       return this.$v.amount.required;
+    },
+    isTransfer() {
+      return this.type.uuid === OPERATION_TYPES[2].uuid;
     },
   },
   async mounted() {
@@ -230,20 +246,24 @@ export default {
       this.category = value;
     },
     handleTypeSelect(value) {
-      console.log('handleTypeSelect value', value);
+      this.typeTitle = value.title;
       this.type = value;
     },
     handleAccountSelect(value) {
       this.account = value;
     },
     async handleAddClick() {
-      await this.createOperationComposition({
+      const params = {
         account: this.account,
         amount: this.amount,
         category: this.category,
         operationType: this.type,
         createDate: dateFormattingFromDDMMYYYtoYYYYMMDDwithTimezone(this.operDate),
-      });
+      };
+      if (this.type.uuid === OPERATION_TYPES[2].uuid) {
+        params.accountFrom = this.accountFrom;
+      }
+      await this.createOperationComposition(params);
       this.$router.push('/main');
     },
     async onDecode(content) {
@@ -265,6 +285,9 @@ export default {
     },
     onError(error) {
       console.log('error', error);
+    },
+    handleAccountFromSelect(value) {
+      this.accountFrom = value;
     },
   },
   validations: {

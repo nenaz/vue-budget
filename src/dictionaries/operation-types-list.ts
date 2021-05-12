@@ -7,8 +7,8 @@ export const OPERATION_TYPES = [
     uuid: '1',
     title: 'Расход',
   },
-  // {
-  //   uuid: '2',
-  //   title: 'Перевод',
-  // },
+  {
+    uuid: '2',
+    title: 'Перевод',
+  },
 ];

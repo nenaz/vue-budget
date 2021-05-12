@@ -10,7 +10,6 @@ export type Account = {
   lastUpdate: string;
   name: string;
   status: string;
-  title: string;
   type: {
     order: number;
     title: string;
@@ -18,16 +17,7 @@ export type Account = {
   };
 };
 
-export type Accounts = {
-  allAccounts: Account[];
-};
-
-export type DataForUpdateAccount = {
-  amount: number;
-  id: string;
-  idFrom: string | null;
-  operationType: {
-    title: string;
-    uuid: string;
-  };
+export type AccountToView = Account & {
+  uuid: number;
+  title: string;
 };

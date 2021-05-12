@@ -43,6 +43,21 @@ export const operations: Module<any, RootState> = {
       commit('updateOperations', value);
       commit('updateOperationsLength', value);
     },
+    async createOperation({ commit, dispatch }: {
+      commit: Commit;
+      dispatch: Dispatch;
+    }, params) {
+      const result = await dispatch('serverCommonAPI', {
+        type: 'POST',
+        params: {
+          url: '/operations/create',
+          data: {
+            ...params,
+          },
+        },
+      });
+      return result;
+    },
   },
   mutations: {
     updateOperationsLength(state, value: any) {

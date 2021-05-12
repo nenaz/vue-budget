@@ -4,18 +4,27 @@ import {
   Module,
 } from 'vuex';
 import { RootState } from '@/store/types';
-import { Accounts } from './types';
+import { OPERATION_TYPES } from '@/dictionaries';
+import {
+  Account,
+  Accounts,
+  DataForUpdateAccount,
+} from './types';
 
 const defaultAccountsState = (): Accounts => ({
   allAccounts: [],
 });
 
 interface OperationParams {
-  account: any;
-  amount: any;
-  category: any;
-  operationType: any;
-  createDate: any;
+  account: Account;
+  accountFrom?: Account;
+  amount: number;
+  category: string;
+  createDate: string;
+  operationType: {
+    title: string;
+    uuid: string;
+  };
 }
 
 export const accounts: Module<Accounts, RootState> = {
@@ -48,10 +57,6 @@ export const accounts: Module<Accounts, RootState> = {
       rootState: RootState;
     }, userId: string) {
       console.log('getAccounts');
-      // dispatch('setError', {});
-      // requestCounts += 1;
-      // const clientInstanceUuid = get(rootState, 'clientInstance.uuid');
-      // if (clientInstanceUuid) {
       const response = await dispatch('serverCommonAPI', {
         type: 'POST',
         params: {
@@ -65,21 +70,6 @@ export const accounts: Module<Accounts, RootState> = {
     },
     setAccounts({ commit }: { commit: Commit }, value) {
       commit('updateAccounts', value);
-    },
-    async createOperation({ commit, dispatch }: {
-      commit: Commit;
-      dispatch: Dispatch;
-    }, params) {
-      const result = await dispatch('serverCommonAPI', {
-        type: 'POST',
-        params: {
-          url: '/operations/create',
-          data: {
-            ...params,
-          },
-        },
-      });
-      return result;
     },
     async fetchUpdateAccount({ commit, dispatch }: {
       commit: Commit;
@@ -102,12 +92,17 @@ export const accounts: Module<Accounts, RootState> = {
     }, operationParams: OperationParams) {
       const result = await dispatch('createOperation', operationParams);
       if (result.message === 'success') {
-        await dispatch('fetchUpdateAccount', {
+        const params: DataForUpdateAccount = {
           amount: operationParams.amount,
           /* eslint-disable-next-line */
           id: operationParams.account._id,
           operationType: operationParams.operationType,
-        });
+          idFrom: null,
+        };
+        if (operationParams.operationType.uuid === OPERATION_TYPES[2].uuid) {
+          params.idFrom = operationParams.accountFrom?._id || null;
+        }
+        await dispatch('fetchUpdateAccount', params);
       }
     },
     async deleteThisAccount({ commit, dispatch }: {
