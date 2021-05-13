@@ -18,16 +18,13 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
 import { mapActions } from 'vuex';
-// import { mapFields } from 'vuex-map-fields';
 import moneyFormat from '@/utils/money-formatter';
 import { formatDate } from '@/utils/date-utils';
 import {
-  // LIST_CATEGORY_DEMO,
-  // OPERATION_TYPES,
   LISTCATEGORY,
 } from '@/dictionaries';
+import { OPER_TYPES } from '@/dictionaries/operation-types-list';
 
 export default {
   name: 'PaymentSchedule', // опервции по счету
@@ -41,21 +38,11 @@ export default {
       default: () => ([]),
     },
   },
-  // data() {
-  //   return {
-  //     operations: [],
-  //   };
-  // },
   computed: {
     renderOperations() {
-      // console.log('this.$store.getters.getOperations', this.$store.state.operations);
-      // this.operations = Object.keys(this.currentOperations);
       return Object.keys(this.currentOperations);
     },
   },
-  // async mounted() {
-  //   await this.getDictionary();
-  // },
   methods: {
     ...mapActions([
       'getDictionary',
@@ -85,13 +72,13 @@ export default {
       let result = '';
       if (isTransferOpertion) {
         result = '<i class="el-icon-refresh"></i>';
-        result += type
-          ? `<i class="el-icon-caret-top ${this.$style['up-icon']}"></i>`
-          : `<i class="el-icon-caret-bottom ${this.$style['down-icon']}"></i>`;
+        result += type === OPER_TYPES.COSTS
+          ? `<i class="el-icon-caret-bottom ${this.$style['down-icon']}"></i>`
+          : `<i class="el-icon-caret-top ${this.$style['up-icon']}"></i>`;
       } else {
-        result = type
-          ? `<i class="el-icon-caret-top ${this.$style['up-icon']}"></i>`
-          : `<i class="el-icon-caret-bottom ${this.$style['down-icon']}"></i>`;
+        result = type === OPER_TYPES.COSTS
+          ? `<i class="el-icon-caret-bottom ${this.$style['down-icon']}"></i>`
+          : `<i class="el-icon-caret-top ${this.$style['up-icon']}"></i>`;
       }
       return result;
     },
@@ -119,7 +106,6 @@ export default {
   .payment-schedule {
     font-family: 'Source Sans Pro';
     margin-top: 5px;
-    // border-radius: 5px;
     background-color: #F1F1F1;
     border-top: 1px solid;
     border-bottom: 1px solid;

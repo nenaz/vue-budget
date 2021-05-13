@@ -12,3 +12,9 @@ export const OPERATION_TYPES = [
     title: 'Перевод',
   },
 ];
+
+export enum OPER_TYPES {
+  INCOME = '0',
+  COSTS = '1',
+  TRANSFER = '2',
+}
