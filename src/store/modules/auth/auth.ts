@@ -35,13 +35,14 @@ const defaultAuthState = (): Auth => ({
 export const auth: Module<Auth, RootState> = {
   state: defaultAuthState(),
   actions: {
-    async testFetch() {
-      // const result = await postData('?email=mr444%40mail.ru&password=1&_csrf=');
-      const result = await postData({
-        login: 'q',
-        password: 'q',
+    async fetchFlyRequest({ dispatch, commit }: {
+      dispatch: Dispatch;
+      commit: Commit;
+    }) {
+      await dispatch('serverAuthAPI', {
+        url: '/login/fly',
+        data: {},
       });
-      console.log('result', result);
     },
     closeSession({ dispatch, commit }: {
       dispatch: Dispatch;

@@ -106,13 +106,12 @@ export default {
     ...mapActions([
       'authProcedure',
       'removeAuthInfo',
-      'testFetch',
+      'fetchFlyRequest',
     ]),
     handleChangeConsent(value) {
       this.$store.commit('SET_AUTH_CONSENT', value);
     },
     async authProcedureStart() {
-      // await this.testFetch();
       await this.authProcedure();
       if (!this.error) {
         this.$router.push('/main');
@@ -120,7 +119,8 @@ export default {
     },
     registerProcStart() {},
   },
-  mounted() {
+  async mounted() {
+    await this.fetchFlyRequest();
     this.removeAuthInfo();
   },
   validations: {
