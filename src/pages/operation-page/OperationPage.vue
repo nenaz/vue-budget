@@ -9,103 +9,98 @@
     </template>
     <template v-slot:body>
       <div :class="$style.body">
-        <div :class="$style['body-content tess']">
-          <div :class="$style['work-info']">
-            <div :class="$style['work-info__input-styles']">
-              <number-input
-                title="Сумма"
-                v-model.lazy="amount"
-              />
-            </div>
-            <div :class="$style.select">
-              <date-picker
-                v-model="operDate"
-                valueType="format"
-                :editable = "false"
-                :clearable = "false"
-                style="width: 100%"
-                format="DD.MM.YYYY"
-              >
-              </date-picker>
-            </div>
-            <div :class="$style.select">
-              <el-select
-                v-model="category"
-                placeholder="Категория"
-                :class="$style.button"
-                @change="handleCategorySelect"
-              >
-                <el-option
-                  v-for="item in dictionaries.category"
-                  :key="item._id"
-                  :label="item.categoryName"
-                  :value="item.categoryName">
-                </el-option>
-              </el-select>
-            </div>
-            <div :class="$style.select">
-              <el-select
-                v-model="typeTitle"
-                placeholder="Тип"
-                :class="$style.button"
-                @change="handleTypeSelect"
-              >
-                <el-option
-                  v-for="item in typeList"
-                  :key="item.uuid"
-                  :label="item.title"
-                  :value="item">
-                </el-option>
-              </el-select>
-            </div>
-            <div :class="$style.select" v-if="isTransfer">
-              <el-select
-                v-model="accountFrom.title"
-                placeholder="Со счета"
-                :class="$style.button"
-                @change="handleAccountFromSelect"
-              >
-                <el-option
-                  v-for="item in getAccountsList"
-                  :key="item.label"
-                  :label="item.title"
-                  :value="item">
-                </el-option>
-              </el-select>
-            </div>
-            <div :class="$style.select">
-              <el-select
-                v-model="account.title"
-                placeholder="Счет"
-                :class="$style.button"
-                @change="handleAccountSelect"
-              >
-                <el-option
-                  v-for="item in getAccountsList"
-                  :key="item.label"
-                  :label="item.title"
-                  :value="item">
-                </el-option>
-              </el-select>
+        <div :class="$style['top-content-block']">
+          <div :class="$style['body-content tess']">
+            <div :class="$style['work-info']">
+              <div :class="$style['work-info__input-styles']">
+                <number-input
+                  title="Сумма"
+                  v-model.lazy="amount"
+                />
+              </div>
+              <div :class="$style.select">
+                <date-picker
+                  v-model="operDate"
+                  valueType="format"
+                  :editable = "false"
+                  :clearable = "false"
+                  style="width: 100%"
+                  format="DD.MM.YYYY"
+                >
+                </date-picker>
+              </div>
+              <div :class="$style.select">
+                <el-select
+                  v-model="category"
+                  placeholder="Категория"
+                  :class="$style.button"
+                  @change="handleCategorySelect"
+                >
+                  <el-option
+                    v-for="item in dictionaries.category"
+                    :key="item._id"
+                    :label="item.categoryName"
+                    :value="item.categoryName">
+                  </el-option>
+                </el-select>
+              </div>
+              <div :class="$style.select">
+                <el-select
+                  v-model="typeTitle"
+                  placeholder="Тип"
+                  :class="$style.button"
+                  @change="handleTypeSelect"
+                >
+                  <el-option
+                    v-for="item in typeList"
+                    :key="item.uuid"
+                    :label="item.title"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </div>
+              <div :class="$style.select" v-if="isTransfer">
+                <el-select
+                  v-model="accountFrom.title"
+                  placeholder="Со счета"
+                  :class="$style.button"
+                  @change="handleAccountFromSelect"
+                >
+                  <el-option
+                    v-for="item in getAccountsList"
+                    :key="item.label"
+                    :label="item.title"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </div>
+              <div :class="$style.select">
+                <el-select
+                  v-model="account.title"
+                  placeholder="Счет"
+                  :class="$style.button"
+                  @change="handleAccountSelect"
+                >
+                  <el-option
+                    v-for="item in getAccountsList"
+                    :key="item.label"
+                    :label="item.title"
+                    :value="item">
+                  </el-option>
+                </el-select>
+              </div>
             </div>
           </div>
-        </div>
-        <p v-if="showScanConfirmation" class="decode-result">Last result: <b>{{ result }}</b></p>
-        <div v-if="showScanConfirmation">
-          <StreamBarcodeReader
-              @decode="onDecode"
-              @loaded="onLoaded"
-              @error="onError"
-          ></StreamBarcodeReader>
-        </div>
-        <div :class="$style.buttons">
-          <el-button
-            type="primary"
-            @click="handleQRClick"
-            :class="$style.button"
-          >
-            QR
-          </el-button>
+          <div v-if="showScanConfirmation" :class="$style['qr-code-block']">
+            <p class="decode-result">Last result: <b>{{ result }}</b></p>
+            <div>
+              <StreamBarcodeReader
+                  @decode="onDecode"
+                  @loaded="onLoaded"
+                  @error="onError"
+              ></StreamBarcodeReader>
+            </div>
+          </div>
         </div>
         <div :class="$style.buttons">
           <el-button
@@ -118,6 +113,17 @@
             Продолжить
           </el-button>
         </div>
+      </div>
+    </template>
+    <template v-slot:footer>
+      <div :class="$style['fab-button-block']">
+      <el-button
+          circle
+          @click="handleQRClick"
+          :class="$style['fab-button']"
+        >
+          QR
+        </el-button>
       </div>
     </template>
   </page>
@@ -263,7 +269,9 @@ export default {
       if (this.type.uuid === OPERATION_TYPES[2].uuid) {
         params.accountFrom = this.accountFrom;
       }
+      this.$store.dispatch('setRequestInProgress', true);
       await this.createOperationComposition(params);
+      this.$store.dispatch('setRequestInProgress', false);
       this.$router.push('/main');
     },
     async onDecode(content) {
@@ -329,6 +337,9 @@ export default {
   }
   .body {
     position: relative;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    height: 100%;
 
     .body-content {
       background: $WHITE;
@@ -428,4 +439,18 @@ export default {
     text-align: left;
     width: 100%;
   }
+
+  .fab-button-block {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px 10px;
+  }
+
+  .fab-button {
+    width: 56px;
+    height: 56px;
+  }
+  // display: grid;
+  //   grid-template-rows: 1fr auto;
+  //   height: 100%;
 </style>

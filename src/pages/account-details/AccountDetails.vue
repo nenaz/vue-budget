@@ -13,22 +13,6 @@
       />
     </template>
     <template v-slot:body>
-        <page-body-content-roll-up>
-          <div style="display: flex; flex-direction: row; justify-content: center;">
-            <template
-              v-for="(item) in items"
-            >
-              <base-button
-                :key="item.icon"
-                type="fab"
-                @click="item.handleName"
-                v-if="item.types.includes(currentAccount.type.uuid)"
-              >
-                {{ item.text }}
-              </base-button>
-            </template>
-        </div>
-      </page-body-content-roll-up>
       <div
         v-if="length"
         style="height: calc(100vh - 211px); overflow: hidden;"
@@ -46,11 +30,31 @@
           </div>
         </page-body-content>
       </div>
-      <div v-else>
+      <div
+        v-else
+        style="height: calc(100vh - 211px); overflow: hidden;"
+      >
         <page-body-content
+          :isHeight100="false"
           text="Пока нет ни одной операции"
         ></page-body-content>
       </div>
+      <page-body-content-roll-up>
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+          <template
+            v-for="(item) in items"
+          >
+            <base-button
+              :key="item.icon"
+              type="fab"
+              @click="item.handleName"
+              v-if="item.types.includes(currentAccount.type.uuid)"
+            >
+              {{ item.text }}
+            </base-button>
+          </template>
+        </div>
+      </page-body-content-roll-up>
     </template>
   </page>
 </template>
@@ -136,56 +140,6 @@ export default {
           ],
         },
       ],
-      tableData: [{
-        date: '2016-05-03',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      }, {
-        date: '2016-05-02',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      }, {
-        date: '2016-05-04',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      }, {
-        date: '2016-05-01',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      }, {
-        date: '2016-05-08',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      }, {
-        date: '2016-05-06',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      }, {
-        date: '2016-05-07',
-        name: 'Tom',
-        state: 'California',
-        city: 'Los Angeles',
-        address: 'No. 189, Grove St, Los Angeles',
-        zip: 'CA 90036',
-      }],
     };
   },
   computed: {

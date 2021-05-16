@@ -92,12 +92,11 @@ export default {
 
 <style lang="scss" module>
   .page {
-    // background: $WILD_SAND;
     background-image: url('../assets/page-bg.jpg');
-    // background-color: #eee;
-    // background: #1d1a1a;
     height: 100%;
     overflow: hidden;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
   }
 
   .small-page {
@@ -114,12 +113,6 @@ export default {
     &.no-top-bottom-padding {
       padding: 0 16px;
     }
-
-    // &.color-default {
-    //   // background-color: $WILD_SAND;
-    //   // background-color: #1d1a1a;
-    //   background-color: #eee;
-    // }
 
     &.color-white {
       background-color: $WHITE;

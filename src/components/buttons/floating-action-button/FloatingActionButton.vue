@@ -73,7 +73,6 @@ export default {
   //   height: 30px;
   // }
   .fab-wrapper {
-    position: absolute;
     width: 56px;
     right: 16px;
   }

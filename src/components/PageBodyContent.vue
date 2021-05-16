@@ -1,5 +1,5 @@
 <template>
-  <div :class="$style['body-content']">
+  <div :class="classes">
     <page-body-content-title
       :text="text"
       :subText="subText"
@@ -25,6 +25,18 @@ export default {
       type: String,
       default: '',
     },
+    isHeight100: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  computed: {
+    classes() {
+      return {
+        [this.$style['body-content']]: true,
+        [this.$style.height100]: this.isHeight100,
+      };
+    },
   },
 };
 </script>
@@ -32,12 +44,14 @@ export default {
 <style lang="scss" module>
   .body-content {
     background: $WHITE;
-    // backdrop-filter: blur(16px);
     border-radius: 8px;
     width: 100%;
     padding: 23px 16px 15px;
     box-sizing: border-box;
     margin-bottom: 16px;
+  }
+
+  .height100 {
     height: 100%;
   }
 </style>

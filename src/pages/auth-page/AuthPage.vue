@@ -3,15 +3,12 @@
     :grid-config="pageConfig"
   >
     <template v-slot:header>
-      <!-- <page-auth-header /> -->
     </template>
     <template v-slot:body>
       <div :class="$style.body">
         <el-card class="box-card">
           <div slot="header" :class="$style.clearfix">
               <span :class="$style['avatar-logo']"></span>
-            <!-- <el-avatar :size="size" :src="circleUrl">
-            </el-avatar> -->
           </div>
           <el-tabs v-model="activeName" type="border-card">
             <el-tab-pane
@@ -34,12 +31,6 @@
             </el-tab-pane>
           </el-tabs>
         </el-card>
-        <!-- <span :class="$style['body-title']">
-          Необходимо
-          <br />
-          войти
-        </span> -->
-        <!-- <div :class="$style['input-block']"> -->
       </div>
     </template>
     <template v-slot:footer>
@@ -52,21 +43,13 @@
 import { mapActions } from 'vuex';
 import { mapFields } from 'vuex-map-fields';
 import { required } from 'vuelidate/lib/validators';
-// import { }
-// import { BaseInput } from '@/components/inputs';
-// import Checkbox from '@/components/Checkbox';
-// import BaseButton from '@/components/BaseButton';
 import Page from '@/components/Page';
 import AuthTab from './AuthTab';
 import RegisterTab from './RegisterTab';
-// import PageFooter from '@/components/PageFooter';
 
 export default {
   name: 'AuthPage',
   components: {
-    // BaseButton,
-    // BaseInput,
-    // Checkbox,
     Page,
     AuthTab,
     RegisterTab,
@@ -106,7 +89,6 @@ export default {
     ...mapActions([
       'authProcedure',
       'removeAuthInfo',
-      'fetchFlyRequest',
     ]),
     handleChangeConsent(value) {
       this.$store.commit('SET_AUTH_CONSENT', value);
@@ -120,7 +102,6 @@ export default {
     registerProcStart() {},
   },
   async mounted() {
-    await this.fetchFlyRequest();
     this.removeAuthInfo();
   },
   validations: {

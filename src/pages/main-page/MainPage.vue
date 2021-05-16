@@ -8,7 +8,7 @@
     </template>
     <template v-slot:body>
         <card-placeholder v-if="requestInProgress" />
-        <div class="accounts" v-else>
+        <div :class="$style.accounts" v-else>
           <card-widget
             v-for="(account, key) in accounts"
             :key="key"
@@ -58,16 +58,15 @@
           </transition>
         </template>
       </div>
-      <floating-action-button
-        @click="handleAddOperation"
-      >add</floating-action-button>
     </template>
     <template v-slot:footer>
-      <el-button-group>
-      <el-button type="primary" icon="el-icon-edit"></el-button>
-      <el-button type="primary" icon="el-icon-share"></el-button>
-      <el-button type="primary" icon="el-icon-delete"></el-button>
-    </el-button-group>
+      <div :class="$style.footer">
+        <floating-action-button
+          @click="handleAddOperation"
+        >
+          add
+        </floating-action-button>
+      </div>
     </template>
   </page>
 </template>
@@ -279,7 +278,13 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 10px;
+  }
+
   .fade-enter-active, .fade-leave-active {
     transition: opacity .2s;
   }
